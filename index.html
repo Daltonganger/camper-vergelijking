@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Camperroute Amerika mei 2027 — vergelijking</title>
+<style>
+  :root{
+    --paper:#faf6ef;            /* warm zandwit */
+    --paper-2:#f1eadc;          /* iets dieper zand */
+    --ink:#2b2620;              /* warm donkerbruin */
+    --ink-soft:#6b6154;
+    --ink-faint:#94887a;
+    --line:#e0d6c4;
+    --line-strong:#c9bca4;
+    --teal:#1f6f63;             /* accent: canyon-teal */
+    --teal-deep:#175349;
+    --teal-ink:#0f3d36;
+    --teal-soft:#dce9e4;
+    --sun:#e08a2e;              /* desert sun, voor sterren */
+    --amber-soft:#f6e8d0;
+    --sand:#e8dcc4;
+    --cream:#fdfbf6;
+    --risk:#a4583c;             /* warm roest voor "minder" */
+    --ok:#2f6d4f;
+    --r1:#1f6f63; --r2:#2d7f9e; --r3:#7a8f3d; --r4:#c97f2d;
+    --r5:#a4583c; --r6:#8a6ba8;
+    --shadow:0 1px 2px rgba(43,38,32,.06), 0 8px 28px rgba(43,38,32,.08);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;
+    font-size:16px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  /* ---------- header ---------- */
+  header{
+    padding:52px 0 30px;
+    background:
+      radial-gradient(1200px 400px at 15% -10%, rgba(224,138,46,.10), transparent 60%),
+      radial-gradient(900px 380px at 90% -20%, rgba(31,111,99,.10), transparent 55%),
+      var(--paper);
+    border-bottom:1px solid var(--line);
+  }
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--teal);
+    background:var(--teal-soft);
+    border:1px solid #c3dcd4;
+    padding:5px 12px;border-radius:999px;
+    margin-bottom:18px;
+  }
+  h1{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.15;margin:0 0 10px;font-weight:800;letter-spacing:-.015em}
+  h1 .accent{color:var(--teal)}
+  .sub{font-size:1.06rem;color:var(--ink-soft);max-width:62ch;margin:0}
+  .facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+  .fact{
+    background:var(--cream);border:1px solid var(--line);border-radius:999px;
+    padding:7px 14px;font-size:.86rem;color:var(--ink-soft);
+  }
+  .fact strong{color:var(--ink);font-weight:700}
+
+  /* ---------- verdict banner ---------- */
+  .verdict{
+    margin:26px 0 0;
+    background:var(--teal-deep);
+    color:#f3efe6;
+    border-radius:var(--radius);
+    padding:18px 22px;
+    display:flex;gap:16px;align-items:flex-start;
+    box-shadow:var(--shadow);
+  }
+  .verdict .badge{
+    flex:0 0 auto;background:var(--sun);color:#3a2608;font-weight:800;
+    border-radius:10px;padding:8px 12px;font-size:.95rem;letter-spacing:.02em;
+  }
+  .verdict h2{margin:0 0 4px;font-size:1.12rem;color:#fff}
+  .verdict p{margin:0;font-size:.95rem;color:#d8d2c4;max-width:80ch}
+  .verdict p strong{color:#fff}
+
+  /* ---------- section shell ---------- */
+  section{padding:44px 0 8px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px}
+  .sec-head h2{font-size:1.3rem;font-weight:800;margin:0;letter-spacing:-.01em}
+  .sec-head .no{
+    font-size:.85rem;font-weight:700;color:var(--teal);
+    background:var(--teal-soft);border:1px solid #c3dcd4;
+    border-radius:8px;padding:3px 9px;flex:0 0 auto;
+  }
+  .sec-head .hint{color:var(--ink-faint);font-size:.88rem}
+
+  /* ---------- legend / chips ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .chip{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--cream);border:1px solid var(--line);
+    padding:6px 12px;border-radius:999px;font-size:.85rem;color:var(--ink-soft);
+    cursor:pointer;user-select:none;transition:all .18s ease;
+  }
+  .chip .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+  .chip[aria-pressed="true"]{
+    border-color:var(--ink);color:var(--ink);font-weight:600;
+    background:#fff;
+  }
+  .chip[aria-pressed="false"]{opacity:.62}
+  .chip[aria-pressed="false"]:hover{opacity:1}
+
+  /* ---------- table ---------- */
+  .table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--cream);box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;min-width:820px;font-size:.92rem}
+  thead th{
+    text-align:left;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--ink-faint);font-weight:700;
+    padding:12px 14px;border-bottom:2px solid var(--line-strong);background:var(--paper-2);
+    vertical-align:bottom;
+  }
+  tbody td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#fffdf7}
+  .r-name{font-weight:800;font-size:.95rem;white-space:nowrap}
+  .r-name .n{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;color:#fff;font-size:.78rem;margin-right:8px}
+  .r-meta{display:block;font-size:.78rem;color:var(--ink-faint);font-weight:500;margin-top:3px}
+  .cell-label{display:none}
+  td .stars{white-space:nowrap;font-size:.95rem;letter-spacing:1px}
+  .star{color:#d8c39a}
+  .star.on{color:var(--sun)}
+  .star.half{position:relative;color:#d8c39a}
+  .star.half:after{content:"★";position:absolute;left:0;top:0;color:var(--sun);width:50%;overflow:hidden}
+  .score{font-weight:800;white-space:nowrap}
+  .score .of{font-weight:500;color:var(--ink-faint);font-size:.8rem}
+  .bar{width:86px;height:6px;background:var(--sand);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px}
+  .bar i{display:block;height:100%;background:var(--teal);border-radius:3px}
+  .best{color:var(--ok);font-weight:700;font-size:.75rem;white-space:nowrap}
+  .worst{color:var(--risk);font-weight:600;font-size:.75rem;white-space:nowrap}
+  .tag{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:.02em}
+  .tag.lead{background:var(--teal-soft);color:var(--teal-deep);border:1px solid #c3dcd4}
+  .tag.watch{background:var(--amber-soft);color:#7a5412;border:1px solid #e5cf9e}
+  .tag.warn{background:#f4ddcf;color:#8a3d20;border:1px solid #e3c0a8}
+  .note{font-size:.78rem;color:var(--ink-faint);margin-top:10px}
+  .note code{background:var(--paper-2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:.75rem}
+
+  /* ---------- map ---------- */
+  .map-shell{border:1px solid var(--line);border-radius:var(--radius);background:var(--cream);box-shadow:var(--shadow);overflow:hidden}
+  .map-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+  .map-top h3{margin:0;font-size:1rem;font-weight:800}
+  .map-top .sub2{font-size:.82rem;color:var(--ink-faint)}
+  .map-legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.8rem;color:var(--ink-soft)}
+  .map-legend span{display:inline-flex;align-items:center;gap:6px}
+  .map-legend .sw{width:22px;height:4px;border-radius:2px;display:inline-block}
+  svg.map{display:block;width:100%;height:auto;background:
+    radial-gradient(800px 300px at 50% 0%, #eef3ee, transparent 70%),
+    #f5f1e7}
+  .state{fill:#e6dcc6;stroke:#fff;stroke-width:.8;transition:fill .15s ease}
+  .state:hover{fill:#d8caac}
+  .route{fill:none;stroke-linejoin:round;stroke-linecap:round;opacity:.65;transition:opacity .15s ease, stroke-width .15s ease;pointer-events:stroke}
+  .route-casing{fill:none;stroke:#fdfbf6;stroke-linejoin:round;stroke-linecap:round;opacity:.9;pointer-events:none}
+  .route:hover{opacity:1}
+  .route.solo{opacity:1;stroke-width:4.5}
+  .route.dim{opacity:.1}
+  .mk{stroke:#fff;stroke-width:1.6}
+  .mk-label{font-size:10.5px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:#f5f1e7;stroke-width:3px}
+  .mk-label.small{font-size:9.5px;font-weight:600}
+  .map-foot{display:flex;flex-wrap:wrap;gap:8px;padding:12px 18px;border-top:1px solid var(--line);font-size:.78rem;color:var(--ink-faint)}
+  .map-foot .lnk{color:var(--teal);text-decoration:none;font-weight:600}
+  .map-foot .lnk:hover{text-decoration:underline}
+
+  /* ---------- cards / route detail ---------- */
+  .route-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+  .rcard{
+    background:var(--cream);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 18px 14px;box-shadow:var(--shadow);transition:transform .15s ease;
+    position:relative;
+  }
+  .rcard:hover{transform:translateY(-2px)}
+  .rcard .top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .rcard h3{margin:0;font-size:1.02rem;font-weight:800;display:flex;align-items:center;gap:9px}
+  .rcard h3 .n{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;color:#fff;font-size:.8rem;flex:0 0 auto}
+  .rcard .meta{font-size:.8rem;color:var(--ink-faint);margin-bottom:10px}
+  .rcard .desc{font-size:.9rem;color:var(--ink-soft);margin-bottom:12px}
+  .rcard ul{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:6px}
+  .rcard li{font-size:.86rem;color:var(--ink-soft);padding-left:20px;position:relative}
+  .rcard li:before{content:"▸";position:absolute;left:2px;color:var(--teal);font-size:.8rem;top:.05em}
+  .rcard .scoreline{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:10px}
+  .rcard .scoreline .stars{font-size:.9rem}
+  .rcard .scoreline b{font-size:1rem}
+  .rcard .hint{font-size:.75rem;color:var(--ink-faint);margin-top:8px;line-height:1.45}
+  .rcard .fave{position:absolute;top:-9px;right:14px;background:var(--sun);color:#3a2608;font-size:.7rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+  .np-count{font-size:.82rem;color:var(--ink);background:var(--paper-2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:0 0 10px;line-height:1.5}
+  .np-count strong{color:var(--teal-deep)}
+  .gmaps{margin:0 0 10px}
+  .gmaps a{font-size:.85rem;font-weight:700;color:var(--teal);text-decoration:none}
+  .gmaps a:hover{text-decoration:underline}
+
+  /* ---------- stars overview ---------- */
+  .stars-table{width:100%;border-collapse:collapse;font-size:.9rem}
+  .stars-table th{
+    text-align:left;font-size:.76rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);
+    padding:10px 12px;border-bottom:2px solid var(--line-strong);background:var(--paper-2);
+    white-space:nowrap;
+  }
+  .stars-table td{padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+  .stars-table tbody tr:hover td{background:#fffdf7}
+  .stars-table .crit{font-weight:600;white-space:normal;min-width:190px}
+  .stars-table .w{font-size:.74rem;color:var(--ink-faint);font-weight:500;display:block;margin-top:2px}
+  .stars-table .total-row td{border-top:2px solid var(--line-strong);font-weight:800;background:var(--paper-2)}
+  .stars-table .rank-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;color:#fff;font-size:.76rem;font-weight:800;margin-right:6px}
+
+  /* ---------- criterium cards ---------- */
+  .crit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+  .ccard{background:var(--cream);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+  .ccard h3{margin:0 0 4px;font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:8px}
+  .ccard .w{font-size:.74rem;color:var(--ink-faint);margin-bottom:10px}
+  .ccard ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+  .ccard li{font-size:.85rem;color:var(--ink-soft);display:flex;gap:8px;align-items:baseline}
+  .ccard li .cn{flex:0 0 auto;font-weight:800;font-size:.8rem}
+  .ccard li .st{margin-left:auto;flex:0 0 auto;font-size:.82rem;letter-spacing:1px;color:var(--sun);font-weight:600}
+
+  /* ---------- footer ---------- */
+  footer{padding:36px 0 60px;color:var(--ink-faint);font-size:.82rem}
+  footer .rules{border-top:1px solid var(--line);padding-top:16px;max-width:78ch;line-height:1.6}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:760px){
+    header{padding:36px 0 22px}
+    section{padding:32px 0 4px}
+    .verdict{flex-direction:column;gap:10px}
+    td .cell-label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);font-weight:700;margin-bottom:3px}
+    .r-name .r-meta{display:block}
+  }
+  @media print{
+    .chips,.map-legend,.map-foot{display:none}
+    body{background:#fff}
+    .map-shell,table,.rcard,.ccard,.verdict{box-shadow:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="kicker">Camperkeuze · Amerika · Mei 2027</span>
+    <h1>Zes routes, één <span class="accent">camper</span>.</h1>
+    <p class="sub">Vergelijking op basis van wat jullie belangrijk vinden: nationale parken, rust &amp; natuur, weer in mei, rij-tijd (Amelie!) en af en toe een warm stranddagje. 21–23 dagen, vertrek tussen 14 en 29 mei.</p>
+    <div class="facts">
+      <span class="fact"><strong>21–23</strong> dagen</span>
+      <span class="fact"><strong>14–29 mei</strong> vertrekvenster</span>
+      <span class="fact"><strong>±3.000–3.500 km</strong> per route</span>
+      <span class="fact"><strong>Camper</strong> · 2 volwassenen + Amelie</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- verdict -->
+  <div class="verdict" id="verdict">
+    <div class="badge">Score</div>
+    <div>
+      <h2>Winnaar op papier: Route 1 — Rocky Mountains (Denver &amp; terug)</h2>
+      <p>Meeste nationale parken per reisdag, koel maar droog en zonnig meigevoel, <strong>geen drukte buiten de weekends</strong>, en de kortste rijtijden (Amelie-vriendelijk). Texas/NM (Route 6) is met 4 parken + strand een sterke nummer 2. Wie puur voor warmte en strand gaat, kiest <strong>Route 3 (Gulf)</strong> — maar die heeft met 1 nationaal park de minste parken. Route 4 (Canada Rockies) is de mooiste pure natuur maar komt met de langste ritten en koelere mei.</p>
+    </div>
+  </div>
+
+  <!-- 1. table -->
+  <section id="tabel">
+    <div class="sec-head">
+      <span class="no">01</span>
+      <h2>Vergelijking in één oogopslag</h2>
+      <span class="hint">klik op een route om hem op de kaart te markeren</span>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Routes filteren"></div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Route</th>
+            <th>Kern</th>
+            <th>Parken &amp; natuur</th>
+            <th>Weer mei</th>
+            <th>Drukte</th>
+            <th>Rit-tijd</th>
+            <th>Score</th>
+            <th>Oordeel</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <p class="note">KM = globaal routeverloop zoals aangeleverd. Score is gewogen: parken &amp; natuur <code>×3</code>, rust &amp; drukte <code>×2</code>, weer <code>×2</code>, rit-tijd/Amelie <code>×2</code>, strand <code>×1</code>.</p>
+  </section>
+
+  <!-- 2. map -->
+  <section id="kaart">
+    <div class="sec-head">
+      <span class="no">02</span>
+      <h2>De routes op de kaart</h2>
+      <span class="hint">hover voor verkenning, klik op een chip om een route te isoleren</span>
+    </div>
+    <div class="map-shell">
+      <div class="map-top">
+        <div>
+          <h3>Verenigde Staten &amp; Zuid-Canada</h3>
+          <div class="sub2">zes globale rondes · vertrek- en eindpunt gemarkeerd</div>
+        </div>
+        <div class="map-legend" id="mapLegend"></div>
+      </div>
+      <div id="mapContainer"></div>
+      <div class="map-foot" id="mapFoot"></div>
+    </div>
+  </section>
+
+  <!-- 3. route detail -->
+  <section id="routes">
+    <div class="sec-head">
+      <span class="no">03</span>
+      <h2>De routes kort uitgewerkt</h2>
+      <span class="hint">21–23 dagen · globaal verloop, niet elke stop is een overnachting</span>
+    </div>
+    <div class="route-cards" id="routeCards"></div>
+  </section>
+
+  <!-- 4. stars -->
+  <section id="sterren">
+    <div class="sec-head">
+      <span class="no">04</span>
+      <h2>Sterrenoverzicht per criterium</h2>
+      <span class="hint">★ = laag … ★★★★★ = hoog · totaal is gewogen</span>
+    </div>
+    <div class="table-scroll">
+      <table class="stars-table">
+        <thead>
+          <tr><th>Criterium</th><th>Gewicht</th><th>1 · Denver</th><th>2 · Atlanta–Hunting Isl.</th><th>3 · Atlanta–Gulf Isl.</th><th>4 · Vancouver</th><th>5 · Toronto</th><th>6 · Dallas–Padre</th></tr>
+        </thead>
+        <tbody id="starsBody"></tbody>
+      </table>
+    </div>
+    <div class="crit-grid" id="critCards" style="margin-top:18px"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap rules">
+    <p><strong>Hoe deze sterren tot stand kwamen.</strong> Alles is relatief ten opzichte van deze zes routes, niet ten opzichte van Amerika in het algemeen. De parken-sterren volgen het aantal echte nationale parken op de route (Route 1: 5, Route 2: 2, Route 3: 1, Route 4: 5, Route 5: 1, Route 6: 4); White Sands is sinds 2019 een nationaal park. Meigemiddelden zijn gebaseerd op historische klimaatdata (hoogte speelt in de Rockies een grote rol: het kan er in mei 's nachts rond het vriespunt zijn). Drukte is ingeschat voor mei: nationale parken zijn dan drukker dan april maar rustiger dan juni–augustus; weekenden zijn overal drukker. Strand in mei is "warm genoeg voor een dagje" (Atlantische Golf < 24 °C, Florida 25–27 °C, Texas Golf 25–27 °C), geen Caraïben. Route 2 en 5 zijn verlaagd op Amelie-factor: lange oostkust-kustritten met veel herhaling van landschap. Jullie eigen favorieten (1 en 2) zijn bewust niet zwaarder meegewogen, alleen de objectieve criteria tellen.</p>
+  </div>
+</footer>
+
+<script>window.MAP_DATA={"states":[{"name":"Alabama","path":"M739.1,407.1L771.7,407.4L785.1,457.8L780.4,465.6L783,481.1L734.6,481.2L738.9,491.8L733.5,495.1L726.9,487L724.6,493.8L719.8,492.9L723.3,407.2L739.1,407.1Z","cx":751,"cy":463},{"name":"Alaska","path":"M-85.8,34.8L-85.2,31.8L-81.2,33.6L-81.8,36.8L-86.6,36.4L-85.8,34.8ZM-90.1,29.2L-86.6,31.4L-90.1,33.5L-90.1,29.2ZM-111.4,10.4L-105.6,13.4L-113.2,12.3L-111.4,10.4ZM-123,12L-114.9,12.6L-102,22.6L-92.8,33.7L-93.8,42.5L-106,36.1L-110.3,36.1L-104.9,39.2L-109.4,42.5L-116,32.8L-120.3,33L-113.8,29.2L-121.1,18.2L-123.8,19.9L-124.3,12.7L-123,12ZM-125.6,26.7L-117.1,27.1L-123.7,29.1L-125.6,26.7ZM-128.8,1.3L-131.4,-0.5L-128.4,-1.8L-113.8,-0.1L-104.8,6.1L-124.2,10.2L-124.7,3L-128.1,2.9L-128.8,1.3ZM-132.7,9.6L-138.3,2.8L-125.8,4.2L-129.7,16.8L-134.8,17.2L-135.9,12L-132.7,9.6ZM-142.4,13.2L-156.9,3.5L-162,-6.8L-157,-10.5L-146.4,-7.5L-142.4,5L-142.4,13.2ZM-143.8,-22.6L-133.8,-21.4L-128.7,-14.9L-133.3,-14L-128.1,-6.7L-141.8,-0.6L-148.3,-26.1L-143.8,-22.6ZM-165.1,-6.1L-159.7,-2.8L-165.1,0.1L-164.5,-3.6L-165.1,-6.1ZM-173,-22.3L-163.7,-23.9L-158.4,-21.6L-160.2,-18.3L-157.6,-21L-147.6,-18.1L-145.8,-9.3L-159.8,-12.5L-162.4,-6.8L-178.4,-17L-174.8,-23.5L-173,-22.3ZM-374.4,-59.2L-389.2,-51.5L-376.7,-60.6L-374.4,-59.2ZM-383.4,-66.2L-387,-58.4L-390.7,-59.7L-387.6,-64.3L-383.4,-66.2ZM-387.5,-245.1L-328.5,-240.1L-307.6,-243.2L-261,-234.1L-261,-61.2L-225.4,-62.2L-227.4,-57.2L-197.7,-41.5L-194.8,-35.3L-178.6,-40.1L-172.6,-48.6L-158.1,-51.8L-115.1,-21.3L-90.2,7.4L-57.8,16.4L-55.7,31.9L-62.2,38.5L-73,40.9L-76.3,33.5L-72,31.5L-82.5,32.6L-90.3,28.5L-87.6,24.1L-96.6,26.1L-95.6,19.3L-99.3,21.2L-106.6,14.5L-99.6,12.2L-98.8,5.9L-121.5,-3.3L-123.8,-14.6L-150.5,-27.8L-154.4,-40.6L-150.7,-22.2L-166.3,-25.6L-169.4,-33.6L-184.1,-36.3L-168.6,-25.6L-178.9,-22.4L-207.3,-37.4L-237.6,-46.4L-233.4,-49.7L-234.1,-56.3L-248.3,-49.9L-289.7,-57.1L-314.9,-55.5L-332.5,-63.7L-339.8,-61.1L-350.9,-65.7L-365.6,-59.9L-365.6,-64.5L-353.3,-66.2L-368.9,-74.8L-392.1,-70L-394.8,-74L-398.1,-70.4L-390.4,-63.7L-396.6,-60.1L-391.2,-55.5L-418,-55.5L-447.5,-41.2L-458.5,-40L-465.7,-41.7L-464,-44.8L-449.8,-49.4L-463.6,-51.4L-453,-62.7L-455,-68.9L-424,-74.3L-441,-79.5L-467.6,-68.4L-485.7,-49.8L-505.6,-43.8L-507,-38.3L-490.4,-34.6L-504.6,-27.5L-506.1,-22.4L-547,-7.7L-550.9,0.3L-584.1,9.6L-587.1,12.2L-581.9,13L-587.5,18.9L-603.6,20.8L-608.1,26L-611.8,21.1L-638.2,30.4L-643.3,30.3L-644.9,25.5L-653.5,35.6L-661.3,36L-664.9,31.6L-664.6,37.1L-674.7,35.3L-671.8,38.1L-678.2,40.7L-673.8,42.6L-705.6,47.8L-707,44.4L-700.1,39.1L-678.6,38.8L-649,20.5L-631.5,18.5L-630.3,23.4L-620.5,22.9L-625.7,18.6L-622.4,13.8L-589.9,3.5L-590.2,-0.6L-572.2,-11.3L-567.9,-27.7L-560.7,-31.6L-561.5,-34.6L-584.1,-30.8L-589.5,-35.4L-594.6,-25.7L-608.1,-35.7L-613.5,-33L-621.2,-38.4L-647.9,-28.7L-651.4,-30.6L-648.2,-32.9L-651.7,-43.7L-647,-46.1L-656.9,-57.2L-692.9,-53.1L-713.5,-66.2L-709.6,-68.3L-710.7,-75.5L-719.5,-76.1L-725.5,-84.4L-729.1,-83.2L-725.3,-86.3L-728.9,-89.1L-722.6,-89.3L-721,-95.1L-705.1,-104.3L-697.8,-115L-671.9,-112.1L-657.6,-120.1L-636.5,-120.4L-629.5,-126.5L-640.9,-139.4L-630.2,-140.8L-636.6,-146.6L-667.2,-135.6L-682.3,-140L-708.5,-137.6L-734.4,-141.3L-740,-147.8L-736.8,-154.3L-765.8,-158.8L-697.4,-177.3L-685.2,-176.8L-688.3,-170.1L-685.5,-167.7L-649.6,-167L-636.3,-172.8L-650.9,-173L-650.2,-176L-661.9,-180.3L-663.8,-183.2L-659,-183.9L-644.6,-174.7L-650.4,-179.9L-647.2,-185.1L-685,-187.5L-693.8,-196.9L-739.8,-209.9L-731.4,-214.2L-731.2,-219.9L-689.4,-221.8L-649.8,-246.4L-630.9,-247L-608.7,-255.3L-578.6,-256L-551.2,-265.6L-533,-262.3L-540.2,-255.6L-522.6,-261.9L-506.8,-254.8L-471,-256.2L-473.9,-251.8L-451,-247.7L-418.8,-250.2L-390.8,-246.5L-387.5,-245.1ZM-483.6,-19L-490.2,-19.4L-478.5,-28.9L-467.6,-24.3L-478.3,-19.6L-483.6,-19ZM-502.6,-10L-497.3,-12.4L-502.2,-15L-495,-13.3L-489.1,-18.5L-479.5,-18.4L-474.8,-16.5L-474.8,-11.1L-468.9,-11.5L-503.6,4.7L-517.2,-5.1L-515.1,-9.5L-503,-12L-502.6,-10ZM-513.3,7.4L-518.5,10.5L-513.3,7.4ZM-533.9,19.9L-531.9,24L-537.6,22.2L-533.9,19.9ZM-613.2,31.8L-615.4,34.5L-613.2,31.8ZM-625,30.4L-621.6,32.4L-630.1,34.5L-630.2,30L-625,30.4ZM-657.3,37.4L-660.7,38.3L-657.3,37.4ZM-660.3,-122.8L-664,-122.6L-660.3,-122.8ZM-667.5,46.5L-663.6,47.2L-667.1,48.6L-667.5,46.5ZM-718.7,50L-721.2,50.8L-718.7,50ZM-722.3,52.7L-728,54.7L-726.8,51.5L-722.3,52.7ZM-733.9,-62.2L-721.2,-60.7L-720.5,-55.4L-728.3,-50.8L-738.6,-52.7L-753.6,-59.3L-736.4,-62.8L-733.9,-62.2ZM-734.1,55.3L-731,56.7L-737.2,60.8L-729.2,59.7L-757.4,69.4L-760.6,67.8L-742.2,61.7L-748.4,58.8L-746.4,56.5L-737.6,57.7L-734.1,55.3ZM-779.1,71.1L-762.3,64.4L-777.2,74.7L-779.1,71.1ZM-797,76L-801.5,76.7L-797,76ZM-804.5,-4.1L-807.5,-4.1L-804.5,-4.1ZM-814.2,79.6L-816.9,80.7L-814.2,79.6ZM-834.2,-124.3L-806.9,-123.7L-777.2,-116.5L-795,-109.9L-817.8,-118.7L-829,-116.7L-836.2,-120.1L-834.2,-124.3ZM-847,85.3L-849.6,86L-847,85.3ZM-869.3,89.8L-859.9,90.5L-867.9,92L-869.3,89.8ZM-882.3,87.3L-875.9,86.6L-878.9,90.2L-888.5,90.6L-882.3,87.3ZM-922.3,95.2L-918.9,97.3L-928.5,99.7L-930.6,96.1L-925.3,95.1L-922.3,95.2ZM-935.1,93.5L-934.5,97.6L-937.4,96.6L-935.1,93.5ZM-953.1,94L-947.1,96.4L-950.2,99L-953.1,94ZM-1120.6,74.2L-1154.2,78.4L-1149.3,74L-1120.6,74.2Z","cx":-477,"cy":-43},{"name":"Arizona","path":"M334.8,370.1L334.7,475.1L296.9,475.1L227.2,453.6L233.6,447.1L228.8,436.6L232.4,426.9L239.8,420L230.5,409.5L228.6,386.8L239.5,388.2L241.5,370.1L307.6,370L334.8,370.1Z","cx":249,"cy":418},{"name":"Arkansas","path":"M606.4,379.4L687,379.5L688.6,383L682.8,388.7L694.8,388.7L694.2,392.1L672.1,423.2L666.9,433.8L670.1,436.2L668.1,444.1L614.5,443.8L614.5,434L606.2,432.4L603.8,379.4L606.4,379.4Z","cx":662,"cy":412},{"name":"California","path":"M70.2,277.5L130.5,277.7L130.5,333.1L230.5,407.1L239.8,420L228.8,436.6L232.6,448.7L184.1,452.8L177.6,438.7L160.1,430.5L157.2,424.9L118.4,414.9L118.7,405.3L95.1,382.8L94.5,370.5L85.4,365.7L85.6,348.9L83.8,352.9L75.7,351.1L60.8,334L58.7,317.7L48.3,306.5L53.9,295.6L51.9,277.6L70.2,277.5Z","cx":130,"cy":378},{"name":"Colorado","path":"M355.7,296L465.1,296L465.3,370.2L334.8,370.1L334.7,296.1L355.7,296Z","cx":388,"cy":334},{"name":"Connecticut","path":"M1005.8,276.9L1029.2,277.2L1029.2,288.4L994.5,296.4L997.7,276.7L1005.8,276.9Z","cx":1010,"cy":287},{"name":"Delaware","path":"M961.8,318.2L958.5,324.6L968.6,343.3L956.6,343.1L954.8,319.8L958,317.7L961.8,318.2Z","cx":961,"cy":328},{"name":"District of Columbia","path":"M931.5,333.2L931.4,337L930,334.4L931.5,333.2Z","cx":932,"cy":335},{"name":"Florida","path":"M773.8,481.2L783,481.1L785.5,486.5L834.9,489.1L835.9,493.1L840,484.4L849.3,486.6L875.7,559L870.6,585.1L856.2,590L851.1,577L845,576.6L837.9,557.5L834.3,559.7L826.1,547.1L831.7,539.7L825.6,542.5L823.1,538.8L827,520.3L824,515.5L801.3,497.8L777.3,505.3L758.9,493L736.1,494.5L738.9,491.8L734.6,481.2L773.8,481.2Z","cx":822,"cy":526},{"name":"Georgia","path":"M818.3,407.1L814,413L848.4,444L859.8,462.1L849.3,486.6L840,484.4L835.9,493.1L834.9,489.1L785.5,486.5L780.9,476.1L780.4,465.6L785.1,457.8L771.7,407.4L808.8,407.4L818.3,407.1Z","cx":821,"cy":452},{"name":"Hawaii","path":"M-533.9,704.2L-538.5,702.6L-541.8,689.7L-538.4,679.8L-518.5,693.6L-531.6,700.8L-533.9,704.2ZM-551.6,665.7L-541.6,672.7L-547.8,674L-553.7,667.7L-551.6,665.7ZM-559,662.4L-563.8,662.2L-559,662.4ZM-577.1,653.4L-576,660.2L-580,660.7L-580.3,655.4L-577.1,653.4ZM-605.3,643.5L-602.2,645.7L-604.9,650.1L-610.1,644.9L-605.3,643.5Z","cx":-558,"cy":672},{"name":"Idaho","path":"M204.2,148.1L204.2,167L210.3,177.2L236.4,191.6L232.2,211.7L246,210.9L252.5,224.6L263.1,233.3L291.1,226.6L297.4,231.8L297.4,277.6L276.6,277.7L185.9,277.6L188.4,237.7L181.9,233.3L196.4,210.7L185.4,197.2L185.8,148.1L204.2,148.1Z","cx":228,"cy":213},{"name":"Illinois","path":"M677.9,268.2L730.8,268.5L736,283L736.5,337.2L728,346.5L725.9,361.2L718.2,362.9L716.9,368.8L707.9,366.2L703,370.2L698.8,357.4L683.2,347.6L687.8,336L677.5,334.5L662,314L663.7,304.3L671.9,297.6L670.3,288.4L686.5,281.1L682,271.5L677.9,268.2Z","cx":699,"cy":325},{"name":"Indiana","path":"M764.6,282.1L786.6,282.1L786.5,337.1L775,338.1L763.7,352.4L758.8,348.6L743.4,355.5L726,354.1L736.5,337.2L736,283L749.1,282.1L764.6,282.1Z","cx":753,"cy":334},{"name":"Iowa","path":"M664.3,249.8L670.1,254.4L669.9,263.7L687.2,277.6L683.4,285.2L670.3,288.4L671.9,297.6L663.4,307.6L657.6,303.2L582.3,303.8L575.6,278.1L566.2,264.5L569.6,249.8L664.3,249.8Z","cx":632,"cy":278},{"name":"Kansas","path":"M467.9,314.6L590.9,314.6L598.8,317.7L594.6,323.1L603.9,330.2L603.8,370.1L465.3,370.2L465.1,314.6L467.9,314.6Z","cx":550,"cy":332},{"name":"Kentucky","path":"M803.5,337.4L822.4,337.6L829.6,352.9L839.5,360.2L817.8,374.9L700.7,379.5L707.9,366.2L716.9,368.8L728.3,353.6L743.4,355.5L758.8,348.6L763.7,352.4L775,338.1L786.5,337.1L786.4,331.2L793.6,331.2L797.7,336.7L803.5,337.4Z","cx":772,"cy":356},{"name":"Louisiana","path":"M622.6,443.8L668.1,444.1L671.5,458.6L661.9,469.3L659.3,481.2L694.5,481.2L692.7,487.3L698.7,496.3L692.8,500.7L703.1,501.9L695.5,508.7L708.4,514.9L705.5,518L692.6,509.3L687.9,515.4L679.3,513L674.9,516.6L654.6,502.7L646.8,508.3L618.3,505.5L624.1,482.4L614.5,462.8L614.5,443.8L622.6,443.8Z","cx":666,"cy":493},{"name":"Maine","path":"M1049.6,258L1044.7,252.8L1042.5,216.5L1055.5,208.5L1062.8,190.7L1077.2,176.5L1083.2,181.8L1095.6,178.5L1103.9,183.8L1103.7,209.6L1110.1,210.9L1109.5,216.9L1119,225.7L1099.1,234.5L1095.8,231.6L1092.5,235.9L1081.7,232.7L1080,239.8L1065.8,245.8L1062.1,243.3L1052.3,253.2L1049.6,258Z","cx":1080,"cy":223},{"name":"Maryland","path":"M950.9,352.5L950,352.5L950.9,352.5ZM886,319.8L954.8,319.8L956.6,343.1L968.6,343.3L964.9,351.1L953,353.3L953.7,347.7L946,345.7L945.6,330.4L951.4,322.8L944,327.4L940.4,337.4L944.1,350.6L928.4,345L933.9,335.1L923.7,331.7L916.6,322L899.3,322.3L885.8,329.3L886,319.8Z","cx":935,"cy":336},{"name":"Massachusetts","path":"M1045.6,261.2L1048.2,264.7L1044.3,272.6L1052.7,281L1063.9,281.1L1062.6,283.7L1041.8,286.9L1036.9,277.3L997.7,276.7L1001.8,263.8L1040.6,263L1045.6,261.2Z","cx":1040,"cy":276},{"name":"Michigan","path":"M811.9,282.6L749.1,282.1L760.5,264.3L755.1,239.2L763.2,223.9L771.6,219.7L773.3,226.7L784.2,208.1L811.3,215.5L814.1,234.3L802.5,245.1L807.9,248.2L815.4,241.1L825,240.7L831.3,259.6L829.3,266.2L824.1,265.5L812.2,281L811.9,282.6ZM773.6,208.6L771.4,211.2L772.5,208.1L773.6,208.6ZM734.8,220.3L725.2,205L682.1,193.1L723.7,176.6L727.9,178L718.9,189L729,186.8L738.5,193.7L751.4,195.5L781.8,189.5L782.6,194.7L799.3,193.8L801.9,203L811.5,203.8L789.4,202.6L788.6,206.3L773.7,201.8L752,209.1L749.8,206.1L734.4,219.8L734.8,220.3ZM712.1,167L714.7,166.4L712.1,167Z","cx":767,"cy":217},{"name":"Minnesota","path":"M652.3,190.5L647.1,191.2L647.1,202.2L636.3,208.8L640.5,213.9L637.5,226.7L663.1,240.7L667.2,249.8L569.6,249.8L569.6,216.6L562,210.9L567.1,206.9L566.8,197.4L555.1,148.1L593.8,148.1L593.8,141L597.4,141.2L604.3,153.3L619.1,157L634.2,155L660.6,165.8L674.2,162.1L697,166.4L676.1,173.5L650.8,189L652.3,190.5Z","cx":631,"cy":185},{"name":"Mississippi","path":"M718.3,407.2L725.3,409.2L718.3,464.6L719.8,492.9L698.7,496.3L692.7,487.3L694.5,481.2L659.3,481.2L661.9,469.3L671.5,458.6L666.9,433.8L684,407.2L718.3,407.2Z","cx":685,"cy":451},{"name":"Missouri","path":"M655.6,303.3L663.4,307.6L664.3,319.7L676.3,328.4L677.5,334.5L687.8,336L683.2,347.6L698.8,357.4L698.8,365L706,370.4L694.8,388.7L682.8,388.7L688.6,383L687,379.5L603.8,379.4L603.9,330.2L594.6,323.1L598.8,317.7L592.7,316.3L582.3,303.8L629.1,303.9L655.6,303.3Z","cx":662,"cy":344},{"name":"Montana","path":"M427.9,148.1L428,222.2L297.3,222.1L297.4,231.8L291.1,226.6L263.1,233.3L252.5,224.6L246,210.9L232.2,211.7L236.4,191.6L210.3,177.2L204.2,167L204.2,148.1L327.1,148.1L427.9,148.1Z","cx":275,"cy":204},{"name":"Nebraska","path":"M441.4,259L531.4,259.2L565.1,265.4L575.6,278.1L580.2,301.3L590.9,314.6L465.1,314.6L465.1,296L427.8,296L427.8,259L441.4,259Z","cx":535,"cy":281},{"name":"Nevada","path":"M185.9,277.6L241.6,277.7L241.5,385L239.5,388.2L228.6,386.8L230.5,407.1L130.5,333.1L130.5,277.7L154.8,277.8L185.9,277.6Z","cx":202,"cy":354},{"name":"New Hampshire","path":"M1042.5,216.5L1047.4,261.5L1038.6,264.7L1015.3,262.7L1024.8,234.6L1034.1,229.8L1037.3,217.1L1041.6,217.6L1042.5,216.5Z","cx":1033,"cy":243},{"name":"New Jersey","path":"M983.7,293.5L990,296.1L983,305.6L988.1,307L986.3,319.1L973.3,333.2L959,321.5L973.7,310.6L965.7,301.8L975.1,289.5L983.7,293.5Z","cx":973,"cy":310},{"name":"New Mexico","path":"M365,370.1L447.4,370.1L446.2,462.7L380,462.7L381.7,466.6L350.3,466.6L350.3,475.1L334.7,475.1L334.8,370.1L365,370.1Z","cx":395,"cy":419},{"name":"New York","path":"M1000.4,221.8L1001.8,263.8L997.8,292.2L993.2,294.2L1002.5,297.9L1020.2,293.2L1023.5,296.2L989.3,304.6L990,296.1L971.5,288L962.8,277.6L880.7,277.6L880.7,272.6L897.6,263.1L893.6,254.3L937.9,252.8L946.5,249.3L945,237L972.7,221.7L985.4,222.3L1000.4,221.8Z","cx":967,"cy":266},{"name":"North Carolina","path":"M858,378.3L953.3,378.5L955.4,385.9L938.1,388.5L954.9,389.8L956.2,394.3L941.9,401.4L945.6,408.3L941.7,413.4L928.3,414.4L914.1,428.5L903.5,428.4L882.3,410.8L861.4,410.5L856.8,404.4L795.7,407.3L805.9,396.8L838.3,386.5L845,377.7L858,378.3Z","cx":887,"cy":398},{"name":"North Dakota","path":"M555.1,148.1L567.5,204.8L427.9,204.6L427.9,148.1L555.1,148.1Z","cx":536,"cy":175},{"name":"Ohio","path":"M866.6,278L866.6,278L866.6,278Z","cx":833,"cy":316},{"name":"Oklahoma","path":"M501.8,370.1L603.8,370.1L606.2,432.4L592.4,426.4L571.5,431.5L560.8,426.4L556.1,430.6L509,418.6L503.4,415.3L503.4,379.4L447.4,379.4L447.4,370.1L465.3,370.2L501.8,370.1Z","cx":545,"cy":415},{"name":"Oregon","path":"M70.6,200.4L76.4,202.1L79,209.9L88.6,211.9L149.4,203.6L188,203.7L194.9,208.2L181.9,233.3L188.4,237.7L185.9,277.6L51.9,277.6L45.6,262.1L52.8,244.1L56,204.6L64.4,198.7L67.7,200.9L70.6,200.4Z","cx":114,"cy":228},{"name":"Pennsylvania","path":"M880.7,272.9L880.7,277.6L962.8,277.6L975.1,289.5L965.7,301.8L973.7,310.6L961.8,318.2L866.6,319.8L866.6,278L880.7,272.6L880.7,272.9Z","cx":939,"cy":295},{"name":"Rhode Island","path":"M1040.4,283.6L1041.8,286.9L1038.2,287.3L1040.4,283.6ZM1034.2,277.3L1039.9,283L1035.1,289.3L1028,290.2L1029.2,277.5L1034.2,277.3Z","cx":1036,"cy":283},{"name":"South Carolina","path":"M824.7,405.9L856.8,404.4L861.4,410.5L882.3,410.8L903.5,428.4L888.3,444L859.8,462.1L848.4,444L814,413L818.3,407.1L824.7,405.9Z","cx":854,"cy":431},{"name":"South Dakota","path":"M427.9,204.6L567.5,204.8L562,210.9L569.6,216.6L569.9,256.8L566.2,264.5L569.7,268.6L555.3,262L541.6,263.4L531.4,259.2L427.8,259L428,222.2L427.9,204.6Z","cx":530,"cy":245},{"name":"Tennessee","path":"M726.1,379.5L725.8,376.1L845,377.7L838.3,386.5L805.9,396.8L795.7,407.3L684,407.2L698.4,379.5L702.9,379.3L726.1,379.5Z","cx":761,"cy":390},{"name":"Texas","path":"M469.6,379.4L503.4,379.4L503.4,415.3L509,418.6L556.1,430.6L560.8,426.4L571.5,431.5L592.4,426.4L614.5,434L614.5,462.8L624.1,482.4L618.3,505.5L605.5,508.1L601.4,503.6L589.5,520.7L578.2,525.5L565.6,523.8L570.5,528.6L563.5,529.2L549.7,548.5L548.8,558.2L555.3,573.9L549.5,575.8L518.8,563.8L513.1,546.3L477,504.2L459.8,502.1L442.2,518.5L419.3,506.4L412.1,489.1L379.5,464.5L446.2,462.7L447.4,379.4L469.6,379.4Z","cx":527,"cy":490},{"name":"Utah","path":"M276.6,277.7L297.4,277.6L297.4,296.1L334.7,296.1L334.8,370.1L241.5,370.1L241.6,277.7L276.6,277.7Z","cx":301,"cy":320},{"name":"Vermont","path":"M1034.7,221.8L1034.1,229.8L1024.8,234.6L1018.3,248.5L1016.9,264.1L1001.8,263.8L998.6,239.8L1000.4,221.8L1019.7,222.1L1034.7,221.8Z","cx":1015,"cy":241},{"name":"Virginia","path":"M962.1,351.4L951.4,367.9L957,352.5L962.1,351.4ZM950.5,352.5L950,352.5L950.5,352.5ZM907,324.5L916.7,330.7L921.6,327.5L930,334.4L927,345.3L946.5,353.7L945.7,368.6L938.4,368.9L950.9,371.6L953.3,378.5L807.8,377.5L839.5,360.2L845,366.4L867.4,362.3L882.8,340.6L889.1,344L906,330L907,324.5Z","cx":905,"cy":355},{"name":"Washington","path":"M185.8,148.1L188,203.7L149.4,203.6L88.6,211.9L79,209.9L72.4,200.2L54.7,197.5L57.9,193.7L42.8,163.2L44.8,159.5L78.3,165L87.2,178.7L88.9,166L79.1,148.1L185.8,148.1ZM79.8,160.8L81.9,163.8L78.9,162.3L79.8,160.8ZM74.1,155.8L78.9,156.3L73.8,158.1L74.1,155.8Z","cx":91,"cy":179},{"name":"West Virginia","path":"M866.6,302.8L866.6,319.8L886,319.8L885.8,329.3L910.3,320.3L918.8,327.2L916.7,330.7L907,324.5L906,330L889.1,344L882.8,340.6L867.4,362.3L845,366.4L827.4,349.4L838.3,332.6L841.1,335.5L844.9,328.1L860.8,320L863.8,303.9L866.6,302.8Z","cx":868,"cy":337},{"name":"Wisconsin","path":"M682.1,193.1L731.2,209.6L729.3,215.4L734.8,220.3L726.3,230.2L745.2,218L732,242.8L730.8,268.5L677.9,268.2L669.9,263.7L670.1,254.4L663.1,240.7L637.5,226.7L640.5,213.9L636,211.4L647.1,202.2L647.1,191.2L674.2,185.9L673.3,189.6L679.4,192.8L682.1,193.1Z","cx":693,"cy":224},{"name":"Wyoming","path":"M334.1,222.1L427.7,222.2L427.8,296L396.6,296.1L297.4,296.1L297.3,222.1L334.1,222.1Z","cx":355,"cy":258},{"name":"Puerto Rico","path":"M1128.9,722.1L1114.7,722.6L1116.9,712.2L1140.3,713.8L1144.2,718L1132.9,723.1L1128.9,722.1Z","cx":1128,"cy":719},{"name":"Quebec","path":"M913.2,-103.5L911.5,-103.3L913.2,-103.5ZM1078,-39.4L1074.7,-36.1L1076.2,-39.9L1078,-39.4ZM885.7,4.3L884.1,3.6L885.7,4.3ZM896.8,12.6L891,21.2L895.2,11.3L889.6,21L892.1,14.2L880.3,22.4L885.3,16L875.8,20.3L886.4,8.3L883.5,16.1L889.9,6.9L895.8,12.7L896.8,12.6ZM884.6,9.3L874.2,14.8L884.8,8.7L884.6,9.3ZM901.2,10.8L896.2,16.4L901.1,10.4L901.2,10.8ZM894.7,17.3L894.3,19.1L894.7,17.3ZM1184,132.5L1214.2,141.7L1217.4,146.4L1207.3,146.9L1182.4,140.9L1165,132.1L1175.9,131.7L1184,132.5ZM1222.9,173.2L1214.5,181L1220.5,173.4L1222.9,173.2ZM1047.5,185.1L1041.6,187.7L1047.1,184.6L1047.5,185.1ZM1303.1,103.4L1274.7,105.9L1267.5,115.7L1246.7,125.8L1129.1,124.6L1111.4,142.1L1091.7,144.5L1068.6,164L1042.8,158.4L1067.7,164.5L1038.5,189.8L1084.6,159.8L1125.4,145.8L1163.6,146L1171.6,152.6L1164.2,150.3L1171.6,155L1168.7,158.8L1150.9,166.3L1139.3,162.5L1111.9,169.5L1093.1,168L1092.9,174.7L1077.1,176.7L1063,190.8L1050.9,214.8L1034.6,221.8L974.4,222.2L982.1,218.4L980.7,211.6L944.5,213.7L921.9,200.8L900.4,197.3L886.6,183L884.9,111.8L888.8,115.5L884.6,100.8L890.4,99.3L897.8,108L900.7,102.1L894.3,96.7L906,88.1L895.2,73.6L892.1,61L896.8,58.9L889.6,54L894,52.1L880.7,43.3L918,31.7L940.8,13L935.8,-12.4L903,-29.9L902.9,-36.3L919.4,-44.3L915.2,-44.7L917.8,-50.2L926.4,-47.5L924.2,-53.9L936.7,-58.5L920.4,-56.7L924.6,-57.9L918.4,-63.4L924.5,-65.6L916.7,-67.4L922.7,-71L910,-70.1L923.4,-84.1L913.4,-87.6L910.7,-97.7L924.4,-103.5L977.8,-94.5L994.1,-101.4L1013.7,-94.7L1010.6,-89.5L1021.6,-90L1025.6,-86.5L1019.8,-84.5L1033.4,-85.2L1027.5,-82L1033.3,-76.9L1060,-75.6L1064.1,-70.5L1071.8,-75.3L1074.5,-70.5L1066,-65.2L1069.7,-56.8L1043.5,-56.7L1070.9,-53.1L1067.2,-42.9L1077,-41.4L1071.3,-40.1L1071.1,-33.5L1065.2,-38L1066.5,-33.8L1058.1,-32.8L1093.4,-32.8L1093.6,-20.9L1074.5,-14.2L1092.5,-19.2L1099.9,-29.2L1102.7,-24.3L1097.6,-19.9L1105,-27.1L1105.4,-17.1L1128.6,-33.7L1138.5,-29.7L1136.1,-24.4L1139.5,-37.2L1150,-37.8L1142.6,-39.8L1149.3,-42.1L1145.8,-46.1L1156.2,-44L1145.8,-50.6L1156.2,-51.1L1151.6,-53.4L1156.8,-60.3L1164.6,-61.1L1158.7,-60.4L1163.4,-57.6L1157.7,-56.4L1162.4,-54.2L1159.2,-46.8L1168.2,-46.2L1164.6,-40.7L1169.1,-37.3L1158.2,-35.7L1184.3,-32.4L1173.6,-31L1177.9,-27.2L1166.5,-20.1L1182.1,-13.6L1172.2,5.4L1177,10.4L1172,12.9L1184.9,18.1L1179.9,21.1L1191.4,30.5L1183.5,33.6L1180.7,44.2L1143.1,42.3L1122.8,30.7L1124.3,41.8L1110.7,35.7L1118,44L1107.4,45L1109.6,51.2L1104.1,54.3L1120.3,67.7L1117.4,79.6L1132.3,76.3L1129.1,88.8L1153.9,89.4L1163.7,100.7L1172.4,89.7L1171.4,76.8L1180.3,71.9L1186.2,80.5L1173.1,83.8L1179.2,92.5L1303.2,92.5L1303.1,103.4Z","cx":1060,"cy":35},{"name":"Newfoundland and Labrador","path":"M1325.9,65L1324.3,65.8L1325.9,65ZM1333.7,115L1333.7,114.6L1333.7,115ZM1359.5,134.4L1358.3,134.2L1359.5,134.4ZM1351.1,136.3L1344.8,139L1351,135.8L1351.1,136.3ZM1369.1,163L1366.8,163.8L1369.1,163ZM1325.1,172.6L1321.6,173.1L1325.1,172.6ZM1358.7,173.2L1354.2,177.5L1358.5,172.7L1358.7,173.2ZM1162.8,-62.1L1166.7,-60.8L1162.8,-62.1ZM1164.6,-61.1L1160.4,-59.8L1167.5,-58.5L1159.1,-55.3L1171.3,-56L1169.8,-51L1176,-49.1L1172.3,-46.6L1179.8,-46.5L1173.4,-44.1L1186.1,-42.3L1173.7,-37.4L1190.9,-38L1187.2,-34.3L1195.7,-31.7L1182.2,-24.1L1201.5,-27.4L1195,-22.4L1201,-22.5L1186.9,-18.1L1203.4,-21.8L1206.1,-19L1199.3,-17.2L1209.5,-17.9L1214,-11.8L1201.7,-9.3L1223.8,-1.6L1213.6,3.8L1217.7,7.1L1200.9,3.8L1218.3,8.6L1209.3,10.3L1219.5,13.2L1210.4,13.2L1224,14.4L1221.1,18.4L1237.9,21.9L1236.5,26.6L1242.8,22.5L1240.2,30.6L1245.5,29.2L1236.4,37.1L1253.3,30.9L1249.8,35L1259.8,34.4L1250.2,41.6L1264.8,32.6L1260.6,37.5L1267.4,34.1L1269.4,39.8L1298.6,44.8L1257.1,54.6L1279.4,51.3L1246.7,59.6L1246.7,64.3L1232.8,58.7L1248.3,64.9L1241.7,69.1L1290.4,54.3L1283.3,51.1L1302.4,56.7L1294.8,63.1L1298.1,66.1L1315.1,59.6L1310.2,61.6L1324.1,64L1318.8,64L1328.3,71.5L1320.6,73.5L1327.4,77L1320.7,77.8L1328.6,80.6L1314.5,81.5L1328.4,83.4L1320.1,84.5L1330.8,88.6L1306.2,103.1L1303.2,92.5L1179.2,92.5L1173.1,83.8L1186.2,80.5L1180.3,71.9L1171.4,76.8L1172.4,89.7L1163.7,100.7L1153.9,89.4L1129.1,88.8L1130.8,74.5L1117.4,79.6L1120.3,67.7L1104.1,54.3L1109.6,51.2L1107.4,45L1118,44L1110.7,35.7L1124.3,41.8L1122.8,30.7L1143.1,42.3L1180.7,44.2L1183.5,33.6L1191.4,30.5L1179.9,21.1L1184.9,18.1L1174.2,17.1L1171.4,10.6L1177,10.4L1172.2,5.4L1182.1,-13.6L1166.5,-20.1L1177.9,-27.2L1173.6,-31L1184.3,-32.4L1158.2,-35.7L1169.1,-37.3L1164.6,-40.7L1168.2,-46.2L1159.2,-46.8L1162.4,-54.2L1157.7,-56.4L1163.4,-57.6L1158.7,-60.4L1164.6,-61.1ZM1173.7,-52.7L1172.3,-52.7L1173.7,-52.7ZM1214,-16L1213,-16.1L1214,-16ZM1218.3,-14.3L1217.9,-14.7L1218.3,-14.3ZM1213.2,-8.4L1215.9,-9.4L1213.2,-8.4ZM1218.5,-9.7L1216.8,-9.9L1218.5,-9.7ZM1223.9,1.7L1219.6,4.3L1223.2,7.1L1218.7,2.6L1224.1,1.2L1223.9,1.7ZM1220.1,8.3L1219.3,8.3L1220.1,8.3ZM1220.3,11.3L1215.7,10.9L1220.3,11.3ZM1228.8,15.4L1231.7,18.3L1227.1,16.5L1228.8,15.4ZM1235.2,19.8L1233,19.4L1235.2,19.8ZM1287.5,38.6L1283.3,39.7L1287.5,38.6ZM1326,113.6L1320.8,113.2L1307.7,138L1321.6,126.7L1320.2,131L1333.8,130.3L1321.3,140.2L1336.7,142.3L1339.8,138.1L1335.2,147.3L1352.7,138L1351.9,143.3L1360.2,139.2L1371.2,143.4L1357.7,151.7L1368.5,153.9L1358,159.5L1380.1,155.5L1362.1,163.5L1368.4,165.7L1362.3,169.4L1367.2,175.4L1382.8,164.8L1374.7,173.9L1377.4,177.4L1386,172.9L1380.8,189L1368.1,191.7L1369.2,181.3L1357.5,188.3L1364.7,177.2L1356.1,168.4L1353.5,176.7L1335.2,187.6L1324,186L1348,172.8L1321.8,176.5L1330.7,172.6L1325.3,172.9L1327.9,167.4L1309.2,175.3L1262.1,173.8L1260.3,168.3L1281.5,157L1263.5,156.8L1272,152.2L1268.6,155.2L1273.2,156L1279.9,145.3L1288.4,148.4L1282.3,140.8L1292.1,139.5L1287.4,135.6L1303.4,110.7L1332.8,99.9L1331.2,105.4L1322.1,104.2L1329.1,107.8L1326.6,112.8L1326,113.6Z","cx":1266,"cy":75},{"name":"British Columbia","path":"M-76,89.8L-75,93.6L-76.9,90.2L-76,89.8ZM-59,36.8L-63.4,41.4L-59.9,36.8L-59,36.8ZM-64.5,40.7L-67.3,41.6L-64.5,40.7ZM-69.9,44.1L-73.2,44.1L-69.9,44.1ZM-109.6,62.9L-113.1,52.3L-96.3,55.4L-105.6,61.5L-102,63.5L-96.5,54.8L-86.8,52.6L-96.7,71.1L-111.8,63.2L-109.6,62.9ZM-62.2,54.3L-69.2,58.2L-63.6,53.7L-62.2,54.3ZM-46.2,69.4L-61.3,58.5L-46.9,68.4L-46.2,69.4ZM-61,59.3L-57.6,63.5L-61.6,59.3L-61,59.3ZM-34,61.1L-40.3,67L-37.4,61.2L-34,61.1ZM-63.2,62.6L-54.7,71.1L-65.4,62.3L-63.2,62.6ZM-37,64.3L-38,64.4L-37,64.3ZM-40.4,68.5L-42.4,72.5L-41.5,68L-40.4,68.5ZM-29.7,80.3L-30.8,74.6L-35.3,80.5L-39.5,76.5L-34.2,73.4L-40.8,73.6L-35.3,68.7L-28.3,75.4L-29.7,80.3ZM-76,88.5L-103.5,72.4L-89.4,69.4L-85.7,73.4L-93.2,73.1L-86,75.4L-92.9,76.3L-77.9,88.3L-76,88.5ZM-45.9,70.7L-47,70.6L-45.9,70.7ZM-27.9,76.4L-28.7,79.5L-27.9,76.4ZM-21.8,77.4L-22.8,78.1L-21.8,77.4ZM-41.6,77.4L-37,84.2L-42.5,77.4L-41.6,77.4ZM-25.6,77.9L-25.5,85.5L-26.9,78.7L-25.6,77.9ZM-83.3,79L-84.8,79.8L-83.3,79ZM-28.6,80.6L-27.7,84.4L-33.8,82.9L-28.9,80.2L-28.6,80.6ZM-30.1,84.2L-31.2,83.6L-30.1,84.2ZM-11.1,89.7L-4.3,86.7L-11.1,89.7ZM-20.4,85L-20.8,84.8L-20.4,85ZM-17.9,87.2L-19.5,87L-17.9,87.2ZM-21.4,89.1L-23.1,89.1L-21.4,89.1ZM-19.2,89.5L-20.8,89.8L-19.2,89.5ZM-17.7,91.7L-21.1,97.3L-21.4,91.8L-17.7,91.7ZM-18.6,97.9L-17,103.4L-21.2,98.8L-18.6,97.9ZM-2.3,132.3L-1.7,126.9L-16.9,127.3L-17.2,121L-7.7,118.9L-19.6,121.3L-26.4,115.3L-19.8,113.4L29.2,123.8L41.2,139.5L56.7,143.8L64.6,156.8L67.1,154L69.4,158.2L63.7,161L35.2,153L40.9,143.6L28.3,149.6L20.4,140L7.9,140.5L16.7,135.5L1.1,132.1L-2.3,132.3ZM3.8,115.3L8.1,114.7L3.8,115.3ZM14,114.4L11.4,114.6L14,114.4ZM12.4,119.9L14.5,119.2L12.4,119.9ZM30.4,121.1L27.3,122.5L30.4,121.1ZM32.2,121.6L36.4,126L31.3,122.4L32.2,121.6ZM39.2,124.1L38,125.2L39.2,124.1ZM30.8,124.7L31.3,126.9L30.8,124.7ZM37.6,125.4L37.5,129.3L37.2,125.4L37.6,125.4ZM4.3,131.8L6.8,137L0.6,132.7L4.3,131.8ZM53.6,138.9L49.4,135.1L53.6,138.9ZM16.3,140.8L14.3,141.1L16.3,140.8ZM62,146.3L61.4,146.2L62,146.3ZM63.8,149.4L63.5,149L63.8,149.4ZM185.9,148.1L73.9,148.1L69.9,143L77.3,140L69.6,141.9L71.6,135.1L64.6,141L54.7,136.3L64.6,135.1L57.2,133.9L59.3,126.7L50.9,134.3L42.1,130.3L49.4,120.3L35.8,123.6L40.1,112.2L34.1,121.9L26.6,121.1L29.2,116.3L24.2,121.6L13.5,120.2L24.2,117L25.5,109.3L19.8,116.9L8.3,114.1L15.5,112.2L9,109.7L-7.4,112.4L6.5,108.3L-14.7,108L-2.7,105.2L-14.6,104.9L-9.3,99.7L7.4,97.8L-7.9,98.7L-6.5,95.1L-11.9,102.6L-16.4,98.6L-3.2,86.8L6.2,92.8L1.1,86.9L4.9,85.5L-3.5,85.5L0.6,77.2L-11.4,87.1L-19.7,85.2L-16.4,81.8L-26,87.1L-19.1,75.7L-26.9,77.3L-36.8,63.8L-16.2,69.6L-33.9,62.5L-27.4,58.6L-30,54.9L-43.1,67L-57.8,56.5L-46.1,51.1L-64.9,48.8L-63.7,43.9L-55.2,49.5L-62.8,43.2L-53.7,44.1L-59.2,39.9L-48.9,37.1L-55.9,36.7L-46.1,28.3L-52.4,25.4L-58.1,37.1L-57.6,16.3L-89.9,7.5L-119.9,-27L-158,-51.9L-195.1,-35.3L-222.6,-55.5L37.3,-55.6L130.8,-55.3L132.3,64.4L153.6,71.7L163.6,85.8L180.5,89.2L228,122.9L228.6,136.8L241.2,148.1L203.9,148.1L185.9,148.1Z","cx":-7,"cy":90},{"name":"Nunavut","path":"M317.4,-401.1L330.8,-397.5L317.2,-394.7L317.4,-401.1ZM320.8,-390.5L317.2,-390.5L320.8,-390.5ZM345.2,-360.1L352.8,-356.8L345,-352.4L361.1,-351.5L353.9,-347.6L371.7,-349.7L375.2,-345.1L380.2,-352.7L397.7,-350.8L402.9,-345.3L398.1,-339.9L374.2,-331.9L316.8,-330L316.9,-343L338.8,-345.8L316.9,-349.3L330.2,-352.3L317,-355.8L317,-360.4L339.8,-367.5L345.9,-365L343.2,-360.6L345.2,-360.1ZM316.6,-285.8L321.2,-291L316.6,-295.7L333.5,-291.3L357.1,-270.3L368.1,-275.8L358.4,-280.1L348.6,-298.6L356.8,-299.6L351.6,-301.8L394.2,-297.2L422.2,-269.7L416.7,-261.3L437.1,-251.7L485.2,-243.5L487.2,-237.2L438.4,-234.8L447,-231.2L443.6,-224.4L457.5,-231L470.7,-225.1L449.4,-218.4L407.8,-220.2L411.6,-223.5L384,-225.4L380.3,-231.3L367.2,-222.7L336.8,-217.3L256.3,-212L248.4,-218.6L251.3,-225.4L195.3,-229.6L184.9,-240.6L316.4,-240.5L316.6,-285.8ZM638.7,-234.5L683.9,-230.2L662.9,-228.6L677.4,-223.6L681.7,-219.8L678.5,-211.8L686,-207.9L701.2,-226.1L723.2,-220.5L731.1,-209.6L719.8,-208.9L720.2,-202.8L740.7,-186.9L754.5,-191.5L771,-217.2L787.2,-217.2L780.4,-221.1L791.8,-222.4L777.2,-224.8L772.6,-238L834.2,-233.9L814.9,-232L851.4,-225.5L837.9,-219.8L852.9,-215.5L826.9,-211.8L853.2,-193.1L847.9,-184.9L813.5,-173L802.1,-177.3L803.4,-182.8L796.8,-179.8L784.4,-186.2L789.8,-184.7L778.8,-182.7L790.5,-183.9L804.5,-169.4L778.3,-171.6L774.1,-177.3L749.8,-176.2L766.3,-169.6L738.8,-154L696,-165.4L661.9,-165.6L746.3,-149.1L725,-132.1L687.6,-131.9L693.3,-128.4L684.6,-129.6L689.8,-125.4L686,-122.4L619.5,-133.1L621.8,-127.3L650.6,-124L643.7,-120.7L656.7,-124.3L675.2,-118.4L678.1,-112.1L644.1,-107.6L654.8,-104L641.1,-103.9L637.2,-99L643.8,-95.3L631.2,-98.8L637.8,-95.8L622.3,-91.6L629.1,-87.8L613.2,-80L615.6,-75.8L600.4,-64.7L600.3,-55.5L466.1,-55.5L466.4,-133.5L328.4,-144.9L304.8,-157.3L270.4,-157.4L118.2,-203.6L118.1,-232.3L183.6,-220L223.9,-219.5L244,-210.8L219.3,-207L221.7,-203.8L213.6,-202.1L221.6,-199.9L281.6,-197.6L314.8,-203.7L334.4,-198.3L339.1,-191.5L342.7,-196.6L354,-190.5L356.5,-186L342.6,-187.9L368.7,-173L358,-180.6L360.7,-186.5L371.3,-181.8L354.1,-198.2L360.7,-202.5L356.3,-205.1L383.2,-206.4L397.7,-215.4L381.3,-213.1L381.4,-209L357.7,-209.9L361.6,-206.6L339,-208.5L347.8,-214.7L387.5,-221L419.5,-204.2L439.9,-206.6L461.9,-197.8L523.3,-198L534.1,-199.8L529.8,-205.3L555.6,-196.6L554.8,-202.2L538.9,-200.5L527.3,-210.3L554,-212.4L570.3,-209.4L564.8,-203.7L580,-209L569.3,-193.9L576.2,-193.7L575.8,-189L586.1,-192L581.1,-188.1L590.1,-184.4L569.4,-186.2L581.3,-177.4L584.5,-180.1L576.4,-183.7L592.5,-184.6L593.6,-190.4L583.5,-198.7L587.8,-204.7L601.8,-204.6L626.9,-215.3L619.9,-214.9L623.3,-219.3L618.9,-223.4L603.5,-217.5L615.1,-224.9L609.6,-227.7L624.1,-230.2L618.3,-225.1L626.8,-229.1L623.8,-231.8L610,-230.2L568.6,-242.5L573.4,-251.1L581.7,-250.4L566.6,-255.3L568.6,-264.2L586.6,-264.5L589.6,-268.5L579.7,-270.2L603.9,-275.1L592.6,-276.6L620.6,-273.2L634.4,-265.4L633.1,-256.6L657.6,-247.2L661.7,-243.4L643.6,-243.9L653.7,-241L642.6,-235.2L638.7,-234.5ZM1225.2,-178L1208.4,-178.2L1220.2,-172.8L1195.3,-172.7L1212.6,-166.8L1192.1,-168.8L1206.5,-163.1L1195.8,-164.9L1199.8,-158.9L1184.1,-165.4L1186.7,-160.4L1179.6,-160.6L1187.3,-159L1181,-156.8L1187,-153.6L1183,-146L1167.5,-151.4L1170.2,-156L1164.6,-149.9L1157.6,-154.4L1166.9,-156.9L1153.2,-156L1161.3,-160.1L1150.3,-159.7L1159.8,-161.4L1146.7,-161.7L1167.9,-173L1138.9,-165.7L1147.1,-173.7L1134.7,-169L1117.5,-178.5L1104.8,-177.1L1115.9,-174.8L1113.4,-171.7L1100.1,-175.9L1115,-164.9L1084.4,-170L1099.5,-168L1093.5,-167.3L1103.5,-163.2L1099.5,-157L1112.5,-160.3L1110.2,-157.2L1117.6,-156L1111,-154.2L1120,-152.3L1116.6,-149.1L1123.8,-151.4L1124.3,-143.7L1124.4,-148.8L1133.3,-142.2L1141,-141.3L1140.3,-145.9L1145.6,-142.9L1142.4,-138.8L1154.5,-138.4L1143.7,-135.2L1162.1,-130.2L1156.2,-126.1L1165.1,-123.1L1165.6,-116.3L1150.4,-126.1L1162.9,-109.2L1150.8,-111.1L1157.3,-104.2L1153.2,-103L1149.7,-109.7L1130,-111L1125.2,-118L1127.2,-110.9L1101.6,-125.1L1105.3,-117.8L1081.5,-125L1138.5,-96.3L1133.5,-94.6L1138.1,-90.5L1089.8,-97.1L1073.1,-102.7L1074,-106.7L1041.2,-110.8L1045.8,-114.2L1036.5,-112.1L1022.7,-119.3L1039.7,-122.3L1019.5,-123.5L1023.7,-127.8L1015.6,-125.6L999.6,-134.6L1001,-141.7L986.5,-135.6L987,-143.1L981,-140.1L976.2,-146.3L969.8,-144.3L979.4,-139.9L975.4,-136.4L953.8,-140.8L955.9,-136.3L925.1,-134.1L908,-142.6L926.1,-151.4L924.3,-156.6L954.8,-152.2L962.1,-142.8L958.9,-145.9L966,-149.9L951.8,-154L997.8,-156.4L979.4,-169.4L1021.8,-190.1L1006.9,-207.9L991.2,-209.8L992.7,-216.2L984.6,-213L969.8,-218.6L975.2,-219.6L968.7,-220.3L973.5,-223.5L938.5,-216.5L939.2,-222.4L958.5,-226.2L939,-232.2L947.3,-234.4L928.6,-233.9L936.3,-235.9L926.4,-237.5L932.7,-239.4L920.7,-235.8L919.7,-243.9L906.1,-244.5L893.6,-249.3L900.2,-250.7L894.7,-253.2L883.9,-248L896.4,-246.2L898.7,-238.3L844,-243L858.2,-235.3L820.5,-246.2L844.4,-239.4L836.3,-236.6L769.5,-240.4L754.1,-244.9L757.1,-250.3L729.6,-245L714.2,-249L698,-260.8L745.7,-259L689.8,-267.5L693.6,-273.2L687.6,-276.2L697.8,-280.6L691.6,-285.6L707.6,-300.7L737.2,-310.2L786.1,-309.8L750.6,-291.1L759.9,-285.4L756.6,-277.8L786.2,-264.3L753.2,-258.6L780.9,-262.4L786.9,-257.7L790.4,-271.1L763.5,-277.8L774.3,-282.5L798.6,-278L784.3,-282.9L793.5,-284.7L773.1,-286.3L770.2,-294.2L802.5,-291.5L775.5,-298.6L808.5,-295.8L780.5,-301.8L809.1,-301.6L801.6,-305.6L823.3,-309.7L849.1,-308.9L853.8,-301.1L865.2,-298.9L871.7,-291.1L850.6,-282.1L866.6,-286.9L858.2,-281.3L865.7,-279L856,-278.5L861.5,-278.1L858.6,-275.4L871.4,-283.1L882.3,-280L873.2,-283.7L879.3,-286.8L880.9,-281.6L895.9,-282.7L890.6,-277.2L904.1,-275.3L897.6,-280.8L918,-273L897.5,-282L932.3,-280L903.1,-285.7L920.8,-291.5L965.2,-286.9L970.5,-282.2L943.2,-275L965.1,-279.2L953.1,-272.1L968.8,-279.9L983.6,-279L983.8,-274.3L962.2,-271.7L976.4,-271.1L966.7,-267.7L975.1,-266.3L968.3,-262.5L988.5,-273.2L995.2,-272.4L982.2,-266.7L987.6,-267.2L983.8,-262.8L995.2,-269.9L999.7,-266.2L990,-260.2L1000.3,-265.5L1005.9,-264.1L999.7,-258.7L1015,-271.3L1035.8,-267.8L1041.8,-264.1L1035.4,-260.3L1011,-255.7L1022.4,-256.1L1015.3,-251.9L1051.3,-260.3L1048.8,-254.4L1026.2,-248.4L1040.9,-250.4L1034.1,-241L1044.1,-252.2L1064.7,-256.9L1053.8,-249.4L1072.9,-255.3L1094.7,-250.6L1054.3,-238L1087.3,-244.4L1063,-233.5L1099,-246.6L1116.4,-235.5L1062.1,-232L1113.8,-230.7L1125.2,-225.9L1081.6,-228.7L1098.6,-226.1L1082,-226.2L1090.6,-225.8L1080.8,-221.6L1096.7,-224.8L1105.5,-222.4L1090.9,-220.1L1104.3,-218L1074.2,-218.7L1099.1,-216.2L1083.2,-214.8L1100.8,-210.9L1124.9,-211.6L1102.4,-208.4L1131.5,-205.9L1123.4,-201.3L1130.1,-199.4L1138.9,-206.5L1137.1,-196.7L1140.7,-203L1147.7,-203.4L1144.5,-199.5L1149.3,-196.1L1148.3,-202.1L1161.3,-203.2L1152.2,-197L1164,-200.3L1176.3,-190.8L1159.7,-191.7L1175.3,-190.1L1161.6,-185.1L1182.7,-189.5L1178.8,-184.3L1191.2,-191.2L1188.7,-184.4L1177.9,-181.7L1196.1,-184.4L1195.1,-178.4L1198,-184L1206,-180L1203.9,-183.6L1210.8,-186L1225.6,-178.2L1225.2,-178ZM1108.5,-480.5L1130.4,-479.1L1088,-474.3L1159,-479.5L1226.9,-466.8L1141.2,-455.9L1075.9,-457.5L1125.9,-453.7L1062.8,-446L1160.9,-451.1L1070.2,-432.4L1047.6,-436.1L1059.4,-429.2L1018,-429.7L1053.2,-427.5L1036.3,-424.4L1041.5,-421.7L972.4,-422.8L1000.3,-421.3L1004.4,-417.5L1000.2,-416.5L912.6,-413.7L978.9,-411.3L896.9,-408.3L919,-407.4L908.9,-402.9L956.1,-406.5L942.6,-404.2L971.1,-404.4L976.3,-399.5L938.1,-398.3L968.9,-394.8L934.9,-392.9L958.7,-390.8L952.3,-387.9L908.7,-388.6L918.7,-381.2L899.1,-375.8L862.2,-376.3L840.3,-382.8L854.5,-376.4L835.4,-375.7L843,-373.1L890.2,-374.2L894.8,-371.9L887.7,-368.8L918.9,-366.8L906.5,-360.1L856.2,-354L861.9,-359.4L825,-366.8L835.6,-359.4L818.5,-360.2L813.3,-365.7L816.2,-359.2L796.4,-363.8L797.3,-359.9L782.1,-361.2L794.6,-357.4L779.4,-356.8L752.7,-363.4L758.8,-361.4L751,-358L735.8,-363.1L738,-358.1L720.6,-358.8L717.4,-366.7L715.8,-359L704.5,-359.6L695.9,-362.1L698.5,-367.4L753,-373.5L732.5,-376.8L723,-386L756.5,-385.5L768.2,-377.9L791.8,-375.6L811.7,-376.6L804.8,-378.6L833,-390L804.1,-379.3L777.5,-382.4L795.8,-386.7L770.4,-387.4L801.2,-391.9L783.5,-392.5L790.1,-399.5L773.6,-390.5L759,-390.1L767.5,-395.7L735.9,-391.1L744.1,-392.5L736.1,-396.5L752.5,-403.5L781.9,-405.7L833.2,-399.2L815.6,-404.1L848.6,-408.1L787.4,-407.9L813.7,-408.1L755.3,-421.3L778.3,-424.2L755.4,-425.8L754.8,-431.2L805.8,-430.2L844.5,-418L878,-419.1L847.8,-420.4L845.3,-423.9L850.2,-424.5L816.5,-431.6L912.4,-436.1L877,-437L941.3,-441.5L896.1,-441.9L936.3,-452.4L885.6,-447.8L893.3,-445.9L890,-442.8L859.1,-437.8L818.5,-435.7L843.5,-440.7L815.5,-441.2L781.8,-435L750.6,-436.7L768.6,-443.2L832.2,-447.5L771.7,-445.2L737.2,-437.3L699.9,-442.7L787.8,-449.5L696.7,-444.3L683.3,-447.3L709.5,-448.7L690.7,-450.3L741.2,-453.3L681.6,-451L697.5,-455.7L653.4,-456.4L725.7,-464.6L789.9,-460.6L748.1,-466.4L782.2,-471.6L890.6,-459.3L825.4,-470.2L848.8,-471.9L839.5,-475L865.4,-472.7L850,-478L903.8,-475.2L868.9,-478.9L886.4,-480.7L929.8,-478.7L952.9,-473.6L946.5,-470.9L962.1,-474.1L928.8,-481.8L1013.6,-475.5L994.7,-479.8L1013.3,-483L1097.3,-480L1108.5,-480.5ZM564.1,-369.8L621.6,-368.5L630.5,-365.4L623.7,-358.8L671.4,-363.7L681.1,-360.4L663.4,-360.2L704.9,-356.1L659.7,-356.5L686.3,-352.8L668.8,-348.7L689.8,-351.8L705.4,-347.5L694.2,-343.8L709.1,-341.1L713.3,-345.7L753.3,-339.8L801.6,-348.3L855.4,-347.5L885.8,-339.8L868.1,-333.8L888.7,-331.1L870.3,-332L871.6,-325.3L827.5,-324.1L810.5,-331.3L814.4,-328.8L808.9,-324.6L778.2,-323.7L717.1,-323.9L721.6,-328.9L716.9,-331.4L691.2,-324.5L670.7,-327.6L675.4,-331L658.6,-327.1L643.2,-337.2L652.4,-344.1L650.5,-349L632.8,-358L589.4,-356L600.1,-357.7L560.3,-365L572.3,-365.6L562.5,-369.6L564.1,-369.8ZM756.8,-140.3L764.1,-161.2L772.9,-165.3L784.5,-151.9L791.2,-157L837.3,-142.2L846.4,-133.3L839.2,-129.4L858.8,-132L872.4,-126L856.2,-119.4L830.2,-123.6L832.2,-127.8L818.7,-128.7L820,-133L773.9,-113.3L769.8,-125.2L741.7,-122.6L760.9,-131.4L757.4,-139.7L756.8,-140.3ZM608.9,-446.2L631.6,-446.3L612.4,-450.8L649.8,-448.6L675.5,-436.1L703.9,-435.2L703.8,-430.8L717.1,-427.5L724.4,-427.4L715,-433L733,-433.3L735.3,-429L725.9,-427.9L746.5,-423.9L737.1,-417.1L770.3,-418.5L784.8,-412.1L746.1,-408.2L734.3,-400.6L727.1,-403.6L731.9,-408.8L723.3,-406.7L720.6,-400.7L728.8,-398.8L712.1,-399.9L717.1,-396.3L711.9,-391.5L689.8,-399.9L700,-391.7L642.5,-394.4L634.3,-397.6L658.9,-399.1L628.8,-399.5L618.7,-402.8L633.2,-402.8L610,-406.6L683.1,-411.7L644.2,-411.3L668.8,-414.4L632.2,-416.1L592.2,-412.5L582.9,-417.1L609.3,-421.6L580.7,-419.1L563,-427.4L607.5,-425.3L600.3,-427.4L613,-429.1L565.3,-432L619.2,-435.4L586.7,-440.8L612.5,-445.2L608.9,-446.2ZM483.1,-302.1L473.2,-305.2L495.7,-303.9L482.5,-309.5L502.9,-309.6L506.3,-312.4L500.7,-313.4L518.5,-308.8L555.2,-312L559.9,-307.8L546.9,-305.1L556.1,-302.6L531.2,-296.3L554,-295.5L555.7,-288.8L568,-291.5L572.4,-285.3L561.7,-283.6L568.9,-280L561.8,-278.4L568.8,-276.2L549.9,-270.4L536.8,-271.1L535.7,-275.8L531.5,-272.3L540,-268.9L532,-264.9L517.6,-265.5L491.6,-281L452.3,-291L466.8,-297.8L477.9,-291L495,-291.2L495.5,-296.8L502.8,-294.9L493.2,-300.3L507.6,-300L487.7,-300.9L483.1,-302.1ZM585.4,-301.4L584.3,-309.7L603.7,-308.2L590.6,-313.7L601.6,-316.4L686,-312.6L651.3,-291.5L609.7,-291.9L625.3,-286.2L614.1,-277.2L592.7,-277.4L601.2,-280.4L593.4,-280.2L594.1,-286.1L585.4,-290.6L586.2,-300.4L585.4,-301.4ZM513.6,-351.2L485.1,-361L547,-360.5L548.9,-349.1L541.8,-346.9L552.1,-345.8L554.1,-340.5L539.9,-342L548.7,-335.9L538.8,-337.3L541.6,-333.5L496,-333.8L493.3,-336.9L503.6,-337.5L490.4,-341.2L522.6,-346.3L451.6,-343.2L465.9,-346.1L460.7,-349L486.4,-348.2L468.9,-352.1L477.6,-356.2L463.6,-355.7L468.7,-360L504.7,-349.3L513.6,-351.2ZM511.2,-222.9L533.3,-227.8L530.3,-232.8L540.6,-230.2L533.8,-233.2L541.2,-238.6L592.8,-219.3L568.6,-211.8L511,-222.4L511.2,-222.9ZM428,-400.1L441.5,-402.4L425.1,-402.9L432.1,-405.3L425,-407L409.9,-403.5L416.1,-407.5L399.2,-407.8L402,-413.3L496.8,-404L523,-389.8L505.1,-384.6L484.1,-392.3L420.1,-393.6L409.4,-398L440,-400L428,-400.1ZM861.9,-310L924.3,-306.4L946.4,-297.8L949.7,-294.3L940.4,-292.6L883.8,-291.6L873.4,-300.2L859.9,-302.2L860.2,-309.9L861.9,-310ZM969.5,-205.8L969,-196.5L962.3,-191.6L931.4,-189.9L926.2,-198L934.7,-206.5L967,-207.9L969.5,-205.8ZM578.7,-330.5L566.5,-332.9L582.1,-340L574.6,-340.2L608.5,-344.1L624.6,-338L624.9,-327.4L580.4,-330.3L578.7,-330.5ZM835.5,-110.7L840.1,-105.7L807.2,-95.2L802.7,-100.4L810.5,-107.7L833.5,-110.7L835.5,-110.7ZM541.6,-403.8L599.6,-395.1L589.2,-392.9L598.7,-390.7L594.5,-387.8L562.7,-384.8L544.9,-389.3L561.7,-391.1L533,-397.7L540.3,-398.7L533.7,-402L538,-403.8L541.6,-403.8ZM406,-294.9L372.2,-305.1L379.5,-309.1L418,-307.2L410.5,-296.5L406,-294.9ZM884.8,-88.8L879.1,-84.6L871.3,-94.5L884.4,-100.3L890.1,-97.2L887.8,-92.6L884.8,-88.8ZM856,70.7L863,79.8L837.8,73.5L850.6,69.9L856,70.7ZM803.2,-166.7L816.4,-161.1L804.6,-160.1L793,-167.8L801.7,-167.1L803.2,-166.7ZM630.6,-383.2L623.3,-378.3L580.5,-378.7L573.5,-383L587.9,-385.1L621.7,-384.5L630.6,-383.2ZM994.6,-203.7L998.4,-199.2L975.4,-201.4L981.8,-206.9L992,-203.4L994.6,-203.7ZM398.1,-384L420.9,-375.9L415,-372.2L402.8,-374.1L393.1,-384.3L398.1,-384ZM909.6,-120.2L923,-116L914.3,-112.8L902.9,-119.2L909.6,-120.2ZM905,-229.3L909.6,-227.4L890.9,-218.9L887.1,-220.6L900.2,-228.4L905,-229.3ZM880.6,-236L888.8,-235.1L876,-231.2L861.2,-234.7L876.9,-235.4L880.6,-236ZM689.8,-380.3L696.6,-376.4L689.8,-374.1L668.5,-376.8L667.7,-381.4L683.5,-381.7L689.8,-380.3ZM547.1,-316.5L522.7,-311L513.9,-312.7L540.8,-316.7L547.1,-316.5ZM426,-341.2L436.6,-336.2L423.9,-333.5L411.5,-335.6L420.8,-340.9L426,-341.2ZM756.3,-206.6L753.7,-198.6L747.5,-206.9L756.9,-207.2L756.3,-206.6ZM1051.8,-106.9L1058.8,-103.2L1049.2,-102.7L1039.6,-108.8L1048,-108L1051.8,-106.9ZM426.3,-364L447.4,-359.6L438,-357.4L416.1,-362.7L426.3,-364ZM784.7,-166.6L790.8,-160.9L787.1,-158.4L781.5,-167.1L784.7,-166.6ZM1162.3,-84.9L1158.3,-80L1146.8,-85.1L1162.3,-85.3L1162.3,-84.9ZM525.2,-419.5L499.8,-426.3L519.5,-428.1L528.7,-422L525.2,-419.5ZM453.9,-357L429.1,-352.3L423.3,-355.6L446.3,-357.3L453.9,-357ZM938.1,-120L923.7,-123L939.4,-120.7L938.1,-120ZM893.8,38.5L894.6,38.3L893.8,38.5ZM1168.5,-122.8L1169.6,-117.1L1167.5,-123.6L1168.5,-122.8ZM969.5,-216L973.8,-212.3L969.4,-209.8L961.7,-213.2L964.3,-216.7L969.5,-216ZM910.9,-235.8L898.3,-230.5L908.6,-235.6L910.9,-235.8ZM689.8,-367.1L695.9,-365.3L693.4,-360.6L681,-366.4L689.8,-367.1ZM930.1,-230.3L938.8,-229.1L934.1,-224L925.5,-229.4L930.1,-230.3ZM577.5,-344.3L562.1,-339.6L558.3,-342.2L570.6,-345.2L577.5,-344.3ZM466.3,-350.4L440.3,-347.3L463,-351.5L466.3,-350.4ZM1101,-65.9L1102.7,-62.5L1092.8,-60L1097.6,-66.1L1101,-65.9ZM896.9,-353.8L891.6,-350.6L897.2,-348.8L886.6,-347.8L880.9,-349.4L893.2,-353.8L896.9,-353.8ZM472.2,-386.7L486.1,-383.9L469.9,-382.7L458.9,-386.5L472.2,-386.7ZM587.5,-232.6L587,-228.2L581.4,-232.5L578.1,-228.6L585.2,-233.5L587.5,-232.6ZM1029.3,-260.1L1036.3,-257.4L1023.3,-255.6L1028.2,-260.4L1029.3,-260.1ZM459.5,-353L449.9,-352.9L459.5,-353ZM471.8,-217.8L469.3,-214.1L459.6,-216.2L466.1,-218.8L471.8,-217.8ZM497.4,-222L501,-220.3L496.5,-216.7L491.7,-217.8L493.3,-222.8L497.4,-222ZM497.8,-365L471.9,-362.5L490,-365.6L497.8,-365ZM740.8,-242.7L752.1,-240L738.7,-242.3L740.8,-242.7ZM575.4,-232.2L567.7,-230.9L574.5,-232.6L575.4,-232.2ZM889.4,90.8L883.5,94.1L888.6,90.5L889.4,90.8ZM1167.4,-102.3L1165.9,-102.1L1167.4,-102.3ZM1164.3,-127.6L1166.4,-123.5L1157.5,-126L1162.9,-127.4L1164.3,-127.6ZM1005.7,-264.6L999.7,-268.7L1007.3,-265L1005.7,-264.6ZM765.8,-408.2L758.9,-407.4L765.8,-408.2ZM416.1,-214.2L411.3,-214.4L416.1,-214.2ZM563.6,-299.5L565.7,-295.3L558.5,-298.8L563.6,-299.5ZM1154.7,-91.1L1152.8,-91.6L1154.7,-91.1ZM1151,-142.4L1143.1,-139.2L1150.4,-143.1L1151,-142.4ZM494.8,-252.8L490.3,-253.2L494.8,-252.8ZM898.7,-211.7L896.8,-215.6L902.2,-212.8L898.7,-211.7ZM606.3,-351.2L609.9,-347.6L600.8,-347.4L598.4,-350.4L605.5,-351.5L606.3,-351.2ZM909.3,-70.5L900.5,-68.9L909.4,-70.9L909.3,-70.5ZM994.3,-137.5L994.6,-135.5L994.3,-137.5ZM483.8,-231.4L479.5,-229.2L481.5,-232.6L483.8,-231.4ZM979.2,-106.2L976,-105.8L979.2,-106.2ZM981.8,-212.1L985.3,-208.2L980.8,-211.8L981.8,-212.1ZM893.1,-210L891.4,-209.5L893.1,-210ZM1102.4,-235.1L1100.5,-234.9L1102.4,-235.1ZM686.2,-229.8L680.3,-228.3L686,-230.3L686.2,-229.8ZM1195.2,-186.2L1204.1,-188.6L1197.8,-185.3L1195.2,-186.2ZM552.5,-326.2L549.4,-325.8L552.5,-326.2ZM584.9,-326.5L592,-324.3L580.9,-325.1L584.9,-326.5ZM1131.2,-206.3L1132.5,-206.6L1131.2,-206.3ZM679.1,-225.8L681.4,-226.3L679.1,-225.8ZM821.5,-171.2L814.8,-172.4L822,-171.7L821.5,-171.2ZM1156.8,-121.3L1155.8,-121.3L1156.8,-121.3ZM501.6,-224.3L500.7,-224.7L501.6,-224.3ZM778.2,-381L773,-380.1L778.2,-381ZM920.6,-129.5L921.8,-130.1L920.6,-129.5ZM356.4,-193.6L351.4,-192.6L355.8,-194.1L356.4,-193.6ZM1207,-161.5L1205.9,-161.9L1207,-161.5ZM877.6,-53.2L876,-53.4L877.6,-53.2ZM1175.9,-196.8L1175,-197.1L1175.9,-196.8ZM565.1,-294L563.1,-293.9L565.1,-294ZM595.4,-438.3L587.4,-438.6L595.4,-438.3ZM880.3,1.1L878.9,1.1L880.3,1.1ZM689.3,-217.5L690.6,-217L689.3,-217.5ZM354.5,-197L352,-197.5L354.5,-197ZM494.4,-343.2L500.4,-344L494.4,-343.2ZM1184.7,-190L1186.3,-190.7L1184.7,-190ZM973.7,-216L978.5,-213.9L971.5,-215.1L973.7,-216ZM661.2,-235.5L662.5,-236.2L661.2,-235.5ZM449.4,-393.6L446.3,-393.4L449.4,-393.6ZM881.7,-10.7L881.2,-11.5L881.7,-10.7ZM669.8,-374.8L665.6,-374.2L669.8,-374.8ZM1171.4,-122.8L1170.6,-122.6L1171.4,-122.8ZM1156,-136.1L1153.8,-135.6L1156,-136.1ZM512.2,-365.1L502.7,-365.5L512.2,-365.1ZM336.5,-203.1L334.2,-203.1L336.5,-203.1ZM1008.2,-271.1L1006,-269.8L1008.2,-271.1ZM1110.4,-233L1109,-233.2L1110.4,-233ZM824.1,-237L822.6,-236.4L824.1,-237ZM1142.6,-89.3L1141.4,-89.3L1142.6,-89.3ZM362,-188.7L361.2,-188.5L362,-188.7ZM1122,-173.7L1119.4,-174.1L1122,-173.7ZM632.3,-89.4L633.9,-89.7L632.3,-89.4ZM877.2,67.6L877.3,67.2L877.2,67.6ZM726.1,-396.9L722.7,-396.6L726.1,-396.9ZM360.9,-306.7L352.7,-307L362,-307.3L360.9,-306.7ZM1092.2,-218.6L1106.3,-216.6L1091.6,-218.1L1092.2,-218.6ZM1168.3,-126.8L1167.1,-126.7L1168.3,-126.8ZM896,-285.7L893.7,-285.4L896,-285.7ZM809.6,-236.5L804.8,-237.4L809.6,-236.5ZM1158.1,-103.5L1155.9,-103.6L1158.1,-103.5ZM303.4,-212.5L304,-212.6L303.4,-212.5ZM553.2,-239.3L550.9,-239.9L553.2,-239.3ZM993.2,-136.7L992.2,-137.1L993.2,-136.7ZM813.9,-163.5L815,-163.6L813.9,-163.5ZM327.3,-205.3L326.2,-205.2L327.3,-205.3ZM838.8,-209.7L834.9,-210.7L838.8,-209.7ZM884.6,-286L882.2,-285.6L884.6,-286ZM475,-225.7L471.8,-225.9L475,-225.7ZM977.8,-403L976.3,-403L977.8,-403ZM605.7,-393.8L602.9,-393.8L605.7,-393.8ZM553,-198.4L548.9,-197.9L553,-198.4ZM348.9,-194.9L348,-195.5L348.9,-194.9ZM288.4,-209L288.7,-209.3L288.4,-209ZM879.2,2.6L877.3,3.1L879.2,2.6ZM1002.8,-272L1000.3,-271.3L1002.8,-272ZM353.3,-202.6L352.4,-203.1L353.3,-202.6ZM689.8,-314.4L691.7,-315.3L689.8,-314.4ZM1207.6,-171.6L1203.8,-170.8L1207.6,-171.6ZM427.5,-373.1L423.2,-373L427.5,-373.1ZM919.6,-386.2L914.4,-385.5L919.6,-386.2ZM1143.8,-206.7L1142.6,-206.8L1143.8,-206.7ZM687.2,-221.5L691.6,-220.7L687.2,-221.5ZM590.5,-274.7L588.2,-274.3L590.5,-274.7ZM589.7,-374.6L584.7,-374.5L589.7,-374.6ZM599.3,-354.2L596.4,-353.6L599.3,-354.2ZM827.1,-238.2L826.1,-237.8L827.1,-238.2ZM763.2,-283.1L762.6,-282.7L763.2,-283.1ZM441.3,-349.3L431.3,-349.3L441.3,-349.3ZM554.8,-370.8L550.5,-369.8L554.8,-370.8ZM569.5,-348.3L565.6,-347.7L569.5,-348.3ZM974.9,-281.4L975.6,-281.9L974.9,-281.4ZM472,-392.9L470.7,-392.9L472,-392.9ZM799.9,-361L799.1,-361L799.9,-361ZM1193.9,-186.1L1191.2,-186.6L1193.9,-186.1ZM1125.3,-454.6L1131.8,-455L1125.3,-454.6ZM1043.2,-261.7L1040.3,-261.4L1043.2,-261.7ZM905.7,-479.3L906.7,-479L905.7,-479.3ZM657,-454.3L660.3,-454.9L657,-454.3Z","cx":767,"cy":-260},{"name":"Northwest Territories","path":"M309.6,-402.6L317.4,-401.1L317.2,-394.7L258.4,-393.6L303.2,-402.6L309.6,-402.6ZM317.2,-387.3L300.2,-386L315,-384.5L312.8,-379.5L278.6,-376.1L257.3,-379.8L255.1,-384.9L317.2,-390.5L317.2,-387.3ZM316.8,-330L252.2,-322.4L235,-327.7L297,-338.2L243.5,-334.2L255.1,-340.9L241.2,-341.8L230.9,-338.2L235,-334.8L210.9,-332.5L173.7,-337.8L223.8,-346L181.8,-344L227.5,-349.6L191.6,-349.9L195.5,-354.6L229.7,-354.7L206.5,-356.8L225.6,-361.2L271.7,-354.7L284.7,-350.2L275.5,-348.1L289.9,-348.6L293.2,-342.8L316.9,-343L316.8,-330ZM316.9,-349.3L316.9,-349.8L316.9,-349.3ZM317,-355.8L309.8,-359.6L317,-360.4L317,-355.8ZM178.4,-240.5L290,-246L243.5,-253.8L176.3,-251.6L162,-257.2L222.7,-268.8L165.7,-266L173.4,-271.5L148.2,-270.7L147.5,-275.9L165.7,-281.9L157.8,-286.8L179.8,-294.6L231.9,-303.1L243.2,-298.4L242.9,-292.7L232,-288L252.8,-290.1L260.9,-296.3L294.1,-291L281.4,-284.1L284.1,-281.3L303.9,-288.3L316.6,-285.8L316.4,-240.5L184.9,-240.6L195.5,-233.8L181.8,-236.1L178.4,-240.5ZM316.6,-286.7L312.2,-287.9L316.6,-287.4L316.6,-286.7ZM316.6,-289.1L311.5,-290L316.6,-290.8L316.6,-289.1ZM316.6,-291.5L302.8,-295.6L316.6,-295.7L316.6,-291.5ZM466.1,-55.5L55.4,-55.9L45.1,-73.2L3.2,-69.5L-2.6,-82.7L-42.8,-95.4L-40.5,-101.5L-51.7,-108.7L-48.5,-112L-58.7,-116L-52.6,-120L-61.9,-123.9L-58.2,-126L-104.8,-144.9L-99.4,-148.7L-107.8,-152.3L-96.5,-159L-103.9,-163.8L-99.6,-166.2L-123.6,-166.1L-122.5,-171.7L-127.2,-172.4L-122.8,-177L-132.2,-184.2L-127.4,-185.1L-170.9,-185.1L-176.1,-219.7L-134.6,-216.4L-142.2,-222.3L-133.4,-226.9L-49.8,-245.5L-46.6,-241L-108.8,-226.1L-120.9,-219.3L-110.3,-216.4L-119,-219.2L-102.4,-218.4L-109.4,-223.4L-92.7,-229.6L-79.2,-231.3L-82.3,-227.6L-79.2,-232.9L-77,-228.8L-76.3,-233.4L-73.1,-224.6L-62.7,-234.9L-35.4,-240.1L-40.4,-237.4L-36.9,-234.6L-9.6,-244.7L-22.2,-247.8L-18.6,-251.5L29.3,-227.9L35.6,-230.4L25.7,-229.8L35.1,-231.1L30.5,-234.9L40.6,-235.3L32.1,-237L44.2,-240.2L33.8,-240.8L43.2,-243.4L48.7,-243.3L46.6,-235.5L55.3,-234.7L47.6,-228.9L67.5,-229.7L75.3,-237.5L103.6,-236.3L118.1,-232.3L118.2,-203.6L270.4,-157.4L304.8,-157.3L328.4,-144.9L466.4,-133.5L466.1,-55.5ZM135.3,-315.1L178.3,-318.9L217.7,-304.9L125.8,-282.4L120.4,-268.7L72.8,-260.6L56.9,-271.3L18.7,-277.1L38.3,-288.2L35.2,-293.6L47.1,-294.8L39.7,-297.6L60.1,-310.3L41.6,-320.9L102.2,-324.8L139.4,-318.9L133.7,-315.7L135.3,-315.1ZM202.4,-370.6L210.1,-369.2L198.3,-368.8L207,-364.4L180.5,-356.4L166.7,-359.2L169.9,-366.8L149.6,-360.9L157.2,-357.9L147.7,-353.2L135.8,-357.8L140.2,-351.1L132.9,-349L122,-348.2L114,-355.3L112.2,-350.6L80.2,-350.8L84.1,-354.3L73.9,-353.2L81.7,-358L101.9,-359.7L146.3,-376.2L186,-375.5L192.9,-377.3L183.6,-378.6L197.3,-380.5L216.5,-375.9L200.1,-371.2L202.4,-370.6ZM-165,-222.2L-158.8,-222.5L-166.2,-226.9L-156.8,-223.9L-164.1,-228L-138.1,-230.9L-139.7,-235.5L-126.4,-232.8L-143.1,-222.3L-134.7,-216.5L-167.2,-222.9L-165,-222.2ZM174.8,-353.8L156.5,-342.3L141.5,-344.3L171.9,-353.7L174.8,-353.8ZM238.8,-383.1L221.6,-387.9L229.6,-389.1L246.3,-383.9L238.8,-383.1ZM241.4,-364.7L248.9,-364.7L241.4,-364.7ZM114.3,-350L106.5,-347.1L114.1,-350.5L114.3,-350ZM275.2,-247.3L273.7,-247L275.2,-247.3ZM319.1,-205.7L312.1,-204.4L318.4,-206.1L319.1,-205.7ZM-20.9,-251.6L-20.4,-252.1L-20.9,-251.6ZM183,-250.5L188.7,-250.7L183,-250.5ZM-154.7,-227.7L-159.7,-229.3L-154.2,-228.7L-154.7,-227.7ZM81.4,-350.2L80.3,-349.8L81.4,-350.2ZM50.2,-307.8L49.2,-307.8L50.2,-307.8ZM246.5,-372.1L248.6,-372.4L246.5,-372.1Z","cx":84,"cy":-268},{"name":"New Brunswick","path":"M1165.6,168.1L1164.6,169.1L1165.6,168.1ZM1080.6,179.6L1097.8,166.5L1130.6,165.2L1144.1,173.6L1159.2,170.1L1157.6,178.5L1149,183.5L1159.7,183.6L1164.1,199.5L1178.7,201.3L1165.6,208.7L1160.5,201.9L1162.6,208.8L1142.1,217.6L1134.9,216.5L1137.2,213.5L1129.1,220.7L1112.2,219.8L1110.4,211.1L1103.7,209.5L1103.9,183.9L1095.7,178.6L1080.7,180.3L1080.6,179.6Z","cx":1141,"cy":194},{"name":"Nova Scotia","path":"M1232.2,212L1232.8,211.8L1232.2,212ZM1123,225.8L1121.3,226.8L1123,225.8ZM1238,200L1227.9,209.2L1235.5,209.6L1242.7,197.8L1252.5,204.9L1236.6,211.6L1225.2,212L1220.3,203.1L1238.1,184.5L1243.5,188.1L1238.2,198.9L1238,200ZM1173.8,203.7L1198,210.8L1213.4,205.7L1226.2,212.8L1222,215.7L1231.1,217.1L1180.9,227.4L1181.5,232.5L1176.7,227.8L1168.9,230.2L1169.8,235.6L1147,250.5L1134.2,243.1L1140.2,230L1133.7,232.8L1165.5,215.9L1171.7,222.5L1186.5,215.4L1157.1,216L1171.7,204.2L1173.8,203.7Z","cx":1193,"cy":220},{"name":"Saskatchewan","path":"M466.1,-55.5L466.1,21.7L477.9,148.1L316.9,148.1L316.9,-55.4L423.8,-55.5L466.1,-55.5Z","cx":435,"cy":53},{"name":"Alberta","path":"M241.2,148.1L228.6,136.8L230.1,128.3L223.4,118.9L180.5,89.2L163.6,85.8L153.6,71.7L132.3,64.4L130.8,-55.3L316.9,-55.4L316.9,148.1L276.2,148.1L241.2,148.1Z","cx":201,"cy":94},{"name":"Prince Edward Island","path":"M1174.8,196.3L1166.8,191L1174.6,183.9L1175.7,194.8L1212.4,195.1L1201,199.3L1203.3,203.5L1175.9,195.7L1174.8,196.3Z","cx":1188,"cy":197},{"name":"Yukon Territory","path":"M-226,-231.9L-224.2,-232.8L-226,-231.9ZM59.3,-55.4L-222.6,-55.5L-227.3,-57.2L-225,-62L-260.9,-61.2L-261.1,-234L-175.6,-220.2L-170.9,-185.1L-127.4,-185.1L-132.2,-184.2L-122.8,-177L-127.2,-172.4L-122.5,-171.7L-123.6,-166.1L-99.6,-166.2L-103.9,-163.8L-96.5,-159L-107.8,-152.3L-99.4,-148.7L-104.8,-144.9L-58.2,-126L-61.9,-123.9L-52.6,-120L-58.7,-116L-48.5,-112L-51.7,-108.7L-40.5,-101.5L-42.8,-95.4L-2.6,-82.7L3.2,-69.5L45.1,-73.2L44.5,-67.9L58.2,-56.3L59.3,-55.4Z","cx":-87,"cy":-132},{"name":"Manitoba","path":"M466.1,-55.5L600.3,-55.5L603,-43.5L596.7,-38L611.5,-33.4L608.5,-22.6L612,-32.8L631.1,-32.2L644.7,-6.2L636.2,1.7L671.2,-4.8L705.1,2.4L593.8,77.2L593.7,148.1L477.9,148.1L466.1,21.7L466.1,-54L466.1,-55.5Z","cx":565,"cy":22},{"name":"Ontario","path":"M884.7,102.5L884.9,111.4L881.9,103.6L884.7,102.5ZM884.9,111.8L884.2,176.9L895.8,194.1L935.8,206.1L944.5,213.7L976.1,210.3L982.1,218.4L951.3,233.5L921.8,238.4L935.1,238.4L929.7,243.3L893.2,243.8L880.5,253.2L893.5,254.2L896.3,260.8L872.5,263L867.9,266.3L874.1,267.6L851.4,265.6L829.6,279.2L818,276.3L831,271.1L830.2,261L843.7,252.7L843.7,239L852.6,229.2L844.7,217.2L858.6,222.8L858.7,229.6L874.6,231.9L874.3,225.4L882.6,226.7L862.3,205L792.1,194.7L795.1,187.2L787.2,185.4L790.9,179.7L782.5,173.8L786,167.5L767,166.8L756.3,152.2L722.3,148.2L723.3,155.3L716.7,158.6L718.2,150.8L713.3,159.7L705.9,157.6L702.2,164.4L691.7,166.7L673.7,161.9L660.5,165.8L634.9,154.9L602.3,152.2L599.7,141.9L593.8,141.2L593.8,77.2L705.1,2.4L727.6,10.4L734.3,18.5L780.6,30.6L775.1,37.2L783,31.5L832.6,34L833.4,74.7L848.7,86.9L841.2,89.1L865.1,97.8L868.4,104.3L857.3,110.5L869,104.8L882.1,110.2L884.9,111.8ZM822.6,204.2L844.9,205.3L841.5,212.5L843.4,209.1L820.6,204.9L822.6,204.2Z","cx":814,"cy":166}],"routes":{"1":"M410.4,319.4L408.7,303.7L413.5,293.5L399.2,290.4L368.4,281.5L331.5,285.2L327.8,297.8L325.7,306.1L337.1,306.5L362.6,305.2L376.1,305.7L392.6,313L396,316.7L400.7,319.4L410.4,319.4","2":"M794.4,430.3L777.3,406.2L803.2,389.4L828.7,396.1L840.3,408.1L860.6,402.9L915.6,421.8L897,431.4L877.6,448.3L868.1,455.8L855.9,461.2L839.7,435.5L831.7,409.9L813.3,426.6L794.4,430.3","3":"M794.4,430.3L758.8,455.8L726.4,486.9L732.9,495.1L739.2,493.2L741.7,491.9L796.5,491.6L783.4,504.7L770.7,496.7L755.1,492.5L775.8,476.9L783.2,454.2L794.4,430.3","4":"M72.3,142.9L75.5,127.3L94.3,116.8L105.9,114.6L124.4,117.2L164.1,111.2L187.2,105.5L213.1,107.7L201.7,103.1L198.6,101.8L166.3,76.4L251.9,63.9L241.1,110.1L244.1,147.1L233.2,136.4L140.4,147.5L139.8,131.6L103.7,141L72.3,142.9","5":"M887.8,247.1L893.6,257.3L897.2,261.1L844.8,286.9L876.3,306.5L931.5,334.8L905.4,341.8L904.6,351.1L924,360.2L951.2,372.9L966.5,347.9L941.7,333.5L966.3,315.6L957.2,288.5L948.1,258.2L920.8,256.1L887.8,247.1","6":"M563.1,448.3L556.5,471L545.5,494.7L531.5,510.4L551.9,540.4L553.9,546.5L552.1,545.6L486.6,511.5L483.8,509.9L442.8,513.6L443,495.8L430.7,488.8L412.6,464.2L420.6,459.4L419.1,437L392.6,394.4L399.5,381.1L469.3,403.5L468.7,433.4L531.5,427.3L563.1,448.3"},"cities":[{"name":"Denver","x":-105,"y":39.7},{"name":"Atlanta","x":-84.4,"y":33.8},{"name":"Vancouver","x":-123.1,"y":49.3},{"name":"Toronto","x":-79.4,"y":43.7,"labelDx":5,"labelDy":-4},{"name":"Dallas","x":-96.8,"y":32.8},{"name":"Hunting Island","x":-80.4,"y":32.4},{"name":"Gulf Islands","x":-87.3,"y":30.4},{"name":"Padre Island","x":-97.3,"y":27.5},{"name":"Banff","x":-115.6,"y":51.2},{"name":"Niagara Falls","x":-79.1,"y":43.1,"labelDx":5,"labelDy":12},{"name":"Big Bend","x":-103.2,"y":29.3}]};</script>
+
+<script>
+/* ================= route data ================= */
+const ROUTES = [
+  {
+    n:1, name:"Rocky Mountains", loop:"Denver → Denver", km:2878, color:"#1f6f63",
+    short:"Rockies", region:"Colorado &amp; Utah",
+    fave:true, gmaps:"https://maps.app.goo.gl/L62sySaPAxtigzqg9",
+    stops:["Denver","Rocky Mountain NP (Estes Park)","Dinosaur NM","Arches NP (Moab)","Canyonlands NP","Grand Junction / Colorado NM","Glenwood Springs","Aspen &amp; Independence Pass","Leadville","Breckenridge","Denver"],
+    desc:"De klassieke rondje-Rockies: alpine meren, bergpassen en woestijnrode rotsen in één lus. Alles binnen redelijke rij-afstand van Denver.",
+    criteria:{parks:5,rust:4,weer:4,tijd:5,strand:1},
+    fit:"Amelie: minste kilometers per dag, geen lange verplaatsingen, elke dag wat nieuws.",
+    watch:"Mei kan in de bergen nog fris zijn: nachten rond 0–5 °C op hoogte. Neem warme kleding mee.",
+    parks:["Rocky Mountain NP","Arches NP","Canyonlands NP","Colorado NM","Dinosaur NM"],
+    np:5,
+    weerTxt:"Droog, zonnig, 15–24 °C dalen, koel in de bergen; kans op late sneeuw op passen.",
+    rustTxt:"Meestal rustig buiten weekenden; Arches &amp; RMNP zijn de bekende drukkepunten.",
+    tijdTxt:"Kortste dagafstanden van alle routes (±150–220 km/dag)."
+  },
+  {
+    n:2, name:"Oostkust Zuid", loop:"Atlanta → Hunting Island → Atlanta", km:3267, color:"#2d7f9e",
+    short:"Oostkust Zuid", region:"Georgia, Carolinas &amp; Virginia",
+    gmaps:"https://maps.app.goo.gl/M35kMhxU27LkTkx36",
+    stops:["Atlanta","Great Smoky Mountains NP","Asheville &amp; Blue Ridge Pkwy","Charlotte","Wilmington","Myrtle Beach","Charleston","Hunting Island SP","Savannah","Augusta","Greenville","Atlanta"],
+    desc:"Bergen (Smokies), dan een lange oostkust naar de zandstranden van de Carolinas, met Charleston en Savannah als culturele parels.",
+    criteria:{parks:2,rust:3,weer:3,tijd:2,strand:4},
+    fit:"Veel afwisseling stad/kust, maar de kuststrook is lang en eentonig.",
+    watch:"Myrtle Beach is in mei al behoorlijk druk; Hunting Island is het rustige pareltje.",
+    parks:["Great Smoky Mountains NP","Congaree NP"],
+    np:2,
+    weerTxt:"Aangenaam: 22–27 °C, maar vochtig; kans op buien, zeewater ±22 °C.",
+    rustTxt:"Myrtle Beach &amp; Charleston in mei druk; Smokies druk in het weekend.",
+    tijdTxt:"Lange ritten langs de kust (200–300 km/dag), veel snelweg."
+  },
+  {
+    n:3, name:"Golf van Mexico", loop:"Atlanta → Gulf Islands → Atlanta", km:3101, color:"#7a8f3d",
+    short:"Golfkust", region:"Georgia, Alabama &amp; Florida Panhandle",
+    gmaps:"https://maps.app.goo.gl/YvP9XnLt2238JZUW6",
+    stops:["Atlanta","Montgomery","Mobile","Gulf Shores","Gulf Islands NS","Pensacola","Tallahassee","Apalachicola","Panama City Beach","Destin","Dothan","Columbus","Atlanta"],
+    desc:"Een echt rondje: van Atlanta via de witte zandstranden van de Gulf naar de Panhandle, en terug door het binnenland van Alabama &amp; Georgia. Warm water en rustige barrier-eilanden.",
+    criteria:{parks:1,rust:4,weer:5,strand:5,tijd:3},
+    fit:"Het warmste strandgevoel van de zes in mei, en de minst toeristische kust van de zuidelijke drie.",
+    watch:"Weinig nationale parken (alleen Gulf Islands NS); de natuur zit in de stranden en staatsparken.",
+    parks:["Gulf Islands NS"],
+    np:1,
+    weerTxt:"Warm en zonnig: 25–30 °C, zeewater 25–27 °C. Perfect strandweer.",
+    rustTxt:"Panama City is druk(ker); Gulf Shores, Apalachicola en de eilanden zijn rustig.",
+    tijdTxt:"Redelijke ritten; terugweg door het binnenland is rustig en vlak."
+  },
+  {
+    n:4, name:"Canadese Rockies", loop:"Vancouver → Vancouver", km:3042, color:"#c97f2d",
+    short:"Canada Rockies", region:"BC &amp; Alberta",
+    gmaps:"https://maps.app.goo.gl/YWMUmH9v15Ew75LU7",
+    stops:["Vancouver","Whistler","Kamloops","Revelstoke","Glacier NP","Banff","Lake Louise","Yoho NP","Jasper NP","Edmonton / Calgary","Waterton Lakes NP","Okanagan","Hope","Vancouver"],
+    desc:"De mooiste pure natuur van allemaal: gletsjers, turquoise meren en beren. Wel de zwaarste rit-logistiek.",
+    criteria:{parks:5,rust:5,weer:2,tijd:2,strand:1},
+    fit:"Ongelooflijk mooi, maar mei is er het natste en koelste maand van het jaar.",
+    watch:"Veel afstanden van 250–400 km; Jasper–Banff is prachtig maar lang. Hoogseizoen begint eind mei.",
+    parks:["Banff NP","Jasper NP","Yoho NP","Glacier NP","Waterton Lakes NP"],
+    np:5,
+    weerTxt:"Koel &amp; wisselvallig: 10–18 °C, veel regen, sneeuwresten hoog in de passen.",
+    rustTxt:"Rustig in mei vóór het Canadese hoogseizoen (juni–aug).",
+    tijdTxt:"Langste dagritten van alle routes (±250–400 km/dag)."
+  },
+  {
+    n:5, name:"Oostkust Noord", loop:"Toronto → Toronto", km:3298, color:"#a4583c",
+    short:"Oostkust Noord", region:"Ontario, NY, PA &amp; Mid-Atlantic",
+    gmaps:"https://maps.app.goo.gl/iCYdckwknNqdDgYL6",
+    stops:["Toronto","Niagara Falls","Cleveland","Pittsburgh","Washington DC","Shenandoah NP","Charlottesville","Richmond","Virginia Beach","Assateague Island","Annapolis","Philadelphia","Scranton","Finger Lakes","Toronto"],
+    desc:"Niagara, nationale hoofdstad DC en de oostkust met wilde paarden op Assateague. Veel stad, veel snelweg, herhalend landschap.",
+    criteria:{parks:1,rust:3,weer:3,tijd:2,strand:3},
+    fit:"Voor wie steden wil combineren met natuur; niet de rustigste keuze.",
+    watch:"DC en de stranden zijn in mei al druk; de kustrit langs Virginia Beach is lang.",
+    parks:["Shenandoah NP"],
+    np:1,
+    weerTxt:"Mild: 18–24 °C, wisselvallig met buien; zeewater nog fris (±15–18 °C).",
+    rustTxt:"DC &amp; Philadelphia zijn stedelijke drukte; stranden nog rustig buiten weekends.",
+    tijdTxt:"Lange ritten (200–320 km/dag), veel tolwegen en stadsknooppunten."
+  },
+  {
+    n:6, name:"Texas &amp; New Mexico", loop:"Dallas → Padre Island → Dallas", km:3462, color:"#8a6ba8",
+    short:"Texas / NM", region:"Texas &amp; New Mexico",
+    gmaps:"https://maps.app.goo.gl/5UPh3NY9mF63TWpNA",
+    stops:["Dallas","Big Bend NP","Guadalupe Mountains NP","El Paso","Carlsbad Caverns NP","Roswell","Santa Fe","Taos","Amarillo","Wichita Falls","Dallas"],
+    desc:"Woestijn-klassiekers: Big Bend, Carlsbad Caverns en het kunstenaarsstadje Santa Fe, plus het strand van Padre Island als verrassing.",
+    criteria:{parks:5,rust:4,weer:5,strand:4,tijd:2},
+    fit:"Veel afwisseling (woestijn, bergen, strand) maar de totale afstand is het grootst.",
+    watch:"Big Bend is afgelegen: minimaal 2 nachten nodig; lange ritten door leeg land.",
+    parks:["Big Bend NP","Guadalupe Mountains NP","Carlsbad Caverns NP","Padre Island NS","White Sands NP"],
+    np:4,
+    weerTxt:"Warm &amp; droog: 25–32 °C, zeewater 25–27 °C. Beste strandweer naast Gulf.",
+    rustTxt:"Zeer rustig buiten de steden; Santa Fe is in mei al levendig.",
+    tijdTxt:"Grootste totaalafstand (±3.462 km) met lange lege ritten in West-Texas."
+  }
+];
+
+/* gewichten: parks x3, rust x2, weer x2, tijd x2, strand x1 */
+const W = {parks:3, rust:2, weer:2, tijd:2, strand:1};
+const TOTAL_W = Object.values(W).reduce((a,b)=>a+b,0);
+const CRITERIA = [
+  {k:"parks", label:"Nationale parken &amp; natuur", w:3},
+  {k:"rust", label:"Rust &amp; weinig drukte", w:2},
+  {k:"weer", label:"Weer in mei", w:2},
+  {k:"tijd", label:"Rit-tijd / Amelie-factor", w:2},
+  {k:"strand", label:"Warm stranddagje", w:1}
+];
+
+function weighted(r){
+  return Object.entries(W).reduce((s,[k,v])=>s+(r.criteria[k]||0)*v,0)/TOTAL_W;
+}
+ROUTES.forEach(r=>{ r.weighted = Math.round(weighted(r)*10)/10; });
+
+/* ================= render helpers ================= */
+const $ = (s,el=document)=>el.querySelector(s);
+function stars(v){
+  let h="";
+  for(let i=1;i<=5;i++){
+    if(v>=i-.5) h+='<span class="star on">★</span>';
+    else if(v>=i-.75) h+='<span class="star half">★</span>';
+    else h+='<span class="star">★</span>';
+  }
+  return '<span class="stars" aria-label="'+v+' van 5">'+h+'</span>';
+}
+function chip(r,active){
+  return '<span class="chip" role="button" tabindex="0" aria-pressed="'+active+'" data-n="'+r.n+'"><span class="dot" style="background:'+r.color+'"></span>'+r.n+' · '+r.short+'</span>';
+}
+function nameCell(r){
+  return '<div class="r-name"><span class="n" style="background:'+r.color+'">'+r.n+'</span>'+r.name+
+    '<span class="r-meta">'+r.loop+' · '+r.km+' km</span></div>';
+}
+function bestWorst(){
+  const sorted=[...ROUTES].sort((a,b)=>b.weighted-a.weighted);
+  return {best:sorted[0].n, worst:sorted[sorted.length-1].n};
+}
+
+/* ================= 1. tabel ================= */
+const bw = bestWorst();
+$("#tableBody").innerHTML = ROUTES.map(r=>{
+  const maxScore = 5;
+  const pct = Math.round(r.weighted/maxScore*100);
+  return '<tr data-n="'+r.n+'">'+
+    '<td>'+nameCell(r)+'</td>'+
+    '<td>'+r.region+'</td>'+
+    '<td><span class="cell-label">Parken &amp; natuur</span>'+stars(r.criteria.parks)+'<br><span class="note" style="margin-top:4px">'+r.np+' '+(r.np===1?'nationaal park':'nationale parken')+' · '+r.parks.slice(0,2).join(', ')+'…</span></td>'+
+    '<td><span class="cell-label">Weer mei</span>'+stars(r.criteria.weer)+'<br><span class="note" style="margin-top:4px">'+r.weerTxt+'</span></td>'+
+    '<td><span class="cell-label">Drukte</span>'+stars(r.criteria.rust)+'<br><span class="note" style="margin-top:4px">'+r.rustTxt+'</span></td>'+
+    '<td><span class="cell-label">Rit-tijd</span>'+stars(r.criteria.tijd)+'<br><span class="note" style="margin-top:4px">'+r.tijdTxt+'</span></td>'+
+    '<td><span class="cell-label">Score</span><span class="score">'+r.weighted.toFixed(1)+' <span class="of">/ 5</span></span><br><span class="bar"><i style="width:'+pct+'%"></i></span></td>'+
+    '<td><span class="cell-label">Oordeel</span>'+
+      (r.n===bw.best?'<span class="tag lead">Beste overall</span>':r.n===bw.worst?'<span class="tag warn">Laagste score</span>':'<span class="tag watch">Sterke optie</span>')+
+      (r.fave?'<br><span class="tag watch" style="margin-top:5px">Jullie favoriet</span>':'')+
+    '</td>'+
+  '</tr>';
+}).join("");
+
+/* ================= 2. kaart ================= */
+const MAP = window.MAP_DATA;
+let active = null;
+const vp = MAP.routes;
+const routePaths = {};
+ROUTES.forEach(r=> routePaths[r.n] = vp[r.n]);
+
+$("#mapLegend").innerHTML = ROUTES.map(r=>
+  '<span><span class="sw" style="background:'+r.color+'"></span>'+r.n+' '+r.short+'</span>'
+).join("");
+$("#mapFoot").innerHTML =
+  '<span>Bron coördinaten: ruwe steden &amp; parken per route (indicatief, geen exacte Google-route).</span>'+
+  ROUTES.map(r=>'<a class="lnk" href="#routes" data-go="'+r.n+'">Route '+r.n+'</a>').join("");
+
+function buildMap(){
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS,"svg");
+  svg.setAttribute("viewBox","0 0 1100 620");
+  svg.setAttribute("class","map");
+  svg.setAttribute("role","img");
+  svg.setAttribute("aria-label","Kaart van de Verenigde Staten en Zuid-Canada met zes camperroutes");
+
+  MAP.states.forEach(s=>{
+    if(!s.path) return;
+    const p = document.createElementNS(svgNS,"path");
+    p.setAttribute("d",s.path);
+    p.setAttribute("class","state");
+    if(s.name) p.setAttribute("aria-label",s.name);
+    p.title = s.name;
+    svg.appendChild(p);
+  });
+
+  ROUTES.forEach(r=>{
+    const casing = document.createElementNS(svgNS,"path");
+    casing.setAttribute("d",routePaths[r.n]);
+    casing.setAttribute("class","route-casing");
+    casing.setAttribute("stroke-width",5);
+    const p = document.createElementNS(svgNS,"path");
+    p.setAttribute("d",routePaths[r.n]);
+    p.setAttribute("class","route");
+    p.setAttribute("stroke",r.color);
+    p.setAttribute("stroke-width",3);
+    p.dataset.n = r.n;
+    p.style.transition = "opacity .15s ease, stroke-width .15s ease";
+    svg.appendChild(casing);
+    svg.appendChild(p);
+  });
+  svg.querySelectorAll(".route-casing, .route").forEach(p=>{
+    const len = p.getTotalLength ? p.getTotalLength() : 0;
+    if(len){
+      p.style.strokeDasharray = len;
+      p.style.strokeDashoffset = len;
+      p.style.transition = "stroke-dashoffset .6s ease, opacity .15s ease, stroke-width .15s ease";
+      requestAnimationFrame(()=>{ p.style.strokeDashoffset = "0"; });
+    }
+  });
+
+  svg.querySelectorAll(".route").forEach(p=>{
+    p.addEventListener("mouseenter",()=>{
+      const n = Number(p.dataset.n);
+      svg.querySelectorAll(".route").forEach(q=>{
+        q.classList.toggle("dim", Number(q.dataset.n)!==n && !active);
+      });
+    });
+    p.addEventListener("mouseleave",()=>{
+      svg.querySelectorAll(".route").forEach(q=>q.classList.remove("dim"));
+      if(active) setActive(active);
+    });
+  });
+
+  MAP.cities.forEach(c=>{
+    const g = document.createElementNS(svgNS,"g");
+    g.setAttribute("class","mk-g");
+    const c1 = document.createElementNS(svgNS,"circle");
+    c1.setAttribute("cx",c.x); c1.setAttribute("cy",c.y); c1.setAttribute("r",3.4);
+    c1.setAttribute("fill","#2b2620"); c1.setAttribute("class","mk");
+    const c2 = document.createElementNS(svgNS,"circle");
+    c2.setAttribute("cx",c.x); c2.setAttribute("cy",c.y); c2.setAttribute("r",1.6);
+    c2.setAttribute("fill","#f5f1e7");
+    const t = document.createElementNS(svgNS,"text");
+    const dx = c.labelDx||5, dy = c.labelDy||3.5;
+    t.setAttribute("x",c.x+dx); t.setAttribute("y",c.y+dy);
+    t.setAttribute("class", c.name.length>9?"mk-label small":"mk-label");
+    t.textContent = c.name;
+    g.appendChild(c1); g.appendChild(c2); g.appendChild(t);
+    svg.appendChild(g);
+  });
+
+  $("#mapContainer").appendChild(svg);
+  return svg;
+}
+const svg = buildMap();
+
+/* selecteren via chips + tabel + foot links */
+function setActive(n){
+  active = n;
+  document.querySelectorAll("#chips .chip").forEach(c=>{
+    c.setAttribute("aria-pressed", String(Number(c.dataset.n)===n));
+  });
+  svg.querySelectorAll(".route").forEach(p=>{
+    p.classList.toggle("solo", Number(p.dataset.n)===n);
+    p.classList.toggle("dim", Number(p.dataset.n)!==n);
+  });
+  svg.querySelectorAll(".mk-g").forEach(g=>{
+    g.style.opacity = n ? .35 : 1;
+  });
+  if(n){
+    const r = ROUTES.find(x=>x.n===n);
+    document.querySelectorAll("#tableBody tr").forEach(tr=>{
+      tr.style.background = Number(tr.dataset.n)===n ? "#f3efe3" : "";
+    });
+  } else {
+    document.querySelectorAll("#tableBody tr").forEach(tr=>{ tr.style.background=""; });
+  }
+}
+$("#chips").innerHTML = ROUTES.map(r=>chip(r,false)).join("");
+$("#chips").addEventListener("click",e=>{
+  const c = e.target.closest(".chip"); if(!c) return;
+  const n = Number(c.dataset.n);
+  setActive(active===n?null:n);
+});
+$("#chips").addEventListener("keydown",e=>{
+  if(e.key==="Enter"||e.key===" "){
+    const c = e.target.closest(".chip"); if(!c) return;
+    e.preventDefault();
+    const n = Number(c.dataset.n);
+    setActive(active===n?null:n);
+  }
+});
+document.querySelectorAll("#tableBody tr").forEach(tr=>{
+  tr.style.cursor = "pointer";
+  tr.addEventListener("click",()=>{
+    const n = Number(tr.dataset.n);
+    setActive(active===n?null:n);
+  });
+});
+$("#mapFoot").addEventListener("click",e=>{
+  const a = e.target.closest("[data-go]"); if(!a) return;
+  e.preventDefault();
+  setActive(Number(a.dataset.go));
+  document.querySelector("#routes").scrollIntoView({behavior:"smooth"});
+});
+
+/* deep-link: ?route=N markeert die route bij het laden */
+(function(){
+  const m = location.search.match(/[?&]route=(\d)/);
+  if(m) setActive(Number(m[1]));
+})();
+
+/* ================= 3. route cards ================= */
+$("#routeCards").innerHTML = ROUTES.map(r=>
+  '<article class="rcard" data-n="'+r.n+'">'+
+    (r.fave?'<span class="fave">Jullie favoriet</span>':'')+
+    '<div class="top"><h3><span class="n" style="background:'+r.color+'">'+r.n+'</span>'+r.name+'</h3>'+
+    '<span class="score">'+r.weighted.toFixed(1)+' <span class="of">/ 5</span></span></div>'+
+    '<div class="meta">'+r.loop+' · '+r.km+' km · '+r.region+'</div>'+
+    '<p class="desc">'+r.desc+'</p>'+
+    '<ul>'+r.stops.map(s=>'<li>'+s+'</li>').join("")+'</ul>'+
+    '<p class="np-count"><strong>'+r.np+' '+(r.np===1?'nationaal park':'nationale parken')+'</strong> · '+r.parks.join(', ')+'</p>'+
+    '<p class="gmaps"><a href="'+r.gmaps+'" target="_blank" rel="noopener">Bekijk de route op Google Maps ↗</a></p>'+
+    '<div class="scoreline"><span>'+stars(r.weighted)+'</span><b>gewogen</b></div>'+
+    '<p class="hint"><strong>Past bij:</strong> '+r.fit+'<br><strong>Let op:</strong> '+r.watch+'</p>'+
+  '</article>'
+).join("");
+
+/* ================= 4. sterren ================= */
+$("#starsBody").innerHTML = CRITERIA.map(c=>{
+  const cells = ROUTES.map(r=>{
+    const v = r.criteria[c.k];
+    return '<td>'+stars(v)+'</td>';
+  }).join("");
+  return '<tr><td class="crit">'+c.label+'<span class="w">gewicht ×'+c.w+'</span></td>'+
+    '<td>×'+c.w+'</td>'+cells+'</tr>';
+}).join("") +
+'<tr class="total-row"><td class="crit">Totaal (gewogen)<span class="w">max 5,0</span></td><td>—</td>'+
+ROUTES.map(r=>'<td>'+stars(r.weighted)+'</td>').join("")+'</tr>';
+
+/* criteria kaarten: per criterium de top-keuze */
+const TOP_LABEL = {
+  parks:"Meeste parken", rust:"Rustigst", weer:"Beste weer", tijd:"Minste rijtijd", strand:"Beste strand"
+};
+$("#critCards").innerHTML = CRITERIA.map(c=>{
+  const sorted = [...ROUTES].sort((a,b)=>b.criteria[c.k]-a.criteria[c.k]);
+  const top = sorted[0], second = sorted[1];
+  const rank = sorted.map((r,i)=>'<li><span class="cn" style="color:'+r.color+'">'+r.n+'</span>'+r.name+'<span class="st">'+stars(r.criteria[c.k])+'</span></li>').join("");
+  return '<div class="ccard"><h3>'+c.label+'</h3><div class="w">'+TOP_LABEL[c.k]+': route '+top.n+' ('+top.short+') · tweede: route '+second.n+'</div><ul>'+rank+'</ul></div>';
+}).join("");
+
+/* top-3 kort */
+const top3 = [...ROUTES].sort((a,b)=>b.weighted-a.weighted).slice(0,3);
+const vBadge = $("#verdict .badge");
+vBadge.textContent = "Top 3";
+const vTitle = $("#verdict h2");
+vTitle.innerHTML = "Eindscore: <span style='color:#ffd9a0'>1. "+top3[0].short+" ("+top3[0].weighted.toFixed(1)+")</span> · 2. "+top3[1].short+" ("+top3[1].weighted.toFixed(1)+") · 3. "+top3[2].short+" ("+top3[2].weighted.toFixed(1)+")";
+$("#verdict p").innerHTML =
+  '<strong>1 — Rockies (Denver):</strong> wint op parken, rust en Amelie-factor; koel maar droog en zonnig. '+
+  '<strong>2 — Texas/NM:</strong> met 4 nationale parken (Big Bend, Guadalupe, Carlsbad, White Sands) + strand de sterkste combi van parken én warmte, maar de grootste totale afstand. '+
+  '<strong>3 — Canada Rockies:</strong> de meeste parken (5) en de mooiste natuur, maar mei is er koel en nat en de ritten zijn lang. '+
+  '<br>Wie puur voor warm strand en korte ritten gaat: <strong>Gulf (Route 3)</strong> — maar accepteer dat er maar 1 nationaal park op ligt. '+
+  'Routes 2 en 5 (oostkust) vallen af op parken en lange kustritten; Toronto is ook nog de meest stedelijke optie.';
+</script>
+</body>
+</html>
