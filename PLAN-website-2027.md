@@ -10,6 +10,8 @@
 > - ✅ Fase 4 — China-module: 3 routes in eigen kleurfamilie (karmozijn/goud) met gestippelde treinverbindingen
 > - ✅ Bewerkmodus — per route stops toevoegen/verwijderen, nachten wijzigen; opslag in browser + export naar `routes-data.js` (getest in browser)
 > - ⬜ Fase 5 — nog open: `og-card` vernieuwen (nu nog "zes routes, één camper"), oude pagina's naar `archief/`, pushen naar GitHub Pages
+> - ✅ Restyle 18 aug (later op de dag): donkere Rockstar-look vervangen door rustige Apple-stijl (licht, systeemtypografie, CARTO light-kaart) mét paginarouter — overzicht + 9 losse routepagina's, zachte overgangen, vorige/volgende + pijltjestoetsen + terug-knop; alles opnieuw getest
+> - ⬜ Nog open: pushen naar GitHub Pages (live staat nog op de donkere versie tot de volgende push)
 > - 💡 Optioneel later: gecureerde foto's/YouTube-video's per stop i.p.v. zoeklinks (nu: YouTube/Afbeeldingen/Wikipedia/Maps-knop per stop — altijd geldig, nul onderhoud)
 
 ---
