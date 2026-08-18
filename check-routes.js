@@ -18,6 +18,8 @@ for (const r of ROUTES) {
     if (r[v] === undefined) { err(label + ": mist veld '" + v + "'"); ok = false; }
   }
   if (r.soort !== "USA" && r.soort !== "China") { err(label + ": soort moet USA of China zijn"); ok = false; }
+  if (!["A","B","C","park"].includes(r.lijst)) { err(label + ": lijst moet A, B, C of park zijn"); ok = false; }
+  if (r.finalist && r.lijst !== "A") { err(label + ": finalist hoort op de A-lijst"); ok = false; }
 
   const nachten = r.stops.reduce((s, x) => s + (x.n || 0), 0);
   if (nachten !== 21) warn(label + ": " + nachten + " nachten (vergelijkingsmodel = 21)");

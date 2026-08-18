@@ -98,6 +98,10 @@
   .badge.b-fin{background:#f6e8d0;color:#7a5a1e}
   .badge.b-china{background:#f4e3e0;color:var(--china)}
   .badge.b-park{background:#eee3f3;color:#6b4a8a}
+  .badge.b-b{background:#e2ede8;color:#0f3d36}
+  .badge.b-c{background:#ececef;color:#6e6e73}
+  tbody tr.hl{background:#fdf6ea}
+  .fnoot{font-size:13px;color:var(--faint);margin-top:10px;text-align:center}
 
   /* ── kaarten ───────────────────────────────────────── */
   .map{height:420px;border-radius:var(--r);border:1px solid var(--hair)}
@@ -251,6 +255,7 @@
   <div class="secthead reveal"><span class="eyebrow">Op één meetlat</span>
     <h2>Alle negen vergeleken.</h2>
     <p>Scores zijn gevoelsoordelen (wow · comfort Amelie · tempo · weer · prijs-kwaliteit → totaal) — geen wetenschap, wel dezelfde meetlat.</p>
+    <p style="margin-top:4px;font-size:15px"><a href="#score">Zo komen we aan deze cijfers ↓</a></p>
   </div>
   <div class="tablewrap reveal"><table id="cmpTable"></table></div>
 </div></section>
@@ -270,6 +275,31 @@
     <p>Deze plekken hebben jullie al gezien. Geen van de negen routes raakt ze aan — deze reis wordt iets dat jullie nog niet gezien hebben.</p>
   </div>
   <div class="visited stagger" id="visitedList"></div>
+</div></section>
+
+<section id="score"><div class="wrap wide">
+  <div class="secthead reveal"><span class="eyebrow">De berekening</span>
+    <h2>Hoe we aan de cijfers komen.</h2>
+    <p>Vijf deelscores per route op dezelfde meetlat — en hier precies waar het totaalcijfer vandaan komt.</p>
+  </div>
+  <div class="panel reveal" style="max-width:880px;margin:0 auto 22px">
+    <ul>
+      <li><b>De deelscores (1–10)</b> beoordelen elk één ding: Wow (natuur &amp; verbazing), Comfort Amelie, Tempo, Weer in mei/juni en Prijs/kwaliteit.</li>
+      <li><b>Het totaalcijfer is géén gemiddelde</b> van die vijf. Het is een gewogen gevoelsoordeel waarin de droomfactor zwaar meetelt. Daarom staat Denver (9,1) boven China 1 (9,0) ondanks lagere deelscores: een 10 voor Yellowstone-achtige natuur weegt zwaarder dan een 10 voor organisatiegemak.</li>
+      <li><b>Finalist ≠ hoogste score.</b> De A-lijst kiest per rol één reis: Denver = de natuurdroom, Atlanta = de makkelijkste gezinsreis, China 3 = de meest complete rondreis.</li>
+    </ul>
+  </div>
+  <div class="tablewrap reveal"><table id="scoreTable"></table></div>
+  <p class="fnoot reveal">* Gewogen gevoelsoordeel (droomfactor telt zwaar mee) — geen gemiddelde van de vijf deelscores.</p>
+  <div class="panel reveal" style="max-width:880px;margin:22px auto 0;border:1px solid #ecd9b5;background:#fffdf5">
+    <h3>Waarom China 1 (9,0) tóch geen finalist is</h3>
+    <ul>
+      <li>China 1 is de <b>gelijkmatigste reis van alle negen</b>: nergens een deelscore onder de 7 (Amelie 9, tempo 9, prijs 9). Dat maakt het de beste reis <i>als rust met Amelie het zwaarst weegt</i> — vandaar de hoge 9,0.</li>
+      <li>Maar de A-lijstplek voor China is naar <b>China 3</b> gegaan: wow 10 (Zhangjiajie én Yangshuo) én het echte rondreistempo waar jullie om vroegen — jullie eigen conclusie was dat 5 bases in 3 weken te rustig aanvoelt.</li>
+      <li><b>Onderling:</b> China 1 wint op Amelie (9 vs 7,5), tempo (9 vs 7) en prijs (9 vs 8). China 3 wint op wow (10 vs 9) en "meeste China in één reis". Precies de criteria waar de A-lijst op selecteert.</li>
+      <li>Die 9,0 betekent dus níet "tweede keus", maar "beste reis voor een andere rol". China 1 staat op de <b>B-lijst als terugvaloptie</b>: voor als vlak voor boeken blijkt dat Amelie's ritme meer rust vraagt dan China 3 biedt.</li>
+    </ul>
+  </div>
 </div></section>
 
 <section id="bewerken"><div class="wrap">
@@ -355,10 +385,16 @@ $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).map((r) => `
   </a>`).join("");
 
 {
+  const lijstBadge = (r) =>
+    r.lijst === "A" || r.finalist ? '<span class="badge b-fin">A-lijst · finalist</span>'
+    : r.lijst === "B" ? '<span class="badge b-b">B-lijst · terugvaloptie</span>'
+    : r.lijst === "C" ? '<span class="badge b-c">C-lijst</span>'
+    : '<span class="badge b-park">geparkeerd — ander seizoen</span>';
+
   const rows = [...ROUTES].sort((a, b) => b.score.totaal - a.score.totaal).map((r) => `
     <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
       <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
-        <div style="margin-top:5px">${r.finalist ? '<span class="badge b-fin">finalist</span> ' : ""}${r.geparkeerd ? '<span class="badge b-park">ander seizoen</span>' : ""}${r.soort === "China" ? ' <span class="badge b-china">trein &amp; hotel</span>' : ""}</div></td>
+        <div style="margin-top:5px">${lijstBadge(r)}${r.soort === "China" ? ' <span class="badge b-china">trein &amp; hotel</span>' : ""}</div></td>
       <td>${r.soort === "China" ? r.treinkm.toLocaleString("nl") + " km trein/vlucht" : r.km.toLocaleString("nl") + " km"}</td>
       <td>${sumNachten(r)} nachten · ${bases(r)} bases</td>
       <td>${r.parks.length}</td>
@@ -367,6 +403,20 @@ $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).map((r) => `
       <td style="font-size:13.5px;color:var(--soft)">${esc(r.plus[0])}</td>
     </tr>`).join("");
   $("#cmpTable").innerHTML = `<thead><tr><th>Route</th><th>Afstand</th><th>Tempo-model</th><th>Parken</th><th>Tempo</th><th>Score</th><th>Grootste kracht</th></tr></thead><tbody>${rows}</tbody>`;
+
+  const nl = (x) => x.toLocaleString("nl");
+  const srows = [...ROUTES].sort((a, b) => b.score.totaal - a.score.totaal).map((r) => `
+    <tr class="${r.finalist ? "finalist" : ""}${r.id === "china1" ? " hl" : ""}" style="--c:${r.kleur}">
+      <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
+        <div style="margin-top:5px">${lijstBadge(r)}</div></td>
+      <td>${nl(r.score.wow)}</td>
+      <td>${nl(r.score.amelie)}</td>
+      <td>${nl(r.score.tempo)}</td>
+      <td>${nl(r.score.weer)}</td>
+      <td>${nl(r.score.prijs)}</td>
+      <td><b>${nl(r.score.totaal)}</b><span style="color:var(--faint);font-size:12px"> *</span></td>
+    </tr>`).join("");
+  $("#scoreTable").innerHTML = `<thead><tr><th>Route</th><th>Wow</th><th>Comfort Amelie</th><th>Tempo</th><th>Weer mei/juni</th><th>Prijs/kwaliteit</th><th>Totaal*</th></tr></thead><tbody>${srows}</tbody>`;
 }
 $("#visitedList").innerHTML = VISITED.map((v) => `<span>${esc(v)}</span>`).join("");
 

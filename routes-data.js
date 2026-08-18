@@ -21,7 +21,7 @@ const ROUTES = [
 
 // ════════════════════════════════ USA 1 ═══════════════════════════════════
 {
-  id:"usa1", soort:"USA", naam:"Denver 6B-light",
+  id:"usa1", soort:"USA", naam:"Denver 6B-light", lijst:"A",
   alias:"Rockies, Yellowstone & Black Hills",
   kleur:"#1f6f63", km:3700, tempo:"gemiddeld-actief", finalist:true,
   gmaps:"https://maps.app.goo.gl/L62sySaPAxtigzqg9",
@@ -84,7 +84,7 @@ const ROUTES = [
 
 // ════════════════════════════════ USA 2 ═══════════════════════════════════
 {
-  id:"usa2", soort:"USA", naam:"Atlanta 4-plus",
+  id:"usa2", soort:"USA", naam:"Atlanta 4-plus", lijst:"A",
   alias:"Appalachen, Blue Ridge Parkway & Hunting Island",
   kleur:"#2d7f9e", km:4150, tempo:"gemiddeld", finalist:true,
   gmaps:"https://maps.app.goo.gl/M35kMhxU27LkTkx36",
@@ -142,7 +142,7 @@ const ROUTES = [
 
 // ════════════════════════════════ USA 3 ═══════════════════════════════════
 {
-  id:"usa3", soort:"USA", naam:"Atlanta Gulf",
+  id:"usa3", soort:"USA", naam:"Atlanta Gulf", lijst:"C",
   alias:"Smokies, Nashville, New Orleans & Florida-strand",
   kleur:"#7a8f3d", km:3100, tempo:"gemiddeld", finalist:false,
   gmaps:"https://maps.app.goo.gl/YvP9XnLt2238JZUW6",
@@ -195,7 +195,7 @@ const ROUTES = [
 
 // ════════════════════════════════ USA 4 ═══════════════════════════════════
 {
-  id:"usa4", soort:"USA", naam:"Vancouver & Banff",
+  id:"usa4", soort:"USA", naam:"Vancouver & Banff", lijst:"C",
   alias:"Vancouver Island, Olympic, Rainier en de Canadese Rockies",
   kleur:"#c97f2d", km:3750, tempo:"actief", finalist:false,
   gmaps:"https://maps.app.goo.gl/YWMUmH9v15Ew75LU7",
@@ -250,7 +250,7 @@ const ROUTES = [
 
 // ════════════════════════════════ USA 5 ═══════════════════════════════════
 {
-  id:"usa5", soort:"USA", naam:"Toronto & Appalachen",
+  id:"usa5", soort:"USA", naam:"Toronto & Appalachen", lijst:"C",
   alias:"Niagara, Finger Lakes, Washington DC en de Smokies",
   kleur:"#a4583c", km:3063, tempo:"gemiddeld-actief", finalist:false,
   gmaps:"https://maps.app.goo.gl/iCYdckwknNqdDgYL6",
@@ -303,7 +303,7 @@ const ROUTES = [
 
 // ════════════════════════════════ USA 6 ═══════════════════════════════════
 {
-  id:"usa6", soort:"USA", naam:"Dallas, Big Bend & Padre",
+  id:"usa6", soort:"USA", naam:"Dallas, Big Bend & Padre", lijst:"park",
   alias:"Woestijnparken van Texas en New Mexico + Golfstrand",
   kleur:"#8a6ba8", km:3470, tempo:"gemiddeld", finalist:false,
   geparkeerd:"Mei/juni is het verkeerde seizoen: Big Bend gemiddeld 39 °C in mei en 42 °C in juni. Route is top in februari–maart — bewaren voor een andere reis.",
@@ -356,7 +356,7 @@ const ROUTES = [
 
 // ═══════════════════════════════ CHINA 1 ══════════════════════════════════
 {
-  id:"china1", soort:"China", naam:"China 1 — keizersteden, panda's en karst",
+  id:"china1", soort:"China", naam:"China 1 — keizersteden, panda's en karst", lijst:"B",
   alias:"Beijing · Xi'an · Chengdu · Yangshuo · Shanghai",
   kleur:"#9c2030", km:0, treinkm:5800, tempo:"rustig", finalist:false,
   gmaps:"",
@@ -405,7 +405,7 @@ const ROUTES = [
 
 // ═══════════════════════════════ CHINA 2 ══════════════════════════════════
 {
-  id:"china2", soort:"China", naam:"China 2 — keizersteden en Zhangjiajie",
+  id:"china2", soort:"China", naam:"China 2 — keizersteden en Zhangjiajie", lijst:"B",
   alias:"Beijing · Xi'an · Chengdu · Zhangjiajie · Shanghai",
   kleur:"#c03a2b", km:0, treinkm:6000, tempo:"rustig-gemiddeld", finalist:false,
   gmaps:"",
@@ -454,7 +454,7 @@ const ROUTES = [
 
 // ═══════════════════════════════ CHINA 3 ══════════════════════════════════
 {
-  id:"china3", soort:"China", naam:"China 3 — de echte rondreis",
+  id:"china3", soort:"China", naam:"China 3 — de echte rondreis", lijst:"A",
   alias:"Beijing · Xi'an · Chengdu · Zhangjiajie · Yangshuo · Shanghai",
   kleur:"#6e1423", km:0, treinkm:6600, tempo:"actief", finalist:true,
   gmaps:"",
