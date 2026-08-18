@@ -44,6 +44,8 @@ const ROUTES = [
     {van:"Jackson → Denver", url:"https://www.google.com/maps/dir/Jackson,+WY/Pinedale,+WY/Rawlins,+WY/Walden,+CO/Grand+Lake,+CO/Alpine+Visitor+Center,+Estes+Park,+CO/Moraine+Park+Campground,+Estes+Park,+CO/Denver,+CO"}
   ],
   parks:["Yellowstone NP","Grand Teton NP","Badlands NP","Rocky Mountain NP","Wind Cave NP","Devils Tower NM"],
+  fotos:["Yellowstone National Park","Grand Prismatic Spring","Grand Teton National Park","Badlands National Park"],
+  video:{id:"mpLJKAXJ9t0", titel:"Yellowstone & Grand Teton — Family Trip 2025 (4K)"},
   score:{wow:10,amelie:8,tempo:8,weer:7,prijs:7,totaal:8.6},
   kosten:{excl:"€5.900–€8.200",incl:"€6.700–€9.600",bron:"jullie eigen projectraming"},
   weer:"Badlands/Black Hills prettig voorseizoen · Yellowstone nachten rond/vroeg bevroren · Teton fris met sneeuw op de bergen · RMNP voorjaarscondities op hoogte",
@@ -107,6 +109,8 @@ const ROUTES = [
     {van:"Smokies → Atlanta (via kust)", url:"https://www.google.com/maps/dir/Cades+Cove,+TN/Congaree+National+Park,+SC/James+Island+County+Park,+Charleston,+SC/Hunting+Island+State+Park,+SC/Beaufort,+SC/Skidaway+Island+State+Park,+GA/Savannah,+GA/Atlanta,+GA"}
   ],
   parks:["Great Smoky Mountains NP","Shenandoah NP","Mammoth Cave NP","New River Gorge NP&P","Congaree NP","Blue Ridge Parkway"],
+  fotos:["Great Smoky Mountains National Park","Craggy Gardens","Hunting Island State Park","Charleston, South Carolina"],
+  video:{id:"ti2I616otFo", titel:"Blue Ridge Parkway — 18 things to do on the road trip"},
   score:{wow:8.5,amelie:9,tempo:7,weer:9,prijs:8.5,totaal:8.4},
   kosten:{excl:"€5.300–€7.000",incl:"€6.100–€8.400",bron:"jullie eigen projectraming"},
   weer:"Bergen aangenaam tot warm met regenkans · kust warm en vochtig · oceaan ±27 °C · géén sneeuw- of pasrisico",
@@ -472,6 +476,8 @@ const ROUTES = [
   kleur:"#6e1423", km:0, treinkm:6600, tempo:"actief", finalist:true,
   gmaps:"",
   parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP","Li River / Yangshuo-karst"],
+  fotos:["Mutianyu","Zhangjiajie National Forest Park","Li River","Shanghai"],
+  video:{id:"8KbiBD_1tl4", titel:"10 Days in China — Family Trip: Beijing, Xi'an, Chengdu, Shanghai"},
   score:{wow:10,amelie:7.5,tempo:9,weer:6.5,prijs:8,totaal:8.7},
   kosten:{excl:"€4.900–€7.600",incl:"€5.600–€8.700",bron:"planningsbandbreedte (extra transfer + extra natuurblok)"},
   weer:"Twee vochtige natuurregio's mee = hogere kans op een regendag, maar ook kleinere kans dat één regio de natuurcomponent verpest",

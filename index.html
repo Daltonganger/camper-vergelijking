@@ -203,12 +203,46 @@
   footer{padding:52px 0 64px;border-top:1px solid var(--hair);color:var(--faint);font-size:13.5px;background:var(--bg2)}
   footer .wrap{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 
+  /* ── fotostrip & video (finalisten) ────────────────── */
+  .fotostrip{display:grid;gap:12px;grid-template-columns:repeat(4,1fr);margin:6px 0 24px}
+  .fotostrip a{display:block;position:relative;border-radius:14px;overflow:hidden;background:var(--bg2);aspect-ratio:4/3;text-decoration:none}
+  .fotostrip img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+  .fotostrip a:hover img{transform:scale(1.05)}
+  .fotostrip span{position:absolute;left:0;right:0;bottom:0;padding:20px 10px 7px;font-size:11.5px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.66));text-align:center}
+  .ytwrap{margin:6px 0 24px}
+  .ytwrap iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:var(--r);display:block;background:#000}
+  .ytcap{font-size:13px;color:var(--faint);margin-top:8px;text-align:center}
+
+  /* ── vergelijk 2 routes ────────────────────────────── */
+  .cmp2{padding:130px 0 60px;min-height:100vh}
+  .selrow{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;margin:28px 0}
+  .selrow select{font-size:16px;font-family:inherit;padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);max-width:340px}
+  .selrow .vs{font-size:12px;font-weight:700;letter-spacing:.28em;color:var(--faint)}
+  .duogrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+  .duocard{background:var(--tile);border:1px solid var(--hair);border-top:5px solid var(--c);border-radius:var(--r);padding:28px}
+  .duocard h2{font-size:27px;margin-bottom:2px}
+  .duocard .alias{color:var(--soft);font-size:15px;margin-bottom:14px}
+  .duocard .sc{font-size:44px;font-weight:700;letter-spacing:-.03em}
+  .duocard .sc small{font-size:17px;color:var(--faint);font-weight:500}
+  .duostat{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--hair);font-size:15px}
+  .duostat span{color:var(--soft);flex:0 0 auto}
+  .duostat b{font-weight:600;text-align:right}
+  .duocard ul{margin:10px 0 0;padding-left:18px;font-size:14.5px;color:var(--soft)}
+  .cmpbars{margin:26px 0}
+  .cmpbar{margin:16px 0}
+  .cmpbar .lab{display:flex;justify-content:space-between;font-size:13.5px;color:var(--soft);margin-bottom:6px}
+  .cmpbar .lab b{color:var(--ink);font-weight:600}
+  .cmpbar .track{height:10px;border-radius:99px;background:var(--bg2);display:flex;overflow:hidden}
+  .cmpbar .fill{height:100%;transition:width .6s cubic-bezier(.16,1,.3,1)}
+
   @media (max-width:640px){
     .map{height:330px}.map.big{height:400px}
     section{padding:60px 0}
     .route{padding:110px 0 40px}
     .pager{grid-template-columns:1fr;text-align:center}
     .pager .next{text-align:center}
+    .fotostrip{grid-template-columns:repeat(2,1fr)}
+    .duogrid{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -217,6 +251,7 @@
   <a class="brand" href="#top">REIS <span>'27</span></a>
   <a class="chip" href="#intro">Overzicht</a>
   <a class="chip" href="#vergelijk">Vergelijk</a>
+  <a class="chip" href="#vergelijk2">⇄ Vergelijk 2</a>
   <a class="chip" href="#kaart">Kaart</a>
   <span id="navRoutes"></span>
   <a class="chip" href="#geweest">Al geweest</a>
@@ -442,6 +477,18 @@ function makeRouteMap(r) {
 }
 
 let oMap = null, oLayers = {};
+async function laadFotos(r) {
+  const el = $("#fotos-" + r.id); if (!el || el._done) return; el._done = true;
+  try {
+    const u = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=thumbnail&pithumbsize=1000&redirects=1&format=json&origin=*&titles=" + encodeURIComponent(r.fotos.join("|"));
+    const d = await (await fetch(u)).json();
+    const m = {}; Object.values(d.query?.pages || {}).forEach((p) => { if (p.thumbnail) m[p.title] = p.thumbnail.source; });
+    el.innerHTML = r.fotos.map((t) => m[t]
+      ? `<a href="https://en.wikipedia.org/wiki/${encodeURIComponent(t.replace(/ /g, "_"))}" target="_blank" rel="noopener" title="Bron & achtergrond: Wikipedia"><img src="${m[t]}" alt="${esc(t)}" loading="lazy"><span>${esc(t)}</span></a>`
+      : "").join("");
+    if (!el.innerHTML) el.remove();
+  } catch { el.remove(); }
+}
 const enabled = Object.fromEntries(ROUTES.map((r) => [r.id, r.finalist || r.soort === "USA" && r.id !== "usa6" ? true : r.id === "china3"]));
 function drawOverview() {
   if (!oMap) return;
@@ -507,7 +554,9 @@ function routePageHTML(r) {
         <div class="stat"><b>${r.score.totaal.toLocaleString("nl")}</b><span>totaalscore / 10</span></div>
       </div>
       <div class="quote" style="text-align:center">„${esc(r.quote)}"</div>
+      ${r.fotos ? `<div class="fotostrip" id="fotos-${r.id}"></div>` : ""}
       <div class="map" id="map-${r.id}" style="margin:26px 0"></div>
+      ${r.video ? `<div class="ytwrap"><iframe src="https://www.youtube-nocookie.com/embed/${r.video.id}" title="${esc(r.video.titel)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><div class="ytcap">▶ ${esc(r.video.titel)}</div></div>` : ""}
       <div class="panel"><h3>Nachtenverdeling</h3>
         <div class="nightsbar">${bar}</div>
         <div style="font-size:13px;color:var(--faint)">Som: ${n} nachten (vergelijkingsmodel: 21).</div></div>
@@ -558,6 +607,85 @@ function routePageHTML(r) {
   </article>`;
 }
 
+/* ═══════════════ vergelijk 2 routes ═══════════════ */
+const GW = window.SCORE_GEWICHTEN || { wow: .40, tempo: .20, amelie: .20, weer: .12, prijs: .08 };
+function kortNaam(r) { return r.naam.split("—")[0].trim(); }
+function klimaatSamen(r) {
+  const ks = r.stops.filter((s) => s.klimaat);
+  if (!ks.length) return "—";
+  return `koudste nacht ${Math.min(...ks.map((s) => s.klimaat.n))}° · warmste dag ${Math.max(...ks.map((s) => s.klimaat.d))}°`;
+}
+function duocard(r) {
+  return `
+  <div class="duocard" style="--c:${r.kleur}">
+    <div class="sc">${r.score.totaal.toLocaleString("nl")}<small>/10</small></div>
+    <h2>${esc(kortNaam(r))}</h2>
+    <div class="alias">${esc(r.alias)}</div>
+    <div class="duostat"><span>Afstand</span><b>${r.soort === "China" ? r.treinkm.toLocaleString("nl") + " km trein/vlucht" : r.km.toLocaleString("nl") + " km camper"}</b></div>
+    <div class="duostat"><span>Nachten</span><b>${sumNachten(r)} · ${bases(r)} bases</b></div>
+    <div class="duostat"><span>Parken &amp; iconen</span><b>${r.parks.length}</b></div>
+    <div class="duostat"><span>Ritme</span><b>${esc(r.tempo)}</b></div>
+    <div class="duostat"><span>Klimaat eind mei–juni</span><b>${klimaatSamen(r)}</b></div>
+    <div class="duostat"><span>Kosten excl. eten</span><b>${esc(r.kosten.excl)}</b></div>
+    <div class="duostat" style="border-bottom:0"><span>Quote</span></div>
+    <p style="font-style:italic;color:var(--soft);font-size:15px;margin:0 0 10px">„${esc(r.quote)}"</p>
+    <div class="duostat" style="border-bottom:0"><span>Plus</span></div>
+    <ul>${r.plus.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+    <div class="duostat" style="border-bottom:0;margin-top:12px"><span>Min</span></div>
+    <ul>${r.min.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+  </div>`;
+}
+function compareHTML(a, b) {
+  const crit = [["wow", "Wow"], ["tempo", "Tempo"], ["amelie", "Comfort Amelie"], ["weer", "Weer mei/juni"], ["prijs", "Prijs/kwaliteit"]];
+  const opts = (sel) => ROUTES.map((r) => `<option value="${r.id}"${r.id === sel ? " selected" : ""}>${esc(kortNaam(r))}</option>`).join("");
+  const bar = (key, lab) => `
+    <div class="cmpbar">
+      <div class="lab"><span>${lab} <em style="font-style:normal;color:var(--faint)">×${GW[key].toLocaleString("nl", { minimumFractionDigits: 2 })}</em></span><b>${a.score[key].toLocaleString("nl")} — ${b.score[key].toLocaleString("nl")}</b></div>
+      <div class="track"><div class="fill" style="width:${a.score[key] * 10}%;background:${a.kleur}"></div><div class="fill" style="width:${b.score[key] * 10}%;background:${b.kleur}"></div></div>
+    </div>`;
+  return `
+  <section class="cmp2 pageIn">
+    <div class="wrap wide">
+      <div class="route-head">
+        <span class="eyebrow">Twee routes naast elkaar</span>
+        <h1 style="font-size:clamp(36px,6vw,64px)">Vergelijk zelf.</h1>
+      </div>
+      <div class="selrow">
+        <select id="selA" aria-label="Route A">${opts(a.id)}</select>
+        <span class="vs">VERSUS</span>
+        <select id="selB" aria-label="Route B">${opts(b.id)}</select>
+      </div>
+      <div class="duogrid">${duocard(a)}${duocard(b)}</div>
+      <div class="panel"><h3>Deelscores naast elkaar — gewogen 40 / 20 / 20 / 12 / 8</h3>
+        <div class="cmpbars">${crit.map(([k, l]) => bar(k, l)).join("")}
+          <div class="cmpbar">
+            <div class="lab"><span><b>Totaal</b></span><b style="color:${a.score.totaal >= b.score.totaal ? a.kleur : b.kleur}">${a.score.totaal.toLocaleString("nl")} — ${b.score.totaal.toLocaleString("nl")}</b></div>
+            <div class="track"><div class="fill" style="width:${a.score.totaal * 10}%;background:${a.kleur}"></div><div class="fill" style="width:${b.score.totaal * 10}%;background:${b.kleur}"></div></div>
+          </div>
+        </div>
+        <p style="font-size:13.5px;color:var(--faint);margin:6px 0 0">Balklengtes = score × 10%. De route met de hogere som staat in de uitleg onder "Alle negen vergeleken" op de hoofdpagina.</p>
+      </div>
+      <div class="btnrow">
+        <a class="btn prim" style="background:${a.kleur}" href="#route-${a.id}">Open ${esc(kortNaam(a))} ›</a>
+        <a class="btn prim" style="background:${b.kleur}" href="#route-${b.id}">Open ${esc(kortNaam(b))} ›</a>
+        <a class="btn sec" href="#top">↩ Overzicht</a>
+      </div>
+    </div>
+  </section>`;
+}
+function showCompare(aId, bId, viaHash) {
+  if (!byId(aId)) aId = "china3";
+  if (!byId(bId) || bId === aId) bId = aId === "usa1" ? "china3" : "usa1";
+  currentRoute = null;
+  homeEl.hidden = true; pageEl.hidden = false;
+  document.querySelectorAll("[data-nav]").forEach((x) => x.classList.remove("active"));
+  pageEl.innerHTML = compareHTML(byId(aId), byId(bId));
+  const go = () => { location.hash = `vergelijk2/${$("#selA").value}/${$("#selB").value}`; };
+  $("#selA").onchange = go; $("#selB").onchange = go;
+  scrollTo({ top: 0 });
+  if (!viaHash) location.hash = `vergelijk2/${aId}/${bId}`;
+}
+
 /* ═══════════════ router: home ⇄ routepagina ═══════════════ */
 const homeEl = $("#home"), pageEl = $("#page");
 function showRoute(id, viaHash) {
@@ -567,6 +695,7 @@ function showRoute(id, viaHash) {
   pageEl.innerHTML = routePageHTML(r);
   wireEdit(pageEl, r);
   makeRouteMap(r);
+  if (r.fotos) laadFotos(r);
   document.querySelectorAll("[data-nav]").forEach((a) => a.classList.toggle("active", a.dataset.nav === id));
   scrollTo({ top: 0 });
   if (!viaHash) location.hash = "route-" + id;
@@ -584,6 +713,8 @@ function showHome(viaHash) {
 }
 function applyHash() {
   const h = location.hash;
+  const c = h.match(/^#vergelijk2(?:\/([\w-]+))?(?:\/([\w-]+))?$/);
+  if (c) { showCompare(c[1] || "china3", c[2] || "usa1", true); return; }
   const m = h.match(/^#route-(.+)$/);
   if (m && byId(m[1])) showRoute(m[1], true);
   else showHome(true);
