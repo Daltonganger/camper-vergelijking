@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+  <name>Camperreis route 4-plus — Atlanta rondreis mei/juni 2027</name>
+  <description>21 dagen, 20 nachten, ca. 4.150 km. Atlanta - Mammoth Cave - New River Gorge - Shenandoah - Blue Ridge Parkway - Great Smoky Mountains - Charleston - Hunting Island - Savannah - Atlanta. Congaree als korte middagstop in plaats van overnachting; Hunting Island uitgebreid naar vier nachten.</description>
+
+  <Style id="overnight"><IconStyle><color>ff0000ff</color><scale>1.1</scale>
+    <Icon><href>http://maps.google.com/mapfiles/kml/paddle/red-circle.png</href></Icon></IconStyle></Style>
+  <Style id="water"><IconStyle><color>ffff9900</color><scale>1.2</scale>
+    <Icon><href>http://maps.google.com/mapfiles/kml/paddle/blu-circle.png</href></Icon></IconStyle></Style>
+  <Style id="daystop"><IconStyle><color>ff00cc66</color><scale>0.9</scale>
+    <Icon><href>http://maps.google.com/mapfiles/kml/paddle/grn-blank.png</href></Icon></IconStyle></Style>
+  <Style id="routeline"><LineStyle><color>ff2e6be6</color><width>4</width></LineStyle></Style>
+
+  <Folder>
+    <name>Overnachtingen en stops</name>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 1 - Atlanta: camper ophalen</name>
+      <description>Cruise America Atlanta. Nonstop vanuit Amsterdam, 124 vluchten per maand - de goedkoopste gateway van alle routes.</description>
+      <Point><coordinates>-84.3880,33.7490,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 1 - Cloudland Canyon State Park, GA</name>
+      <description>550 m. Elektra en water. Diepe kloof met twee watervallen, korte vlakke paden langs de rand. Zachte landing op 180 km van het depot.</description>
+      <Point><coordinates>-85.4810,34.8360,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 2 - Mammoth Cave NP, KY</name>
+      <description>Langste grottenstelsel ter wereld. Grot is jaarrond 12 C - prettige ontsnapping aan de hitte. Camping in het park, GEEN hookups. Frozen Niagara is de kortste en makkelijkste tour.</description>
+      <Point><coordinates>-86.1010,37.1866,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 3 - Natural Bridge SRP / Red River Gorge, KY</name>
+      <description>Natuurlijke zandsteenboog, korte wandelpaden, elektra op de camping. Breekt de 600 km tussen Mammoth Cave en New River Gorge.</description>
+      <Point><coordinates>-83.6830,37.7770,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 4 - New River Gorge Bridge, WV</name>
+      <description>Op een na hoogste brug van de VS, 267 m boven de rivier. Uitzichtpunt met vlakke boardwalk vanaf het Canyon Rim Visitor Center.</description>
+      <Point><coordinates>-81.0770,38.0700,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 4-5 - Babcock State Park, WV</name>
+      <description>Elektra en water - een van de weinige comfortabele nachten in het bergblok. Glade Creek Grist Mill, het meest gefotografeerde molentje van Amerika. Basis voor New River Gorge NP: Sandstone Falls en Grandview.</description>
+      <Point><coordinates>-80.9540,37.9776,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 6-7 - Shenandoah NP, Big Meadows CG</name>
+      <description>1.070 m, Skyline Drive milepost 51. Ruim 200 plekken, alleen op reservering, GEEN hookups maar wel dumpstation. Beroemd om de zwarte beren en herten op de open vlakte. Dark Hollow Falls is de kortste watervalwandeling.</description>
+      <Point><coordinates>-78.4370,38.5220,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 8 - Peaks of Otter CG, Blue Ridge Parkway MP 86</name>
+      <description>Aan Abbott Lake met uitzicht op Sharp Top. BRP-campings zijn open van mei tot eind oktober, zonder hookups maar met dumpstation en stromend water.</description>
+      <Point><coordinates>-79.6060,37.4430,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 9 - Mabry Mill, Blue Ridge Parkway MP 176</name>
+      <description>Het bekendste beeld van de hele Parkway: watermolen met vijver. Verderop bij MP 213 het Blue Ridge Music Center met gratis livemuziek.</description>
+      <Point><coordinates>-80.4030,36.7480,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 9 - Doughton Park CG, Blue Ridge Parkway MP 239</name>
+      <description>Open hooglandweiden met lange vergezichten. Rustigste camping van de Parkway.</description>
+      <Point><coordinates>-81.1770,36.4290,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 10 - Julian Price CG, Blue Ridge Parkway MP 297</name>
+      <description>1.100 m, aan Price Lake. Korte dag: onderweg Linville Falls, Linn Cove Viaduct en Grandfather Mountain.</description>
+      <Point><coordinates>-81.7300,36.1370,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 11 - Mount Mitchell State Park, NC</name>
+      <description>2.037 m - hoogste punt ten oosten van de Mississippi. Vanaf de parkeerplaats is het nog maar 280 m naar de top. Sparrenbos, voelt als Canada.</description>
+      <Point><coordinates>-82.2650,35.7650,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 11 - Mount Pisgah CG, Blue Ridge Parkway MP 408</name>
+      <description>1.500 m, hoogste camping van de Parkway. Onderweg Craggy Gardens (rododendronbloei eind mei / half juni) en Asheville voor boodschappen.</description>
+      <Point><coordinates>-82.7500,35.4200,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 12 - Great Smoky Mountains, Smokemont CG (NC-zijde)</name>
+      <description>Einde van de Blue Ridge Parkway bij MP 469. Oconaluftee Visitor Center met de wapitikudde op de weide - vrijwel gegarandeerd wildlife, zonder wandelen.</description>
+      <Point><coordinates>-83.3120,35.5580,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 13 - Kuwohi (voorheen Clingmans Dome), 2.025 m</name>
+      <description>Hoogste punt van het park, sinds 2024 officieel Kuwohi. Gemiddeld 17 C in juni tegen 30 C beneden - de koelste plek van de hele reis. Steile geasfalteerde oprit van 800 m naar de uitkijktoren.</description>
+      <Point><coordinates>-83.4986,35.5628,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 13-14 - Great Smoky Mountains, Cades Cove CG (TN-zijde)</name>
+      <description>Jaarrond open, ruim 150 plekken, GEEN hookups. De 18 km lange Cades Cove Loop is de beste wildlifeplek van het oosten: zwarte beren, herten, kalkoenen. LET OP: de lus is elke WOENSDAG autovrij van mei tot september. Vlakbij zwemmen in de Little River bij de Townsend Y.</description>
+      <Point><coordinates>-83.7750,35.6030,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 15 - Congaree NP, SC (korte middagstop)</name>
+      <description>Bewust GEEN overnachting. Het park heeft een officiele Mosquito Meter met zes standen tot en met War Zone en spuit bewust niet. Doe de vlonderpad-lus van 40 minuten midden op de dag en rijd door. Ligt vlak langs I-26.</description>
+      <Point><coordinates>-80.7800,33.7900,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#water</styleUrl>
+      <name>NACHT 15 - Charleston, James Island County Park</name>
+      <description>Volledige hookups, 20 min van het historische centrum en van Folly Beach. Na negen nachten zonder stroom een welkome pauze.</description>
+      <Point><coordinates>-79.9900,32.7420,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#water</styleUrl>
+      <name>NACHT 16-19 - HUNTING ISLAND STATE PARK (4 NACHTEN STRAND)</name>
+      <description>Oceaanwater in juni gemiddeld 26,9 C, lucht 31 C. Vijf kilometer strand, palmettobos, vuurtoren uit 1875. 102 plekken met 20/30/50 amp elektra en water. TIP: reserveer bewust aan de oceaanzijde - de zeebries houdt de knutjes weg, de beboste plekken landinwaarts niet.</description>
+      <Point><coordinates>-80.4400,32.3750,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 20 - Skidaway Island State Park, Savannah GA</name>
+      <description>Elektra en water, 20 min van het historische centrum van Savannah. Spaans mos, korte vlakke paden door de zoutmoerassen.</description>
+      <Point><coordinates>-81.0470,31.9370,0</coordinates></Point></Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 21 - Savannah - Atlanta, camper inleveren</name>
+      <description>400 km, ongeveer 4 uur. Plan dit alleen bij een avondvlucht; transatlantische vertrekken vanaf Atlanta liggen doorgaans in de namiddag of avond.</description>
+      <Point><coordinates>-84.3880,33.7490,0</coordinates></Point></Placemark>
+
+  </Folder>
+
+  <Placemark>
+    <name>Route 4-plus (overzichtslijn)</name>
+    <styleUrl>#routeline</styleUrl>
+    <LineString><tessellate>1</tessellate>
+      <coordinates>
+        -84.3880,33.7490,0
+        -85.4810,34.8360,0
+        -86.1010,37.1866,0
+        -83.6830,37.7770,0
+        -81.0770,38.0700,0
+        -80.9540,37.9776,0
+        -78.4370,38.5220,0
+        -79.6060,37.4430,0
+        -80.4030,36.7480,0
+        -81.1770,36.4290,0
+        -81.7300,36.1370,0
+        -82.2650,35.7650,0
+        -82.7500,35.4200,0
+        -83.3120,35.5580,0
+        -83.4986,35.5628,0
+        -83.7750,35.6030,0
+        -80.7800,33.7900,0
+        -79.9900,32.7420,0
+        -80.4400,32.3750,0
+        -81.0470,31.9370,0
+        -84.3880,33.7490,0
+      </coordinates>
+    </LineString>
+  </Placemark>
+
+</Document>
+</kml>

@@ -1,6 +1,7 @@
 # Rondreis 2027 — 3× China en 6× Noord-Amerika
 
-**Volledig gelijkwaardig uitgewerkt — versie 3**  
+**Volledig gelijkwaardig uitgewerkt — versie 4**  
+*(Versie 4, 18 augustus 2026: §32 "Samen kiezen" toegevoegd en toelichting bij de totaalscores in §2.)*
 **Reisperiode:** mei/juni 2027  
 **Richtdatum vertrek:** rond 24 mei 2027  
 **Reisgezelschap:** 2 volwassenen + Amelie van ongeveer 1 jaar  
@@ -58,6 +59,8 @@ Scores zijn bewust subjectief en bedoeld als keuzehulp, niet als wetenschap.
 | Vancouver | 9,5 | 6,5 | 5,5 | 7 | 6,5 | 7,6 |
 | Toronto | 8 | 7 | 6,5 | 8 | 7 | 7,4 |
 | Dallas | 9 | 4 | 7 | **3** | 8 | 6,2 |
+
+> **Toelichting (v4):** de kolom *Totaalgevoel* is **geen gemiddelde** van de vijf subscores. Het is een gewogen gevoelsoordeel waarin "dit is een droomreis" zwaar meeweegt — daarom staat Denver (9,1) boven China 1 (9,0) ook al zijn de subscores lager. Gebruik de subscores als jullie de routes samen vergelijken; gebruik het totaalcijfer alleen om te zien welke reis op dit moment het meest leeft.
 
 **Mijn huidige top vier zonder eerst naar prijs te kijken:**
 
@@ -2011,4 +2014,52 @@ En binnen China:
 1. **China 3** — beste match als jullie normale rondreistempo vrij hoog ligt.
 2. **China 1** — beste match als Amelie's ritme leidend wordt.
 3. **China 2** — alleen mijn #1 als Zhangjiajie persoonlijk veel hoger staat dan Yangshuo.
+
+---
+
+# 32. Samen kiezen — hoe je dit samen beslist
+
+De vraag is niet óf jullie gaan; jullie prioriteiten (parken, geen drukte, mooie natuur, af en toe een stranddagje) liggen allang op één lijn. De vraag is welke zorg het zwaarst weegt. Dat lost niemand op met negen opties op tafel — dat lost op met een goede aanpak van het gesprek.
+
+## 32.1 Bied geen routes aan, maar vragen
+
+Keuzestress ontstaat uit te veel opties, niet uit te weinig informatie. Kom niet met negen routes, maar met drie vragen — elk antwoord sorteert de shortlist vanzelf:
+
+1. **"Wil je dat Amelie het makkelijkst heeft, of dat wij het meeste wow krijgen?"** → Atlanta versus Denver.
+2. **"Camperen, of hotel en trein?"** → Amerika versus China.
+3. **"Moet er écht warm strand in zitten?"** → zo ja, dan valt Denver af en wordt het Atlanta (of China met zwembadblok).
+
+Zij kiest het criterium, de matrix in dit document doet de rest. Dat is geen truc: het is de enige volgorde waarin de uitkomst niet aanvoelt als "zijn reis waar zij mee instemt".
+
+## 32.2 Per finalist de sterkste kaart — en het eerlijke antwoord op het verwachte bezwaar
+
+| Finalist | Sterkste kaart | Verwacht bezwaar | Eerlijke reactie |
+|---|---|---|---|
+| **Atlanta 4-plus** | Veiligste gevoel: geen hoogte, geen sneeuw- of pasrisico, strandvakantie inbegrepen, nonstop vlucht, goedkoopst van de drie | "4.150 km is veel, en vochtig" | De strandnachten (17–19) liggen op het einde als beloning; Parkway-dagen zijn langzaam rijden met stops, geen hikes |
+| **Denver 6B-light** | Wildlife vanaf de autogordel: bizons, beren, wolven — geen zware hikes nodig. Droogste reisweer van alle finalisten. Eigen bed elke nacht | "Kou met een baby" | Camperverwarming is standaard; 11 van 20 nachten met stroom; de route klimt bewust van laag naar hoog; Thermopolis zit erin als verwarmd tussendoel |
+| **China 3** | "Dit doen we niet zomaar later met een kind van één": panda's, de Muur, treinen waarin Amelie kan rondlopen in plaats van 4.000 km autostoel | "Taal, afstand, logistiek" | Alle grote transfers staan al in deze planning; Alipay werkt met Nederlandse kaarten; in alle zes steden zijn internationale klinieken; visumstatus wordt in december 2026 gecheckt |
+
+## 32.3 De drie klassieke zorgen vóór zijn
+
+Dit zijn de bezwaren die in de praktijk de doorslag geven bij reizen met een jong kind — haal ze vóórdoor ze te benoemen:
+
+- **"Wat als Amelie ziek wordt?"** — Sluit vóór het boeken een reisverzekering af mét medische kosten en repatriëring. Amerika: goede zorg dichtbij (kliniek in Yellowstone, ziekenhuis in Jackson). China: internationale klinieken in alle zes steden. Standaardkoffer: kinderparacetamol, ORS, thermometer, zonnebrand, doosje opladers.
+- **"We zitten elkaar op de lip."** — Camper: meer leefruimte dan een hotelkamer en nooit inpakken. China: bewust grotere kamers boeken (staat al bij China 1, § "Met Amelie").
+- **"Het is te veel hooi op de vork."** — Alle drie de finalisten hebben ingebouwde lege dagen (Denver dag 15, Atlanta dag 17–19, China het Yangshuo-blok). Elke dag die jullie schrappen maakt de reis beter, niet kapot.
+
+## 32.4 De bank-methode: maak het tastbaar
+
+- Eén avond, laptop erbij: zet `routekaart-6b-light.html` en `routekaart-route-4-plus.html` naast elkaar en laat **haar** per kaart de dag aanwijzen die ze het mooiste vindt. Wie zelf dagen samenstelt, verdedigt de reis.
+- Deel de vergelijkingspagina via WhatsApp (de og-card-preview doet het werk): <https://daltonganger.github.io/camper-vergelijking/>
+- Twijfel over "hoe is kamperen met een kind eigenlijk"? Een camper-proefweekend van twee dagen in Nederland haalt elke praktische angst weg en is goedkoper dan een verkeerde keuze voor drie weken.
+
+## 32.5 Verdeel de rollen vóór het boeken
+
+- **Eén doet logistiek:** reserveringen, documenten, de kalender uit §28.
+- **De ander bepaalt het tempo ter plaatse** — inclusief vetorecht op elke "nog één uur rijden"-impuls.
+- **Samen:** binnen een week na de bank-avond kiezen, en daarna niet meer heropenen behalve bij een prijsschok of het visumvraagstuk. Herkauwen maakt elke keuze slechter.
+
+## 32.6 En als het echt vastloopt
+
+Dan zijn jullie al zover dat alleen Denver en China 3 over zijn — en bestaat een "verkeerde" keuze eigenlijk niet meer: allebei droomreizen, allebei met een jaar Amelie-logistiek doordacht. In dat geval: samen het criterium bepalen, en als het dan nog 50/50 is, is één eerlijke kop-of-munt volkomen legitiem. Alleen eerst bóvenaan beginnen met waarom jullie allebei enthousiast zijn — nooit met de kosten (§3: €500–€1.000 verschil mag de keuze niet bepalen).
 

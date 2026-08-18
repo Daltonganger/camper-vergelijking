@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+  <name>Camperreis 6B-light — Denver rondreis mei/juni 2027</name>
+  <description>21 dagen, 20 nachten, ca. 3.700 km. Denver - Lake McConaughy - Badlands - Black Hills - Devils Tower - Bighorn - Thermopolis - Yellowstone - Grand Teton - Rocky Mountain NP - Denver.</description>
+
+  <Style id="overnight">
+    <IconStyle><color>ff0000ff</color><scale>1.1</scale>
+      <Icon><href>http://maps.google.com/mapfiles/kml/paddle/red-circle.png</href></Icon>
+    </IconStyle>
+  </Style>
+  <Style id="water">
+    <IconStyle><color>ffff9900</color><scale>1.2</scale>
+      <Icon><href>http://maps.google.com/mapfiles/kml/paddle/blu-circle.png</href></Icon>
+    </IconStyle>
+  </Style>
+  <Style id="daystop">
+    <IconStyle><color>ff00cc66</color><scale>0.9</scale>
+      <Icon><href>http://maps.google.com/mapfiles/kml/paddle/grn-blank.png</href></Icon>
+    </IconStyle>
+  </Style>
+  <Style id="routeline">
+    <LineStyle><color>ff2e6be6</color><width>4</width></LineStyle>
+  </Style>
+
+  <Folder>
+    <name>Overnachtingen</name>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 1 - Denver: camper ophalen</name>
+      <description>Cruise America / verhuurdepot Denver. Boodschappen doen, daarna korte rit naar Cherry Creek SP.</description>
+      <Point><coordinates>-104.8375,39.7756,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#water</styleUrl>
+      <name>NACHT 1 - Cherry Creek State Park, Aurora CO</name>
+      <description>1.660 m. 133 moderne plekken, zwemstrand aan het reservoir, 25 min van het depot. Toegang $15-17 buitenstaatse platen. Zachte landing na de vlucht.</description>
+      <Point><coordinates>-104.8462,39.6413,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#water</styleUrl>
+      <name>NACHT 2 - Lake McConaughy, Ogallala NE (STRANDAVOND)</name>
+      <description>1.000 m. Wit zandstrand, water ca. 20 C half juni. Kamperen op het zand (950+ strandplekken) of Lone Eagle / Cedar View met hookups. Reserveren verplicht vanaf 20 mei.</description>
+      <Point><coordinates>-101.7180,41.2270,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 3-4 - Badlands NP, Cedar Pass Campground</name>
+      <description>750 m. In het park, met elektra, ca. $37. Badlands Loop Road, Notch Trail, prairiehondenstad. Dag 4 is een volledige parkdag.</description>
+      <Point><coordinates>-101.9410,43.7480,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#water</styleUrl>
+      <name>NACHT 5-6 - Custer State Park, Game Lodge CG (ZWEMMEN)</name>
+      <description>1.200 m. In het park. Vier zwemstranden binnen het park: Legion Lake en Stockade Lake liggen het laagst en zijn het warmst; Sylvan Lake (1.950 m) is fris maar spectaculair. Wildlife Loop met bizons, Needles Highway.</description>
+      <Point><coordinates>-103.4022,43.7639,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 6 - Wind Cave National Park</name>
+      <description>Grotrondleiding, prairiehonden, bizons. Dagstop vanuit Custer SP.</description>
+      <Point><coordinates>-103.4780,43.5700,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 7 - Devils Tower NM, Belle Fourche River CG</name>
+      <description>1.280 m. In het monument, geen hookups, ca. $20. Tower Trail is 2,1 km vlak rond de rots - goed met kinderwagen. Prairiehondenstad bij de ingang.</description>
+      <Point><coordinates>-104.6975,44.5872,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 8 - Bighorn Mountains, Meadowlark Lake (US-16)</name>
+      <description>2.500 m. Cloud Peak Skyway. LET OP: campings van de Bighorn NF openen deels pas eind mei/juni - controleren op Recreation.gov. Uitwijken kan naar Ten Sleep of Buffalo (lager en warmer).</description>
+      <Point><coordinates>-107.1958,44.0442,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#water</styleUrl>
+      <name>DAG 9 - Hot Springs State Park, Thermopolis (GRATIS BAD 40 C)</name>
+      <description>1.320 m. Grootste minerale warmwaterbron ter wereld: 6,8 miljoen liter per dag op 53 C. Het staatsbadhuis met binnen- en buitenbad van 40 C is GRATIS. Dagpark, geen camping. Kost 5 km omrijden ten opzichte van de directe route.</description>
+      <Point><coordinates>-108.2050,43.6500,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 9 - Cody, Wyoming</name>
+      <description>1.520 m. Buffalo Bill Center of the West. Laatste boodschappen en volle tank voor Yellowstone - in het park is alles duur en beperkt.</description>
+      <Point><coordinates>-109.0565,44.5263,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 10-11 - Yellowstone, Bridge Bay / Fishing Bridge RV</name>
+      <description>2.360 m. Bridge Bay opent 15 mei, $38, geen hookups. Fishing Bridge RV opent 8 mei, $94, wel volledige hookups - de enige plek in het park met stroom. Nachten rond of onder nul, ook begin juni.</description>
+      <Point><coordinates>-110.4383,44.5386,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 12-13 - Yellowstone, Canyon Village</name>
+      <description>2.400 m. Opent ca. 29 mei, $45. Uitvalsbasis voor Grand Canyon of the Yellowstone, Hayden Valley en de vroege rit naar Lamar Valley.</description>
+      <Point><coordinates>-110.4900,44.7350,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 13 - Lamar Valley (wolven, beren, bizons)</name>
+      <description>Vertrek voor zonsopgang. Beste wildlifeplek van Noord-Amerika buiten Alaska. Eind mei / begin juni: bizonkalveren en piek berenactiviteit. Verrekijker mee.</description>
+      <Point><coordinates>-110.2200,44.8990,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 13 - Mammoth Hot Springs</name>
+      <description>1.900 m, warmste en droogste deel van Yellowstone. Terrassen via vlakke vlonderpaden - goed met een kind.</description>
+      <Point><coordinates>-110.7036,44.9766,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 14 - Yellowstone, Madison Campground</name>
+      <description>2.070 m. Opent 1 mei, $38. Laagste en warmste campingnacht in het park. Elanden langs de Madison River bij zonsondergang.</description>
+      <Point><coordinates>-110.8600,44.6450,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 15 - Old Faithful en Grand Prismatic</name>
+      <description>Geiserbekkens via vlonderpaden. Grand Prismatic Overlook is een korte klim; het vlonderpad langs Midway Geyser Basin kan met kinderwagen.</description>
+      <Point><coordinates>-110.8281,44.4605,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 15-16 - Grand Teton, Colter Bay Village</name>
+      <description>2.070 m. Opent 21 mei. RV-plekken met hookups aan Jackson Lake. Uitzicht op de Teton Range over het water.</description>
+      <Point><coordinates>-110.6420,43.9020,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 17 - Jenny Lake en Schwabacher Landing</name>
+      <description>Vlakke wandeling langs Jenny Lake; Schwabacher Landing bij zonsopgang voor de klassieke spiegeling van de Tetons.</description>
+      <Point><coordinates>-110.7220,43.7500,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 17 - Grand Teton, Gros Ventre Campground</name>
+      <description>2.030 m. Opent al eind april. Laagste en warmste camping van het park, elanden in de wilgen, dicht bij Jackson en Astoria.</description>
+      <Point><coordinates>-110.6650,43.5810,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#water</styleUrl>
+      <name>DAG 17 - Astoria Hot Springs, Hoback WY (KINDERBAD)</name>
+      <description>1.850 m. Zes baden aan de Snake River. Warmste 39-40 C, kinderbad 27-32 C en maximaal 60 cm diep. Kinderen onder 2 jaar gratis. Reserveren aanbevolen, woensdag gesloten.</description>
+      <Point><coordinates>-110.7530,43.3230,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 18 - Rawlins, Wyoming (transit)</name>
+      <description>2.080 m. Pure doorrijnacht na 460 km door de Wind River Range en de Red Desert. Alternatief met meer sfeer: Saratoga, met een gratis openbaar warmwaterbad (Hobo Pool).</description>
+      <Point><coordinates>-107.2387,41.7911,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 19 - Rocky Mountain NP, Timber Creek CG (westzijde)</name>
+      <description>2.680 m. Rustige westkant bij Grand Lake, elanden in de Kawuneeche Valley. Koudste nacht van de reis - verwarming en propaan checken.</description>
+      <Point><coordinates>-105.8520,40.3830,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 20 - Alpine Visitor Center, Trail Ridge Road (3.595 m)</name>
+      <description>Hoogste bezoekerscentrum van het Amerikaanse parksysteem. Trail Ridge opende in 2023 op 26 mei, in 2025 op 30 mei en in 2026 op 29 mei. Vroegste ooit 7 mei 2002. Alternatieve route bij sneeuw: via Berthoud Pass.</description>
+      <Point><coordinates>-105.7550,40.4436,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#overnight</styleUrl>
+      <name>NACHT 20 - Rocky Mountain NP, Moraine Park CG (oostzijde)</name>
+      <description>2.480 m. Laatste nacht in het park. Timed-entry reservering nodig vanaf ca. 22 mei, 9-14 uur (en 5-18 uur voor de Bear Lake-corridor).</description>
+      <Point><coordinates>-105.5900,40.3600,0</coordinates></Point>
+    </Placemark>
+
+    <Placemark><styleUrl>#daystop</styleUrl>
+      <name>DAG 21 - Estes Park en terug naar Denver</name>
+      <description>110 km naar het depot. Camper schoon en leeg inleveren, dumpstation onderweg. Optioneel bij een late vlucht: laatste zwem bij Chatfield State Park, 20 min van het depot.</description>
+      <Point><coordinates>-105.5217,40.3772,0</coordinates></Point>
+    </Placemark>
+
+  </Folder>
+
+  <Placemark>
+    <name>Route 6B-light (overzichtslijn)</name>
+    <styleUrl>#routeline</styleUrl>
+    <LineString>
+      <tessellate>1</tessellate>
+      <coordinates>
+        -104.8375,39.7756,0
+        -104.8462,39.6413,0
+        -101.7180,41.2270,0
+        -101.9410,43.7480,0
+        -103.4022,43.7639,0
+        -103.4780,43.5700,0
+        -103.4022,43.7639,0
+        -104.6975,44.5872,0
+        -107.1958,44.0442,0
+        -108.2050,43.6500,0
+        -109.0565,44.5263,0
+        -110.4383,44.5386,0
+        -110.4900,44.7350,0
+        -110.2200,44.8990,0
+        -110.7036,44.9766,0
+        -110.8600,44.6450,0
+        -110.8281,44.4605,0
+        -110.6420,43.9020,0
+        -110.7220,43.7500,0
+        -110.6650,43.5810,0
+        -110.7530,43.3230,0
+        -107.2387,41.7911,0
+        -105.8520,40.3830,0
+        -105.7550,40.4436,0
+        -105.5900,40.3600,0
+        -105.5217,40.3772,0
+        -104.8375,39.7756,0
+      </coordinates>
+    </LineString>
+  </Placemark>
+
+</Document>
+</kml>
