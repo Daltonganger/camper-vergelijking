@@ -1,7 +1,7 @@
 # Rondreis 2027 — 3× China en 6× Noord-Amerika
 
-**Volledig gelijkwaardig uitgewerkt — versie 4**  
-*(Versie 4, 18 augustus 2026: §32 "Samen kiezen" toegevoegd en toelichting bij de totaalscores in §2.)*
+**Volledig gelijkwaardig uitgewerkt — versie 5**  
+*(Versie 5, 18 augustus 2026: totaalcijfer is een formule; rang 1–3 volgt uit de cijfers. China 3 ≥ China 1 ≥ China 2.)*
 **Reisperiode:** mei/juni 2027  
 **Richtdatum vertrek:** rond 24 mei 2027  
 **Reisgezelschap:** 2 volwassenen + Amelie van ongeveer 1 jaar  
@@ -44,30 +44,33 @@ De zes camperroutes zijn daarnaast allemaal naar hetzelfde format gebracht. Dus 
 
 ---
 
-# 2. Mijn voorlopige totaalscore
+# 2. Totaalscore — één formule, één rangorde
 
-Scores zijn bewust subjectief en bedoeld als keuzehulp, niet als wetenschap.
+Deelscores blijven een inschatting. Het totaal is dat niet: het is een som, en de rang 1–3 volgt daaruit.
 
-| Route | Wow | Comfort Amelie | Tempo | Weer mei/juni | Prijs/kwaliteit | Totaalgevoel |
-|---|---:|---:|---:|---:|---:|---:|
-| **China 1** | 9 | **9** | **9** | 7 | **9** | **9,0** |
-| **China 2** | **9,5** | 8 | 8 | 6,5 | 8,5 | 8,7 |
-| **China 3** | **10** | 7,5 | 7 | 6,5 | 8 | **8,8** |
-| **Denver** | **10** | 8 | 7,5 | 7 | 7 | **9,1** |
-| **Atlanta Hunting** | 8,5 | **9** | 8 | **9** | 8,5 | **8,9** |
-| Atlanta Gulf | 8 | 8 | 8 | 6,5 | 8,5 | 8,1 |
-| Vancouver | 9,5 | 6,5 | 5,5 | 7 | 6,5 | 7,6 |
-| Toronto | 8 | 7 | 6,5 | 8 | 7 | 7,4 |
-| Dallas | 9 | 4 | 7 | **3** | 8 | 6,2 |
+**Tempo** meet of het ritme past bij de gewenste rondreis (om de 3–4 dagen iets nieuws). Hoog ≠ langzaam. China 1 is comfortabel, maar vijf bases in drie weken is te statisch.
 
-> **Toelichting (v4):** de kolom *Totaalgevoel* is **geen gemiddelde** van de vijf subscores. Het is een gewogen gevoelsoordeel waarin "dit is een droomreis" zwaar meeweegt — daarom staat Denver (9,1) boven China 1 (9,0) ook al zijn de subscores lager. Gebruik de subscores als jullie de routes samen vergelijken; gebruik het totaalcijfer alleen om te zien welke reis op dit moment het meest leeft.
+**Totaal** = 40% wow + 20% tempo + 20% Amelie + 12% weer + 8% prijs, afgerond op één decimaal.
 
-**Mijn huidige top vier zonder eerst naar prijs te kijken:**
+| Rang | Route | Wow | Comfort Amelie | Tempo | Weer mei/juni | Prijs/kwaliteit | **Totaal** |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 1 | **China 3** | **10** | 7,5 | **9** | 6,5 | 8 | **8,7** |
+| 2 | **Denver** | **10** | 8 | 8 | 7 | 7 | **8,6** |
+| 3 | **Atlanta Hunting** | 8,5 | **9** | 7 | **9** | 8,5 | **8,4** |
+| 4 | China 1 | 9 | **9** | 6 | 7 | **9** | 8,2 |
+| 5 | China 2 | **9,5** | 8 | 6 | 6,5 | 8,5 | 8,1 |
+| 6 | Atlanta Gulf | 8 | 8 | 7,5 | 6,5 | 8,5 | 7,8 |
+| 7 | Vancouver | 9,5 | 6,5 | 6 | 7 | 6,5 | 7,7 |
+| 8 | Toronto | 8 | 7 | 6,5 | 8 | 7 | 7,4 |
+| 9 | Dallas | 9 | 4 | 7 | **3** | 8 | 6,8 |
 
-1. **Denver 6B-light** — droomreis.
-2. **China 1** — beste balans.
-3. **Atlanta 4-plus** — meest ontspannen camperreis.
-4. **China 3** — misschien wel de leukste keuze als jullie vinden dat een rondreis ook echt móét rondreizen.
+China 3 wint van China 1 en 2 op de cijfers omdat wow 10 (Zhangjiajie én Yangshuo) plus tempo 9 zwaarder wegen dan China 1's extra Amelie-comfort.
+
+**Top drie = A-lijst:**
+
+1. **China 3** — 8,7 — meest complete rondreis.
+2. **Denver 6B-light** — 8,6 — droomnatuur / camper.
+3. **Atlanta 4-plus** — 8,4 — prettigste gezinscampervakantie.
 
 ---
 
@@ -1821,16 +1824,16 @@ Denver blijkt voor circa €7.000 totaal excl. eten haalbaar met goede camper en
 
 Niet negen routes tegelijk blijven volgen. Dat maakt beslissen moeilijker zonder extra kwaliteit.
 
-## A-lijst
+## A-lijst — dezelfde volgorde als de cijfers
 
-### 1. Denver 6B-light
-Voor droomnatuur.
+### 1. China 3 — 8,7
+Meest complete actieve rondreis.
 
-### 2. China 3
-Voor de meest complete actieve rondreis.
+### 2. Denver 6B-light — 8,6
+Droomnatuur / camper.
 
-### 3. Atlanta 4-plus
-Voor de beste gezinscampervakantie.
+### 3. Atlanta 4-plus — 8,4
+Beste gezinscampervakantie.
 
 ## B-lijst
 
@@ -2003,11 +2006,11 @@ Dat is in mijn ogen de **maximale gezonde snelheid met Amelie**.
 
 Sneller dan dit — bijvoorbeeld zeven bases met meerdere tweedaagse stops — zou ik niet doen. Dan win je bestemmingen op papier, maar verlies je vakantie ter plaatse.
 
-Mijn uiteindelijke drie finalisten zijn daarom nu:
+Mijn uiteindelijke drie finalisten zijn daarom nu — in de volgorde van het totaalcijfer:
 
-1. **Denver 6B-light** — als jullie voor de natuur-/camperdroom gaan.
-2. **China 3** — als jullie de meest complete, actieve rondreis willen.
-3. **Atlanta 4-plus** — als jullie de prettigste gezinsvakantie met camper en echt strand willen.
+1. **China 3 (8,7)** — de meest complete, actieve rondreis.
+2. **Denver 6B-light (8,6)** — de natuur-/camperdroom.
+3. **Atlanta 4-plus (8,4)** — de prettigste gezinsvakantie met camper en echt strand.
 
 En binnen China:
 

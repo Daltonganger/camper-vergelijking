@@ -20,6 +20,16 @@
 // die browser; exporteer ze naar dit bestand om ze te bewaren).
 // ============================================================================
 
+
+// Totaalcijfer = gewogen som, afgerond op 1 decimaal.
+// Tempo = past het ritme bij de gewenste rondreis (om de 3–4 dagen iets nieuws).
+// Hoog tempo ≠ langzaam/comfortabel. China 1 is rustig, maar te statisch → lage temposcore.
+const SCORE_GEWICHTEN = { wow: 0.40, tempo: 0.20, amelie: 0.20, weer: 0.12, prijs: 0.08 };
+function scoreTotaal(s) {
+  const t = s.wow * 0.40 + s.tempo * 0.20 + s.amelie * 0.20 + s.weer * 0.12 + s.prijs * 0.08;
+  return Math.round(t * 10) / 10;
+}
+
 const ROUTES = [
 
 // ════════════════════════════════ USA 1 ═══════════════════════════════════
@@ -34,7 +44,7 @@ const ROUTES = [
     {van:"Jackson → Denver", url:"https://www.google.com/maps/dir/Jackson,+WY/Pinedale,+WY/Rawlins,+WY/Walden,+CO/Grand+Lake,+CO/Alpine+Visitor+Center,+Estes+Park,+CO/Moraine+Park+Campground,+Estes+Park,+CO/Denver,+CO"}
   ],
   parks:["Yellowstone NP","Grand Teton NP","Badlands NP","Rocky Mountain NP","Wind Cave NP","Devils Tower NM"],
-  score:{wow:10,amelie:8,tempo:7.5,weer:7,prijs:7,totaal:9.1},
+  score:{wow:10,amelie:8,tempo:8,weer:7,prijs:7,totaal:8.6},
   kosten:{excl:"€5.900–€8.200",incl:"€6.700–€9.600",bron:"jullie eigen projectraming"},
   weer:"Badlands/Black Hills prettig voorseizoen · Yellowstone nachten rond/vroeg bevroren · Teton fris met sneeuw op de bergen · RMNP voorjaarscondities op hoogte",
   amelie:"Sterk: eigen bed elke nacht, wildlife vanaf de weg, korte boardwalks, eigen koelkast. Lastig: 3.700 km autostoel, hoogte, koude nachten — camperverwarming essentieel.",
@@ -97,7 +107,7 @@ const ROUTES = [
     {van:"Smokies → Atlanta (via kust)", url:"https://www.google.com/maps/dir/Cades+Cove,+TN/Congaree+National+Park,+SC/James+Island+County+Park,+Charleston,+SC/Hunting+Island+State+Park,+SC/Beaufort,+SC/Skidaway+Island+State+Park,+GA/Savannah,+GA/Atlanta,+GA"}
   ],
   parks:["Great Smoky Mountains NP","Shenandoah NP","Mammoth Cave NP","New River Gorge NP&P","Congaree NP","Blue Ridge Parkway"],
-  score:{wow:8.5,amelie:9,tempo:8,weer:9,prijs:8.5,totaal:8.9},
+  score:{wow:8.5,amelie:9,tempo:7,weer:9,prijs:8.5,totaal:8.4},
   kosten:{excl:"€5.300–€7.000",incl:"€6.100–€8.400",bron:"jullie eigen projectraming"},
   weer:"Bergen aangenaam tot warm met regenkans · kust warm en vochtig · oceaan ±27 °C · géén sneeuw- of pasrisico",
   amelie:"De gemakkelijkste camperfinalist: geen hoogte, echte rustblokken, vier strandnachten, steden voor afwisseling. Aandacht: teken in de Appalachen, knutjes aan de kust, hitte/schaduw in steden.",
@@ -150,7 +160,7 @@ const ROUTES = [
   kleur:"#7a8f3d", km:3100, tempo:"gemiddeld", finalist:false,
   gmaps:"https://maps.app.goo.gl/YvP9XnLt2238JZUW6",
   parks:["Great Smoky Mountains NP","Mammoth Cave NP","Gulf Islands NS"],
-  score:{wow:8,amelie:8,tempo:8,weer:6.5,prijs:8.5,totaal:8.1},
+  score:{wow:8,amelie:8,tempo:7.5,weer:6.5,prijs:8.5,totaal:7.8},
   kosten:{excl:"€5.200–€7.100",incl:"€6.000–€8.500",bron:"planningsbandbreedte"},
   weer:"Warm tot heet en vochtig naarmate je zuidelijker komt; vanaf 1 juni officieel Atlantisch orkaanseizoen (geen reden tot paniek, wél een extra factor)",
   amelie:"Korte natuurwandelingen, veel strand, camper als koele basis. Lastig: middaghitte — airco is geen luxe; Nashville/New Orleans zijn meer volwassen bestemmingen.",
@@ -203,7 +213,7 @@ const ROUTES = [
   kleur:"#c97f2d", km:3750, tempo:"actief", finalist:false,
   gmaps:"https://maps.app.goo.gl/YWMUmH9v15Ew75LU7",
   parks:["Banff NP","Olympic NP","Mount Rainier NP","North Cascades NP","Pacific Rim NP Reserve"],
-  score:{wow:9.5,amelie:6.5,tempo:5.5,weer:7,prijs:6.5,totaal:7.6},
+  score:{wow:9.5,amelie:6.5,tempo:6,weer:7,prijs:6.5,totaal:7.7},
   kosten:{excl:"€6.200–€8.800",incl:"€7.000–€10.200",bron:"planningsbandbreedte"},
   weer:"Vier klimaatzones: regen aan de Pacifische kust, sneeuw op hoogte in Rainier/North Cascades, droger in Osoyoos, fris bergweer in Banff",
   amelie:"Grootste nadeel is niet de afstand maar de vele schakels: ferryplanning, twee grensovergangen met de camper, lange laatste week. Vancouver Island zelf is erg gezinsvriendelijk.",
@@ -265,7 +275,7 @@ const ROUTES = [
   plus:["Niagara + wijnstreek Finger Lakes geeft iets dat Atlanta niet heeft","sterke bergcomponent","Toronto als rustige finale"],
   min:["geografisch inefficiënt: honderden km aanvoer naar dezelfde Appalachen-as als route 4-plus","geen oceaanstrand","grenslogistiek"],
   quote:"Niagara en Toronto horen net zo sterk op onze wishlist als de Smokies.",
-  letop:["camper meenemen over de grens: voorwaarden verhuurder checken"," Washington DC: gratis maar tijdslot-museums ver van tevoren reserveren","Parkway-status (Helene-herstel) checken"],
+  letop:["camper meenemen over de grens: voorwaarden verhuurder checken","Washington DC: gratis maar tijdslot-museums ver van tevoren reserveren","Parkway-status (Helene-herstel) checken"],
   stops:[
     {naam:"Toronto, Ontario", n:1, lat:43.65, lng:-79.38, note:"Aankomsthotel", wiki:"Toronto", klimaat:{d:22,n:12}},
     {naam:"Niagara Falls + Niagara-on-the-Lake", n:2, lat:43.09, lng:-79.08, note:"Falls vroeg op de dag; wijngebied", wiki:"Niagara Falls, Ontario", klimaat:{d:23,n:12}},
@@ -312,12 +322,12 @@ const ROUTES = [
   geparkeerd:"Mei/juni is het verkeerde seizoen: Big Bend gemiddeld 39 °C in mei en 42 °C in juni. Route is top in februari–maart — bewaren voor een andere reis.",
   gmaps:"https://maps.app.goo.gl/5UPh3NY9mF63TWpNA",
   parks:["Big Bend NP","Guadalupe Mountains NP","Carlsbad Caverns NP","White Sands NP","Padre Island NS"],
-  score:{wow:9,amelie:4,tempo:7,weer:3,prijs:8,totaal:6.2},
+  score:{wow:9,amelie:4,tempo:7,weer:3,prijs:8,totaal:6.8},
   kosten:{excl:"€5.400–€7.400",incl:"€6.200–€8.800",bron:"planningsbandbreedte"},
   weer:"Extreem: Rio Grande Village gemiddeld 39 °C in mei, 42 °C in juni. Buitenleven alleen vroeg/laat; camperairco wordt overlevingsvoorwaarde",
   amelie:"Met een éénjarige niet verantwoord in mei/juni: middaghitte, weinig marge bij pech, laaggelegen canyon- en rivierdelen juist dan onbruikbaar.",
   plus:["vier unieke parken: Big Bend, Guadalupe, Carlsbad, White Sands","strandblok op Padre Island","financieel prima","heel andere natuur dan de andere routes"],
-  min:[" extreme hitte in mei/juni","lange lege stukken","weinig marge met baby","laaggelegen hoogtepunten vallen juist weg"],
+  min:["extreme hitte in mei/juni","lange lege stukken","weinig marge met baby","laaggelegen hoogtepunten vallen juist weg"],
   quote:"Niet voor mei/juni 2027 — bewaren voor februari/maart.",
   letop:["enige check die telt: opnieuw concluderen dat mei/juni te heet is, tenzij jullie het seizoen veranderen"],
   stops:[
@@ -364,7 +374,7 @@ const ROUTES = [
   kleur:"#9c2030", km:0, treinkm:5800, tempo:"rustig", finalist:false,
   gmaps:"",
   parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Li River / Yangshuo-karst"],
-  score:{wow:9,amelie:9,tempo:9,weer:7,prijs:9,totaal:9.0},
+  score:{wow:9,amelie:9,tempo:6,weer:7,prijs:9,totaal:8.2},
   kosten:{excl:"€4.400–€6.800",incl:"€5.100–€7.900",bron:"planningsbandbreedte (5 hotels, 3 treinen, 1 vlucht)"},
   weer:"Beijing warm en vaak prima · Xi'an warm tot heet · Chengdu vochtig · Yangshuo nat seizoen (zwakke plek) · Shanghai vochtiger richting juni. Vier Yangshuo-nachten = regen mag één dag opeten",
   amelie:"Beste comfort van alle negen: weinig hotelwissels, trein i.p.v. autostoel, meerdere vrije middagen, centrale hotels. Aandacht: draagzak + lichte buggy, eigen treinstoel voor lange ritten, grotere kamers boeken, kinderzitje privétransfers schriftelijk regelen.",
@@ -413,7 +423,7 @@ const ROUTES = [
   kleur:"#c03a2b", km:0, treinkm:6000, tempo:"rustig-gemiddeld", finalist:false,
   gmaps:"",
   parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP (Avatar-bergen)"],
-  score:{wow:9.5,amelie:8,tempo:8,weer:6.5,prijs:8.5,totaal:8.7},
+  score:{wow:9.5,amelie:8,tempo:6,weer:6.5,prijs:8.5,totaal:8.1},
   kosten:{excl:"€4.700–€7.200",incl:"€5.400–€8.300",bron:"planningsbandbreedte (Zhangjiajie maakt excursies duurder)"},
   weer:"Zhangjiajie in mei/juni groen en fotogeniek, maar regen en mist mogelijk — uitzicht minder voorspelbaar dan in een stad. Daarom vier nachten en één flexdag",
   amelie:"Voordeel: weinig hotelwissels. Nadeel: Zhangjiajie is geen buggybestemming — draagzak essentieel; reken op wachtrijen, kabelbanen, liften en drukke shuttles.",
@@ -462,11 +472,11 @@ const ROUTES = [
   kleur:"#6e1423", km:0, treinkm:6600, tempo:"actief", finalist:true,
   gmaps:"",
   parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP","Li River / Yangshuo-karst"],
-  score:{wow:10,amelie:7.5,tempo:7,weer:6.5,prijs:8,totaal:8.8},
+  score:{wow:10,amelie:7.5,tempo:9,weer:6.5,prijs:8,totaal:8.7},
   kosten:{excl:"€4.900–€7.600",incl:"€5.600–€8.700",bron:"planningsbandbreedte (extra transfer + extra natuurblok)"},
   weer:"Twee vochtige natuurregio's mee = hogere kans op een regendag, maar ook kleinere kans dat één regio de natuurcomponent verpest",
   amelie:"De grens van wat verantwoord is: zes bases, nooit korter dan drie nachten, langste transfer per trein (±7 u) en Yangshuo direct daarna als herstelblok. Vijf verhuisdagen op 21 nachten is de bovengrens.",
-  plus:["meest complete China-ervaring: keizerrijk → oud → panda's →Avatar-bergen → karst → megastad","tempo voelt écht als rondreis (4-3-3-3-4-4)","beide natuuriconen zitten erin","Shanghai en Yangshuo geven aan het eind stabiliteit en herstel"],
+  plus:["meest complete China-ervaring: keizerrijk → oud → panda's → Avatar-bergen → karst → megastad","tempo voelt écht als rondreis (4-3-3-3-4-4)","beide natuuriconen zitten erin","Shanghai en Yangshuo geven aan het eind stabiliteit en herstel"],
   min:["zwaarste China-variant (5× volledig inpakken)","één treinrit van ±7 uur","twee natte regio's","minder ruimte om een dag volledig te verliezen"],
   quote:"Wij worden juist blij van om de 3–4 dagen een nieuwe plek en vinden vijf bases te weinig voor drie weken.",
   letop:["Zhangjiajie → Yangshuo wordt een volle reisdag (rechtstreekse snelle trein ±7 u naar Guilin + transfer) — geen sightseeingdag maken","in Chengdu géén Leshan-dagtrip in deze variant — die rustdag is nodig","visumstatus december 2026 herchecken","zelfde praktische punten als China 1","Variant-slot: Shanghai is bewust de finale (goedkoopste binnenlandse vlucht, geen extra grens, modern-China-thema). Wil je Hongkong: er rijdt een directe hogesnelheidstrein Guilin → West Kowloon (±3,5–4 u, 2026-netwerk) — ruilt Shanghai dan in voor 2 nachten Hongkong + vlucht AMS. Meerprijs hotels, extra immigratiestop en aparte SAR-regels; wel een wereldstad-finale. Aan te passen via ✏️ Bewerken of in dit bestand"],
@@ -517,5 +527,10 @@ const VISITED = [
   "Bryce Canyon","Zion National Park","Las Vegas Strip"
 ];
 
-if (typeof window !== "undefined") { window.ROUTES = ROUTES; window.VISITED = VISITED; }
-if (typeof module !== "undefined" && module.exports) { module.exports = { ROUTES, VISITED }; }
+if (typeof window !== "undefined") {
+  window.ROUTES = ROUTES; window.VISITED = VISITED;
+  window.SCORE_GEWICHTEN = SCORE_GEWICHTEN; window.scoreTotaal = scoreTotaal;
+}
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { ROUTES, VISITED, SCORE_GEWICHTEN, scoreTotaal };
+}

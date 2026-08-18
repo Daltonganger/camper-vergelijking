@@ -100,7 +100,6 @@
   .badge.b-park{background:#eee3f3;color:#6b4a8a}
   .badge.b-b{background:#e2ede8;color:#0f3d36}
   .badge.b-c{background:#ececef;color:#6e6e73}
-  tbody tr.hl{background:#fdf6ea}
   .fnoot{font-size:13px;color:var(--faint);margin-top:10px;text-align:center}
 
   /* ── kaarten ───────────────────────────────────────── */
@@ -247,7 +246,7 @@
 <section id="intro"><div class="wrap">
   <div class="secthead reveal"><span class="eyebrow">Waar we staan</span>
     <h2>De shortlist.</h2>
-    <p>Drie finalisten, elk met een eigen karakter. De rest is eerlijk uitgewerkt, maar staat er vooral om te laten zien waaróm deze drie boven liggen.</p>
+    <p>Drie finalisten, gerangschikt op totaalcijfer. De rest is eerlijk uitgewerkt, zodat je ziet waaróm deze drie boven liggen.</p>
   </div>
   <div class="cards stagger" id="finalists"></div>
   <div class="quote reveal">Wil je dat Amelie het makkelijkst heeft → Atlanta. Het meeste wow → Denver. De reis die we niet zomaar later herhalen → China 3.</div>
@@ -256,7 +255,7 @@
 <section id="vergelijk" class="tint"><div class="wrap wide">
   <div class="secthead reveal"><span class="eyebrow">Op één meetlat</span>
     <h2>Alle negen vergeleken.</h2>
-    <p>Scores zijn gevoelsoordelen (wow · comfort Amelie · tempo · weer · prijs-kwaliteit → totaal) — geen wetenschap, wel dezelfde meetlat.</p>
+    <p>Vijf deelscores, één formule: 40% wow + 20% tempo + 20% Amelie + 12% weer + 8% prijs. Rang 1–3 volgt uit dat cijfer.</p>
     <p style="margin-top:4px;font-size:15px"><a href="#score">Zo komen we aan deze cijfers ↓</a></p>
   </div>
   <div class="tablewrap reveal"><table id="cmpTable"></table></div>
@@ -287,19 +286,18 @@
   <div class="panel reveal" style="max-width:880px;margin:0 auto 22px">
     <ul>
       <li><b>De deelscores (1–10)</b> beoordelen elk één ding: Wow (natuur &amp; verbazing), Comfort Amelie, Tempo, Weer in mei/juni en Prijs/kwaliteit.</li>
-      <li><b>Het totaalcijfer is géén gemiddelde</b> van die vijf. Het is een gewogen gevoelsoordeel waarin de droomfactor zwaar meetelt. Daarom staat Denver (9,1) boven China 1 (9,0) ondanks lagere deelscores: een 10 voor Yellowstone-achtige natuur weegt zwaarder dan een 10 voor organisatiegemak.</li>
-      <li><b>Finalist ≠ hoogste score.</b> De A-lijst kiest per rol één reis: Denver = de natuurdroom, Atlanta = de makkelijkste gezinsreis, China 3 = de meest complete rondreis.</li>
+      <li><b>Tempo</b> meet of het ritme past bij de gewenste rondreis — om de 3–4 dagen iets nieuws. Hoog ≠ langzaam. China 1 is comfortabel, maar 5 bases in 3 weken is te statisch (tempo 6). China 3 is actief op het gewenste ritme (tempo 9).</li>
+      <li><b>Het totaalcijfer is de formule</b> 40% wow + 20% tempo + 20% Amelie + 12% weer + 8% prijs, afgerond op één decimaal. Rang 1–3 is die som: China 3, Denver, Atlanta. China 1 en 2 scoren lager omdat hun tempo niet past.</li>
     </ul>
   </div>
   <div class="tablewrap reveal"><table id="scoreTable"></table></div>
-  <p class="fnoot reveal">* Gewogen gevoelsoordeel (droomfactor telt zwaar mee) — geen gemiddelde van de vijf deelscores.</p>
+  <p class="fnoot reveal">* Totaal = 0,40×wow + 0,20×tempo + 0,20×Amelie + 0,12×weer + 0,08×prijs.</p>
   <div class="panel reveal" style="max-width:880px;margin:22px auto 0;border:1px solid #ecd9b5;background:#fffdf5">
-    <h3>Waarom China 1 (9,0) tóch geen finalist is</h3>
+    <h3>Waarom China 3 boven China 1 en 2 staat</h3>
     <ul>
-      <li>China 1 is de <b>gelijkmatigste reis van alle negen</b>: nergens een deelscore onder de 7 (Amelie 9, tempo 9, prijs 9). Dat maakt het de beste reis <i>als rust met Amelie het zwaarst weegt</i> — vandaar de hoge 9,0.</li>
-      <li>Maar de A-lijstplek voor China is naar <b>China 3</b> gegaan: wow 10 (Zhangjiajie én Yangshuo) én het echte rondreistempo waar jullie om vroegen — jullie eigen conclusie was dat 5 bases in 3 weken te rustig aanvoelt.</li>
-      <li><b>Onderling:</b> China 1 wint op Amelie (9 vs 7,5), tempo (9 vs 7) en prijs (9 vs 8). China 3 wint op wow (10 vs 9) en "meeste China in één reis". Precies de criteria waar de A-lijst op selecteert.</li>
-      <li>Die 9,0 betekent dus níet "tweede keus", maar "beste reis voor een andere rol". China 1 staat op de <b>B-lijst als terugvaloptie</b>: voor als vlak voor boeken blijkt dat Amelie's ritme meer rust vraagt dan China 3 biedt.</li>
+      <li>China 3 heeft wow 10 (Zhangjiajie <i>én</i> Yangshuo) en tempo 9 — het 4-3-3-3-4-4 ritme waar jullie om vroegen. Totaal <b>8,7</b>.</li>
+      <li>China 1 wint nog op Amelie (9 vs 7,5) en prijs (9 vs 8), maar verliest hard op tempo (6 vs 9): vijf bases is te statisch. Totaal <b>8,2</b>. B-lijst als Amelie meer rust nodig heeft.</li>
+      <li>China 2 heeft wel Zhangjiajie, maar dezelfde vijf-bases-sleep én geen Yangshuo. Totaal <b>8,1</b>.</li>
     </ul>
   </div>
 </div></section>
@@ -377,7 +375,7 @@ $("#navRoutes").innerHTML = ROUTES.map((r) =>
   `<a class="chip" style="--c:${r.kleur}" href="#route-${r.id}" data-nav="${r.id}"><span class="dot"></span>${navKort[r.id] || esc(r.naam.split("—")[0].trim())}</a>`).join("");
 
 /* ═══════════════ home-inhoud ═══════════════ */
-$("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).map((r) => `
+$("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => b.score.totaal - a.score.totaal).map((r) => `
   <a class="card reveal" style="--c:${r.kleur}" href="#route-${r.id}">
     <span class="tag">${r.soort === "China" ? "China · hotel & trein" : "Camper · USA"}</span>
     <div class="sc">${r.score.totaal.toLocaleString("nl")}<small>/10</small></div>
@@ -405,11 +403,11 @@ $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).map((r) => `
       <td><b>${r.score.totaal.toLocaleString("nl")}</b><span style="color:var(--faint);font-size:12px"> /10</span></td>
       <td style="font-size:13.5px;color:var(--soft)">${esc(r.plus[0])}</td>
     </tr>`).join("");
-  $("#cmpTable").innerHTML = `<thead><tr><th>Route</th><th>Afstand</th><th>Tempo-model</th><th>Parken</th><th>Tempo</th><th>Score</th><th>Grootste kracht</th></tr></thead><tbody>${rows}</tbody>`;
+  $("#cmpTable").innerHTML = `<thead><tr><th>Route</th><th>Afstand</th><th>Nachten / bases</th><th>Parken</th><th>Ritme</th><th>Score</th><th>Grootste kracht</th></tr></thead><tbody>${rows}</tbody>`;
 
   const nl = (x) => x.toLocaleString("nl");
   const srows = [...ROUTES].sort((a, b) => b.score.totaal - a.score.totaal).map((r) => `
-    <tr class="${r.finalist ? "finalist" : ""}${r.id === "china1" ? " hl" : ""}" style="--c:${r.kleur}">
+    <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
       <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
         <div style="margin-top:5px">${lijstBadge(r)}</div></td>
       <td>${nl(r.score.wow)}</td>

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Valideert routes-data.js vóór publicatie. Gebruik: node check-routes.js
-const { ROUTES, VISITED } = require("./routes-data.js");
+const { ROUTES, VISITED, scoreTotaal } = require("./routes-data.js");
 
 let fouten = 0, waarschuwingen = 0;
 const err = (m) => { console.error("  ✗ " + m); fouten++; };
@@ -45,7 +45,20 @@ for (const r of ROUTES) {
   if (r.stops.some((s) => s.lat !== undefined) && r.stops.some((s) => s.lng === undefined))
     err(label + ": stop met lat maar zonder lng");
 
+  const verwacht = scoreTotaal(r.score);
+  if (r.score.totaal !== verwacht) {
+    err(label + `: totaal ${r.score.totaal} ≠ formule ${verwacht} (40% wow + 20% tempo + 20% amelie + 12% weer + 8% prijs)`);
+    ok = false;
+  }
+
   console.log(`${ok ? "✓" : "✗"} ${label}: ${r.stops.length} stops, ${nachten} nachten, ${r.dagen.length} dagen, score ${r.score.totaal}${r.finalist ? "  [FINALIST]" : ""}`);
+}
+
+{
+  const tot = (id) => ROUTES.find((r) => r.id === id).score.totaal;
+  if (!(tot("china3") > tot("china1") && tot("china1") > tot("china2"))) {
+    err("China-rangorde moet 3 > 1 > 2 zijn op totaalcijfer");
+  }
 }
 
 console.log(`\nKlaar: ${fouten} fouten, ${waarschuwingen} waarschuwingen.`);

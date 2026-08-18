@@ -5,9 +5,9 @@ Keuzeproces voor de reis in mei/juni 2027 (2 volwassenen + Amelie, ±1 jaar oud)
 
 **Status: shortlist (A-lijst)**
 
-1. **Denver 6B-light** — natuur-/camperdroom (Yellowstone, Teton, Black Hills)
-2. **China 3** — meest complete actieve rondreis (Beijing → … → Shanghai, 6 bases)
-3. **Atlanta 4-plus** — prettigste gezinscampervakantie (Appalachen + 4 strandnachten)
+1. **China 3 (8,7)** — meest complete actieve rondreis (Beijing → … → Shanghai, 6 bases)
+2. **Denver 6B-light (8,6)** — natuur-/camperdroom (Yellowstone, Teton, Black Hills)
+3. **Atlanta 4-plus (8,4)** — prettigste gezinscampervakantie (Appalachen + 4 strandnachten)
 
 Geparkeerd voor een ander seizoen: **Dallas/Big Bend** (39–42 °C in mei/juni is niet verantwoord met Amelie). B-lijst: China 1 (rustigere terugvaloptie) en China 2 (alleen als Zhangjiajie zwaarder weegt dan Yangshuo). C-lijst: Atlanta Gulf, Vancouver, Toronto.
 
@@ -15,7 +15,7 @@ Geparkeerd voor een ander seizoen: **Dallas/Big Bend** (39–42 °C in mei/juni 
 
 | Bestand | Wat het is |
 |---|---|
-| `Rondreis_2027_3x_China_6x_Amerika_volledig.md` | **Hoofddocument (versie 4).** Alle 9 routes dag voor dag, scores, kosten, beslisboom, boekingskalender, bronnen. Start hier. |
+| `Rondreis_2027_3x_China_6x_Amerika_volledig.md` | **Hoofddocument (versie 5).** Alle 9 routes dag voor dag, scores (formule), kosten, beslisboom, boekingskalender, bronnen. Start hier. |
 | `index.html` | **De website (18 aug 2026, Apple-stijl).** Rustige lichte one-pager met paginarouter: overzichtspagina + 9 losse routepagina's met zachte overgangen (vorige/volgende, pijltjestoetsen, terug-knop). Mediaknoppen per stop, bewerkmodus. Dubbelklikken werkt (kaarttegels hebben internet nodig). |
 | `routes-data.js` | **De enige bron van waarheid voor de site.** Alle 9 routes: stops, nachten, dagen, kosten, scores, al-geweest-lijst. Hier pas je routes aan (of via de bewerkmodus + export). |
 | `check-routes.js` | Controlescript: `node check-routes.js` valideert de data (nachtensom, verplichte velden, geen bezochte parken actief). |
@@ -37,7 +37,7 @@ De HTML-pagina's nummeren **Route 1–6**; het hoofddocument gebruikt **USA 1–
 | Route 5 | USA 5 | Toronto / Niagara |
 | Route 6 | USA 6 | Dallas / Big Bend |
 
-De 3 China-routes (China 1/2/3) staan alleen in het hoofddocument — er is (nog) geen interactieve pagina voor.
+De 3 China-routes staan op de site (karmozijn) náást de 6 camperroutes. Totaalcijfer = 40% wow + 20% tempo + 20% Amelie + 12% weer + 8% prijs; rang 1–3 volgt uit dat cijfer.
 
 ## Bekende verouderingen / aandachtspunten
 
