@@ -313,7 +313,8 @@
     <ul>
       <li>Wijzigingen worden <b>in deze browser</b> bewaard (automatisch).</li>
       <li>Definitief maken? Klik <b>Exporteer routes-data.js</b> en vervang het bestand in de map door de download.</li>
-      <li>Coördinaten (lat,lng) zijn optioneel: zonder staat een stop wél in schema en tijdlijn, alleen niet op de kaart.</li>
+      <li>Bij een nieuwe stop zoeken we automatisch de <b>locatie én de gemiddelde dag/nachttemperatuur</b> voor eind mei–juni op (via Open-Meteo, gemiddeld over 2022–2024; internet nodig). De stop verschijnt dan meteen met ☀️/🌙-chip én stip op de kaart.</li>
+      <li>Lukt het opzoeken niet (rare naam, offline)? Geef handmatig lat,lng op; het klimaat-veld kun je later in <code>routes-data.js</code> invullen.</li>
       <li>Check daarna met <code>node check-routes.js</code> of alles klopt.</li>
     </ul>
     <div class="btnrow">
@@ -611,6 +612,27 @@ function updateSummary() {
   const n = Object.keys(EDITS).length;
   $("#editSummary").textContent = n ? `${n} route(s) aangepast in deze browser — exporteer om te bewaren.` : "Nog geen wijzigingen in deze browser.";
 }
+async function zoekKlimaat(naam, coord) {
+  try {
+    let lat = coord ? coord[0] : undefined, lng = coord ? coord[1] : undefined;
+    if (lat === undefined) {
+      const g = await (await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(naam)}&count=1&language=nl&format=json`)).json();
+      if (!g.results || !g.results.length) return null;
+      lat = g.results[0].latitude; lng = g.results[0].longitude;
+    }
+    let somD = 0, somN = 0, n = 0;
+    for (const jaar of [2022, 2023, 2024]) {
+      const u = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${jaar}-05-25&end_date=${jaar}-06-15&daily=temperature_2m_max,temperature_2m_min&timezone=auto`;
+      const a = await (await fetch(u)).json();
+      if (!a.daily || !a.daily.temperature_2m_max) continue;
+      a.daily.temperature_2m_max.forEach((v) => { if (v != null) { somD += v; n++; } });
+      a.daily.temperature_2m_min.forEach((v) => { if (v != null) somN += v; });
+    }
+    if (!n) return null;
+    return { d: Math.round(somD / n), n: Math.round(somN / n), lat: +lat.toFixed(4), lng: +lng.toFixed(4) };
+  } catch { return null; }
+}
+
 function wireEdit(scope, r) {
   const box = scope.querySelector(`[data-edit="${r.id}"]`); if (!box) return;
   const save = (stops) => { EDITS[r.id] = stops; persist(); r.stops = JSON.parse(JSON.stringify(stops)); showRoute(r.id, true); };
@@ -621,11 +643,21 @@ function wireEdit(scope, r) {
     row.querySelector(".del").onclick = () => { stops.splice(i, 1); save(stops); };
   });
   const inp = (f) => box.querySelector(`[data-f="${f}"]`);
-  box.querySelector(".addstop").onclick = () => {
+  const addBtn = box.querySelector(".addstop");
+  addBtn.onclick = async () => {
     const naam = inp("naam").value.trim(); if (!naam) return void inp("naam").focus();
-    const s = { naam, n: Math.max(0, +inp("n").value || 0) };
     const c = inp("coord").value.split(",").map(Number);
-    if (c.length === 2 && isFinite(c[0]) && isFinite(c[1])) { s.lat = +c[0].toFixed(4); s.lng = +c[1].toFixed(4); }
+    const coord = c.length === 2 && isFinite(c[0]) && isFinite(c[1]) ? c : null;
+    const oud = addBtn.textContent;
+    addBtn.disabled = true; addBtn.textContent = "🔎 zoeken…";
+    const k = await zoekKlimaat(naam, coord);
+    addBtn.disabled = false; addBtn.textContent = oud;
+    const s = { naam, n: Math.max(0, +inp("n").value || 0) };
+    if (coord) { s.lat = +coord[0].toFixed(4); s.lng = +coord[1].toFixed(4); }
+    if (k) {
+      s.klimaat = { d: k.d, n: k.n };
+      if (!coord) { s.lat = k.lat; s.lng = k.lng; }
+    }
     r.stops.push(s); save(r.stops);
   };
   box.querySelector(".ereset").onclick = () => { delete EDITS[r.id]; persist(); r.stops = JSON.parse(JSON.stringify(SRC.find((x) => x.id === r.id).stops)); showRoute(r.id, true); };
