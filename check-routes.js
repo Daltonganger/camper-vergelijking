@@ -24,6 +24,7 @@ for (const r of ROUTES) {
   r.stops.forEach((s, i) => {
     if (!s.naam) err(label + ` stop ${i + 1}: geen naam`);
     if (s.n < 0) err(label + ` stop ${i + 1} (${s.naam}): negatieve nachten`);
+    if (!s.wiki) warn(label + ` stop ${i + 1} (${s.naam}): geen wiki-artikel → 📖 valt terug op zoeklink`);
   });
 
   // "al geweest"-filter: geen bezochte plek mag actief in een route zitten

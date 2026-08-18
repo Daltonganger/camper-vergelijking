@@ -3,7 +3,11 @@
 // ----------------------------------------------------------------------------
 // ROUTES AANPASSEN? Dit is het bestand. Per route kun je:
 //   - een stop weghalen:       regel {naam:...} verwijderen
-//   - een stop erbij:          {naam:"Naam", n:2, lat:40.1, lng:-105.2, note:"..."}
+//   - een stop erbij:          {naam:"Naam", n:2, lat:40.1, lng:-105.2, note:"...",
+//                                wiki:"Engelse Wikipedia-titel"}   ← wiki is de
+//                              exacte titel van het Engelstalige Wikipedia-artikel
+//                              (bijv. "Badlands National Park"); zonder wiki valt
+//                              de 📖-knop terug op een NL-zoeklink.
 //                              (lat/lng zijn optioneel; zonder verschijnt de stop
 //                               wel in de lijst/tijdlijn maar niet op de kaart)
 //   - nachten wijzigen:        het getal achter n: aanpassen
@@ -36,21 +40,21 @@ const ROUTES = [
   quote:"We gaan naar Noord-Amerika voor de natuur die nergens anders hetzelfde voelt.",
   letop:["Trail Ridge Road opent weersafhankelijk eind mei (2026: 29 mei) — alternatief achter de hand","Dunraven Pass/Beartooth 2026 gepland vanaf 22 mei","RMNP timed-entry reservering nodig","Yellowstone/Teton-campings: reserveringsvensters volgen vanaf winter 2026"],
   stops:[
-    {naam:"Denver, Colorado", n:1, lat:39.74, lng:-104.99, note:"Aankomsthotel; camper ophalen bij Cruise America Longmont"},
-    {naam:"Lake McConaughy, Nebraska", n:1, lat:41.23, lng:-101.72, note:"Eerste campernacht + strandavond"},
-    {naam:"Badlands NP — Cedar Pass Campground", n:2, lat:43.75, lng:-101.94, note:"Loop Road, boardwalks, zonsondergang"},
-    {naam:"Custer State Park — Game Lodge CG", n:3, lat:43.76, lng:-103.40, note:"Wildlife Loop, Sylvan Lake, Needles; Wind Cave NP op een dag"},
-    {naam:"Devils Tower NM — Belle Fourche River CG", n:1, lat:44.59, lng:-104.70, note:"Rondwandeling bij avondlicht"},
-    {naam:"Bighorn Mountains — Meadowlark Lake", n:1, lat:44.04, lng:-107.20, note:"Scenic drive US-16 over de pas"},
-    {naam:"Thermopolis, Wyoming", n:1, lat:43.65, lng:-108.21, note:"Gratis warme bronnen 40 °C — verwarmd tussendoel"},
-    {naam:"Yellowstone — Bridge Bay / Fishing Bridge RV", n:2, lat:44.54, lng:-110.44, note:"West Thumb, Lake Yellowstone"},
-    {naam:"Yellowstone — Canyon Village CG", n:2, lat:44.74, lng:-110.49, note:"Canyon, Hayden Valley; dagtocht Lamar Valley + Mammoth"},
-    {naam:"Grand Teton — Colter Bay Village", n:2, lat:43.90, lng:-110.64, note:"Jackson Lake, Oxbow Bend"},
-    {naam:"Grand Teton — Gros Ventre CG", n:1, lat:43.58, lng:-110.67, note:"Jenny Lake, Schwabacher Landing, Astoria Hot Springs (kinderbad)"},
-    {naam:"Rawlins, Wyoming (transit)", n:1, lat:41.79, lng:-107.24, note:"Bewust transitnacht om geen monsterdag te rijden"},
-    {naam:"Rocky Mountain NP — Timber Creek CG (west)", n:1, lat:40.38, lng:-105.85, note:"Kawuneeche Valley, Grand Lake"},
-    {naam:"Rocky Mountain NP — Moraine Park CG (oost)", n:1, lat:40.36, lng:-105.59, note:"Trail Ridge Road 3.595 m (alleen indien open)"},
-    {naam:"Denver — laatste nacht", n:1, lat:39.74, lng:-104.99, note:"Camper inleveren, hotel vlak bij vliegveld"}
+    {naam:"Denver, Colorado", n:1, lat:39.74, lng:-104.99, note:"Aankomsthotel; camper ophalen bij Cruise America Longmont", wiki:"Denver"},
+    {naam:"Lake McConaughy, Nebraska", n:1, lat:41.23, lng:-101.72, note:"Eerste campernacht + strandavond", wiki:"Lake McConaughy"},
+    {naam:"Badlands NP — Cedar Pass Campground", n:2, lat:43.75, lng:-101.94, note:"Loop Road, boardwalks, zonsondergang", wiki:"Badlands National Park"},
+    {naam:"Custer State Park — Game Lodge CG", n:3, lat:43.76, lng:-103.40, note:"Wildlife Loop, Sylvan Lake, Needles; Wind Cave NP op een dag", wiki:"Custer State Park"},
+    {naam:"Devils Tower NM — Belle Fourche River CG", n:1, lat:44.59, lng:-104.70, note:"Rondwandeling bij avondlicht", wiki:"Devils Tower"},
+    {naam:"Bighorn Mountains — Meadowlark Lake", n:1, lat:44.04, lng:-107.20, note:"Scenic drive US-16 over de pas", wiki:"Bighorn Mountains"},
+    {naam:"Thermopolis, Wyoming", n:1, lat:43.65, lng:-108.21, note:"Gratis warme bronnen 40 °C — verwarmd tussendoel", wiki:"Thermopolis, Wyoming"},
+    {naam:"Yellowstone — Bridge Bay / Fishing Bridge RV", n:2, lat:44.54, lng:-110.44, note:"West Thumb, Lake Yellowstone", wiki:"Yellowstone National Park"},
+    {naam:"Yellowstone — Canyon Village CG", n:2, lat:44.74, lng:-110.49, note:"Canyon, Hayden Valley; dagtocht Lamar Valley + Mammoth", wiki:"Yellowstone National Park"},
+    {naam:"Grand Teton — Colter Bay Village", n:2, lat:43.90, lng:-110.64, note:"Jackson Lake, Oxbow Bend", wiki:"Grand Teton National Park"},
+    {naam:"Grand Teton — Gros Ventre CG", n:1, lat:43.58, lng:-110.67, note:"Jenny Lake, Schwabacher Landing, Astoria Hot Springs (kinderbad)", wiki:"Grand Teton National Park"},
+    {naam:"Rawlins, Wyoming (transit)", n:1, lat:41.79, lng:-107.24, note:"Bewust transitnacht om geen monsterdag te rijden", wiki:"Rawlins, Wyoming"},
+    {naam:"Rocky Mountain NP — Timber Creek CG (west)", n:1, lat:40.38, lng:-105.85, note:"Kawuneeche Valley, Grand Lake", wiki:"Rocky Mountain National Park"},
+    {naam:"Rocky Mountain NP — Moraine Park CG (oost)", n:1, lat:40.36, lng:-105.59, note:"Trail Ridge Road 3.595 m (alleen indien open)", wiki:"Rocky Mountain National Park"},
+    {naam:"Denver — laatste nacht", n:1, lat:39.74, lng:-104.99, note:"Camper inleveren, hotel vlak bij vliegveld", wiki:"Denver"}
   ],
   dagen:[
     {d:1,t:"Amsterdam → Denver",x:"Aankomsthotel; camper pas dag 2 ophalen"},
@@ -99,16 +103,16 @@ const ROUTES = [
   quote:"We willen dat het óók een gezinsvakantie is en niet alleen een expeditie.",
   letop:["Blue Ridge Parkway: na orkaan Helene nog herstelwerk/afsluitingen — actuele NPS-status checken vóór definitieve etappes","Hunting Island en populaire parkcampings: zodra 2027-vensters open gaan reserveren","Kuwohi heette tot 2024 Clingmans Dome"],
   stops:[
-    {naam:"Atlanta, Georgia", n:1, lat:33.75, lng:-84.39, note:"Aankomsthotel; camper ophalen"},
-    {naam:"Mammoth Cave NP, Kentucky", n:2, lat:37.19, lng:-86.10, note:"Grottour vooraf kiezen; onderweg evt. Cloudland Canyon SP"},
-    {naam:"New River Gorge, West Virginia", n:2, lat:37.98, lng:-80.95, note:"Bridge, Babcock SP (glade-molen); onderweg Natural Bridge/Red River Gorge"},
-    {naam:"Shenandoah NP — Big Meadows CG", n:2, lat:38.52, lng:-78.44, note:"Skyline Drive, korte hikes"},
-    {naam:"Blue Ridge Parkway (noord→zuid)", n:3, lat:35.68, lng:-82.38, note:"Campings o.a. Peaks of Otter, Doughton Park, Julian Price, Mount Pisgah; Mount Mitchell 2.037 m"},
-    {naam:"Great Smoky Mountains NP", n:3, lat:35.60, lng:-83.78, note:"Smokemont + Cades Cove; Kuwohi 2.025 m"},
-    {naam:"Charleston, South Carolina", n:2, lat:32.78, lng:-79.93, note:"James Island County Park; Congaree NP als middagstop"},
-    {naam:"Hunting Island State Park", n:4, lat:32.38, lng:-80.44, note:"Vier nachten strand, palmettobos, vuurtoren"},
-    {naam:"Savannah, Georgia", n:1, lat:32.08, lng:-81.09, note:"Skidaway Island SP; compacte historische kern"},
-    {naam:"Atlanta — inleveren/vlucht", n:1, lat:33.75, lng:-84.39, note:"Laatste rijdag 's ochtends"}
+    {naam:"Atlanta, Georgia", n:1, lat:33.75, lng:-84.39, note:"Aankomsthotel; camper ophalen", wiki:"Atlanta"},
+    {naam:"Mammoth Cave NP, Kentucky", n:2, lat:37.19, lng:-86.10, note:"Grottour vooraf kiezen; onderweg evt. Cloudland Canyon SP", wiki:"Mammoth Cave National Park"},
+    {naam:"New River Gorge, West Virginia", n:2, lat:37.98, lng:-80.95, note:"Bridge, Babcock SP (glade-molen); onderweg Natural Bridge/Red River Gorge", wiki:"New River Gorge National Park and Preserve"},
+    {naam:"Shenandoah NP — Big Meadows CG", n:2, lat:38.52, lng:-78.44, note:"Skyline Drive, korte hikes", wiki:"Shenandoah National Park"},
+    {naam:"Blue Ridge Parkway (noord→zuid)", n:3, lat:35.68, lng:-82.38, note:"Campings o.a. Peaks of Otter, Doughton Park, Julian Price, Mount Pisgah; Mount Mitchell 2.037 m", wiki:"Blue Ridge Parkway"},
+    {naam:"Great Smoky Mountains NP", n:3, lat:35.60, lng:-83.78, note:"Smokemont + Cades Cove; Kuwohi 2.025 m", wiki:"Great Smoky Mountains National Park"},
+    {naam:"Charleston, South Carolina", n:2, lat:32.78, lng:-79.93, note:"James Island County Park; Congaree NP als middagstop", wiki:"Charleston, South Carolina"},
+    {naam:"Hunting Island State Park", n:4, lat:32.38, lng:-80.44, note:"Vier nachten strand, palmettobos, vuurtoren", wiki:"Hunting Island State Park"},
+    {naam:"Savannah, Georgia", n:1, lat:32.08, lng:-81.09, note:"Skidaway Island SP; compacte historische kern", wiki:"Savannah, Georgia"},
+    {naam:"Atlanta — inleveren/vlucht", n:1, lat:33.75, lng:-84.39, note:"Laatste rijdag 's ochtends", wiki:"Atlanta"}
   ],
   dagen:[
     {d:1,t:"Amsterdam → Atlanta",x:"Nonstop; aankomsthotel"},
@@ -152,16 +156,16 @@ const ROUTES = [
   quote:"New Orleans en Nashville zijn voor ons echte highlights, niet alleen namen op de kaart.",
   letop:["Natchez Trace is traag rijden met weinig voorzieningen — tanken vooraf","orkaanverwachting volgen; B-plan (binnenland) hebben"],
   stops:[
-    {naam:"Atlanta, Georgia", n:1, lat:33.75, lng:-84.39, note:"Aankomst; camper ophalen"},
-    {naam:"Great Smoky Mountains NP", n:3, lat:35.61, lng:-83.47, note:"Cades Cove + Oconaluftee"},
-    {naam:"Mammoth Cave NP, Kentucky", n:2, lat:37.19, lng:-86.10, note:"Grottour = hittevrije dag"},
-    {naam:"Nashville, Tennessee", n:2, lat:36.16, lng:-86.78, note:"Muziekstad; kindvriendelijke dagactiviteiten kiezen"},
-    {naam:"Natchez / Natchez Trace", n:2, lat:31.56, lng:-91.40, note:"Scenic rijdag + historische rivierstad"},
-    {naam:"New Orleans, Louisiana", n:3, lat:29.95, lng:-90.07, note:"French Quarter vroeg op de dag; tempo laag door hitte"},
-    {naam:"Gulf Islands NS (Gulf Breeze)", n:3, lat:30.35, lng:-87.04, note:"Wit zandstrand, warme Golf"},
-    {naam:"St. George Island, Florida", n:3, lat:29.64, lng:-84.90, note:"Rustig eilandstrand"},
-    {naam:"Transit richting Atlanta", n:1, lat:32.46, lng:-84.99, note:"Via Dothan/Columbus"},
-    {naam:"Atlanta — inleveren/vlucht", n:1, lat:33.75, lng:-84.39, note:"Camper afronden"}
+    {naam:"Atlanta, Georgia", n:1, lat:33.75, lng:-84.39, note:"Aankomst; camper ophalen", wiki:"Atlanta"},
+    {naam:"Great Smoky Mountains NP", n:3, lat:35.61, lng:-83.47, note:"Cades Cove + Oconaluftee", wiki:"Great Smoky Mountains National Park"},
+    {naam:"Mammoth Cave NP, Kentucky", n:2, lat:37.19, lng:-86.10, note:"Grottour = hittevrije dag", wiki:"Mammoth Cave National Park"},
+    {naam:"Nashville, Tennessee", n:2, lat:36.16, lng:-86.78, note:"Muziekstad; kindvriendelijke dagactiviteiten kiezen", wiki:"Nashville, Tennessee"},
+    {naam:"Natchez / Natchez Trace", n:2, lat:31.56, lng:-91.40, note:"Scenic rijdag + historische rivierstad", wiki:"Natchez Trace Parkway"},
+    {naam:"New Orleans, Louisiana", n:3, lat:29.95, lng:-90.07, note:"French Quarter vroeg op de dag; tempo laag door hitte", wiki:"New Orleans"},
+    {naam:"Gulf Islands NS (Gulf Breeze)", n:3, lat:30.35, lng:-87.04, note:"Wit zandstrand, warme Golf", wiki:"Gulf Islands National Seashore"},
+    {naam:"St. George Island, Florida", n:3, lat:29.64, lng:-84.90, note:"Rustig eilandstrand", wiki:"St. George Island (Florida)"},
+    {naam:"Transit richting Atlanta", n:1, lat:32.46, lng:-84.99, note:"Via Dothan/Columbus", wiki:"Columbus, Georgia"},
+    {naam:"Atlanta — inleveren/vlucht", n:1, lat:33.75, lng:-84.39, note:"Camper afronden", wiki:"Atlanta"}
   ],
   dagen:[
     {d:1,t:"Amsterdam → Atlanta",x:"Aankomsthotel"},
@@ -205,18 +209,18 @@ const ROUTES = [
   quote:"We willen maximale variatie en accepteren dat de reis logistiek een project wordt.",
   letop:["huurvoorwaarden camper voor grenspassage VS↔Canada schriftelijk bevestigen","ferry-reserveringen BC Ferries + Port Angeles–Victoria vroeg boeken","Parks Canada/Banff-campings: reserveringsvenster volgen"],
   stops:[
-    {naam:"Vancouver, BC", n:1, lat:49.28, lng:-123.12, note:"Aankomsthotel"},
-    {naam:"Tofino (Vancouver Island)", n:3, lat:49.15, lng:-125.91, note:"Pacific Rim: stranden + regenwoud-boardwalks; ferry dag 2"},
-    {naam:"Victoria, BC", n:2, lat:48.43, lng:-123.37, note:"Havenstad, Butchart Gardens"},
-    {naam:"Olympic NP (Hoh/Hurricane Ridge)", n:3, lat:47.86, lng:-123.60, note:"Hoh Rain Forest, Ruby Beach, Lake Crescent; ferry Port Angeles"},
-    {naam:"Mount Rainier NP", n:2, lat:46.79, lng:-121.74, note:"Paradise; voorjaarstrails laag/middelhoog"},
-    {naam:"North Cascades NP", n:2, lat:48.71, lng:-121.25, note:"Scenic drive Highway 20, diablo Lake"},
-    {naam:"Osoyoos, BC", n:1, lat:49.03, lng:-119.47, note:"Grens terug Canada; wijnstreek"},
-    {naam:"Kootenay Lake (transit)", n:1, lat:49.65, lng:-116.83, note:"Ferry over het meer, richting Rockies"},
-    {naam:"Banff NP", n:3, lat:51.18, lng:-115.57, note:"Lake Louise, Moraine Lake (shuttle/reservering!)"},
-    {naam:"Revelstoke/Golden", n:1, lat:51.00, lng:-118.20, note:"Start terugweg"},
-    {naam:"Kamloops (transit)", n:1, lat:50.67, lng:-120.33, note:"Lange rijdag"},
-    {naam:"Vancouver — inleveren/vlucht", n:1, lat:49.28, lng:-123.12, note:"Bij vroege vlucht: extra nacht nodig"}
+    {naam:"Vancouver, BC", n:1, lat:49.28, lng:-123.12, note:"Aankomsthotel", wiki:"Vancouver"},
+    {naam:"Tofino (Vancouver Island)", n:3, lat:49.15, lng:-125.91, note:"Pacific Rim: stranden + regenwoud-boardwalks; ferry dag 2", wiki:"Tofino"},
+    {naam:"Victoria, BC", n:2, lat:48.43, lng:-123.37, note:"Havenstad, Butchart Gardens", wiki:"Victoria, British Columbia"},
+    {naam:"Olympic NP (Hoh/Hurricane Ridge)", n:3, lat:47.86, lng:-123.60, note:"Hoh Rain Forest, Ruby Beach, Lake Crescent; ferry Port Angeles", wiki:"Olympic National Park"},
+    {naam:"Mount Rainier NP", n:2, lat:46.79, lng:-121.74, note:"Paradise; voorjaarstrails laag/middelhoog", wiki:"Mount Rainier"},
+    {naam:"North Cascades NP", n:2, lat:48.71, lng:-121.25, note:"Scenic drive Highway 20, diablo Lake", wiki:"North Cascades National Park"},
+    {naam:"Osoyoos, BC", n:1, lat:49.03, lng:-119.47, note:"Grens terug Canada; wijnstreek", wiki:"Osoyoos"},
+    {naam:"Kootenay Lake (transit)", n:1, lat:49.65, lng:-116.83, note:"Ferry over het meer, richting Rockies", wiki:"Kootenay Lake"},
+    {naam:"Banff NP", n:3, lat:51.18, lng:-115.57, note:"Lake Louise, Moraine Lake (shuttle/reservering!)", wiki:"Banff National Park"},
+    {naam:"Revelstoke/Golden", n:1, lat:51.00, lng:-118.20, note:"Start terugweg", wiki:"Revelstoke, British Columbia"},
+    {naam:"Kamloops (transit)", n:1, lat:50.67, lng:-120.33, note:"Lange rijdag", wiki:"Kamloops"},
+    {naam:"Vancouver — inleveren/vlucht", n:1, lat:49.28, lng:-123.12, note:"Bij vroege vlucht: extra nacht nodig", wiki:"Vancouver"}
   ],
   dagen:[
     {d:1,t:"Amsterdam → Vancouver",x:"Hotel"},
@@ -260,16 +264,16 @@ const ROUTES = [
   quote:"Niagara en Toronto horen net zo sterk op onze wishlist als de Smokies.",
   letop:["camper meenemen over de grens: voorwaarden verhuurder checken"," Washington DC: gratis maar tijdslot-museums ver van tevoren reserveren","Parkway-status (Helene-herstel) checken"],
   stops:[
-    {naam:"Toronto, Ontario", n:1, lat:43.65, lng:-79.38, note:"Aankomsthotel"},
-    {naam:"Niagara Falls + Niagara-on-the-Lake", n:2, lat:43.09, lng:-79.08, note:"Falls vroeg op de dag; wijngebied"},
-    {naam:"Finger Lakes, New York", n:3, lat:42.38, lng:-76.87, note:"Watkins Glen, wijngaarden, dorpjes; rustdag inbegrepen"},
-    {naam:"Shenandoah NP", n:2, lat:38.52, lng:-78.44, note:"Skyline Drive"},
-    {naam:"Washington DC (daguitstapje)", n:0, lat:38.89, lng:-77.04, note:"Onderweg tussen Shenandoah en Parkway; geen eigen overnachting"},
-    {naam:"Blue Ridge Parkway", n:3, lat:35.68, lng:-82.38, note:"Langzaam rijden, viewpoints"},
-    {naam:"Great Smoky Mountains NP", n:3, lat:35.61, lng:-83.47, note:"Twee volle dagen + rust"},
-    {naam:"New River Gorge, West Virginia", n:2, lat:37.87, lng:-81.05, note:"Brug, viewpoints, korte trails"},
-    {naam:"Lake Erie (Erie, PA)", n:2, lat:42.13, lng:-80.09, note:"Rustiger dag langs het meer"},
-    {naam:"Toronto — finale", n:3, lat:43.65, lng:-79.38, note:"Stadsdag + buffer + camper afronden"}
+    {naam:"Toronto, Ontario", n:1, lat:43.65, lng:-79.38, note:"Aankomsthotel", wiki:"Toronto"},
+    {naam:"Niagara Falls + Niagara-on-the-Lake", n:2, lat:43.09, lng:-79.08, note:"Falls vroeg op de dag; wijngebied", wiki:"Niagara Falls, Ontario"},
+    {naam:"Finger Lakes, New York", n:3, lat:42.38, lng:-76.87, note:"Watkins Glen, wijngaarden, dorpjes; rustdag inbegrepen", wiki:"Finger Lakes"},
+    {naam:"Shenandoah NP", n:2, lat:38.52, lng:-78.44, note:"Skyline Drive", wiki:"Shenandoah National Park"},
+    {naam:"Washington DC (daguitstapje)", n:0, lat:38.89, lng:-77.04, note:"Onderweg tussen Shenandoah en Parkway; geen eigen overnachting", wiki:"Washington, D.C."},
+    {naam:"Blue Ridge Parkway", n:3, lat:35.68, lng:-82.38, note:"Langzaam rijden, viewpoints", wiki:"Blue Ridge Parkway"},
+    {naam:"Great Smoky Mountains NP", n:3, lat:35.61, lng:-83.47, note:"Twee volle dagen + rust", wiki:"Great Smoky Mountains National Park"},
+    {naam:"New River Gorge, West Virginia", n:2, lat:37.87, lng:-81.05, note:"Brug, viewpoints, korte trails", wiki:"New River Gorge National Park and Preserve"},
+    {naam:"Lake Erie (Erie, PA)", n:2, lat:42.13, lng:-80.09, note:"Rustiger dag langs het meer", wiki:"Lake Erie"},
+    {naam:"Toronto — finale", n:3, lat:43.65, lng:-79.38, note:"Stadsdag + buffer + camper afronden", wiki:"Toronto"}
   ],
   dagen:[
     {d:1,t:"Amsterdam → Toronto",x:"Aankomsthotel"},
@@ -314,15 +318,15 @@ const ROUTES = [
   quote:"Niet voor mei/juni 2027 — bewaren voor februari/maart.",
   letop:["enige check die telt: opnieuw concluderen dat mei/juni te heet is, tenzij jullie het seizoen veranderen"],
   stops:[
-    {naam:"Dallas, Texas", n:1, lat:32.78, lng:-96.80, note:"Aankomst; camper ophalen"},
-    {naam:"Guadalupe Mountains NP", n:2, lat:31.92, lng:-104.87, note:"Alleen vroeg buiten zijn"},
-    {naam:"Carlsbad Caverns NP", n:2, lat:32.14, lng:-104.53, note:"Grotten = hittevrije hoofdattractie"},
-    {naam:"White Sands NP", n:2, lat:32.79, lng:-106.33, note:"Zonsopgang + zonsondergang; middag vermijden"},
-    {naam:"Big Bend NP (Chisos)", n:4, lat:29.27, lng:-103.30, note:"Hooggelegen deel het hele jaar het mildst"},
-    {naam:"San Antonio", n:2, lat:29.43, lng:-98.49, note:"River Walk vroeg/laat op de dag"},
-    {naam:"Padre Island NS", n:4, lat:27.09, lng:-97.38, note:"Strandblok aan de Golf"},
-    {naam:"Hill Country (Fredericksburg)", n:2, lat:30.27, lng:-98.87, note:"Transit + wijnstreekje"},
-    {naam:"Dallas — inleveren/vlucht", n:2, lat:32.78, lng:-96.80, note:"Laatste nachten + vlucht"}
+    {naam:"Dallas, Texas", n:1, lat:32.78, lng:-96.80, note:"Aankomst; camper ophalen", wiki:"Dallas"},
+    {naam:"Guadalupe Mountains NP", n:2, lat:31.92, lng:-104.87, note:"Alleen vroeg buiten zijn", wiki:"Guadalupe Mountains National Park"},
+    {naam:"Carlsbad Caverns NP", n:2, lat:32.14, lng:-104.53, note:"Grotten = hittevrije hoofdattractie", wiki:"Carlsbad Caverns National Park"},
+    {naam:"White Sands NP", n:2, lat:32.79, lng:-106.33, note:"Zonsopgang + zonsondergang; middag vermijden", wiki:"White Sands National Park"},
+    {naam:"Big Bend NP (Chisos)", n:4, lat:29.27, lng:-103.30, note:"Hooggelegen deel het hele jaar het mildst", wiki:"Big Bend National Park"},
+    {naam:"San Antonio", n:2, lat:29.43, lng:-98.49, note:"River Walk vroeg/laat op de dag", wiki:"San Antonio"},
+    {naam:"Padre Island NS", n:4, lat:27.09, lng:-97.38, note:"Strandblok aan de Golf", wiki:"Padre Island National Seashore"},
+    {naam:"Hill Country (Fredericksburg)", n:2, lat:30.27, lng:-98.87, note:"Transit + wijnstreekje", wiki:"Fredericksburg, Texas"},
+    {naam:"Dallas — inleveren/vlucht", n:2, lat:32.78, lng:-96.80, note:"Laatste nachten + vlucht", wiki:"Dallas"}
   ],
   dagen:[
     {d:1,t:"Amsterdam → Dallas",x:"Aankomst"},
@@ -366,11 +370,11 @@ const ROUTES = [
   quote:"We willen China goed beleven en niet na twee weken verlangen naar een vakantie van onze vakantie.",
   letop:["visumvrije regeling loopt nominaal t/m 31 december 2026 — status december 2026 herchecken","kind onder 6 reist gratis mee op de trein (geen eigen stoel) — eigen stoel boeken voor de lange ritten","Alipay/WeChat Pay gekoppeld aan Nederlandse kaart regelen vóór vertrek","12306-account aanmaken met paspoortgegevens"],
   stops:[
-    {naam:"Beijing", n:5, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing", note:"Jetlag + Grote Muur + Verboden Stad + Summer Palace"},
-    {naam:"Xi'an", n:3, lat:34.34, lng:108.94, vervoer:"Hogesnelheidstrein ±4–6 u", note:"Terracottaleger, stadsmuur, Muslim Quarter"},
-    {naam:"Chengdu", n:4, lat:30.57, lng:104.07, vervoer:"Hogesnelheidstrein ±3–4 u", note:"Panda Base, People's Park, theehuizen, vrije dag"},
-    {naam:"Yangshuo", n:4, lat:24.78, lng:110.49, vervoer:"Snelle trein naar Guilin ±5–8 u + transfer", note:"Karstlandschap, Yulong River, Xingping, zwembad/regenbuffer"},
-    {naam:"Shanghai", n:5, lat:31.23, lng:121.47, vervoer:"Binnenlandse vlucht ±2–2,5 u", note:"Bund, Yu Garden, French Concession, Suzhou-dagtrip"}
+    {naam:"Beijing", n:5, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing", note:"Jetlag + Grote Muur + Verboden Stad + Summer Palace", wiki:"Beijing"},
+    {naam:"Xi'an", n:3, lat:34.34, lng:108.94, vervoer:"Hogesnelheidstrein ±4–6 u", note:"Terracottaleger, stadsmuur, Muslim Quarter", wiki:"Xi'an"},
+    {naam:"Chengdu", n:4, lat:30.57, lng:104.07, vervoer:"Hogesnelheidstrein ±3–4 u", note:"Panda Base, People's Park, theehuizen, vrije dag", wiki:"Chengdu"},
+    {naam:"Yangshuo", n:4, lat:24.78, lng:110.49, vervoer:"Snelle trein naar Guilin ±5–8 u + transfer", note:"Karstlandschap, Yulong River, Xingping, zwembad/regenbuffer", wiki:"Yangshuo County"},
+    {naam:"Shanghai", n:5, lat:31.23, lng:121.47, vervoer:"Binnenlandse vlucht ±2–2,5 u", note:"Bund, Yu Garden, French Concession, Suzhou-dagtrip", wiki:"Shanghai"}
   ],
   dagen:[
     {d:1,t:"Amsterdam → Beijing",x:"Overnight vlucht, bij voorkeur rechtstreeks"},
@@ -415,11 +419,11 @@ const ROUTES = [
   quote:"We willen niet sneller reizen, maar wél het spectaculairste landschap.",
   letop:["visumstatus december 2026 herchecken","trein Chengdu → Zhangjiajie: ± halve dag deur-tot-deur","Tianmen Mountain: bij mist niet forceren — flexdag inbouwen (zit erin)","zelfde praktische punten als China 1 (Alipay, 12306, kinderzitjes)"],
   stops:[
-    {naam:"Beijing", n:5, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing", note:"Zelfde programma als China 1"},
-    {naam:"Xi'an", n:3, lat:34.34, lng:108.94, vervoer:"Hogesnelheidstrein ±4–6 u", note:"Terracottaleger + oude stad"},
-    {naam:"Chengdu", n:4, lat:30.57, lng:104.07, vervoer:"Hogesnelheidstrein ±3–4 u", note:"Panda's + theehuizen + bufferdag"},
-    {naam:"Zhangjiajie", n:4, lat:29.13, lng:110.48, vervoer:"Trein ± halve dag deur-tot-deur", note:"Forest Park (Yuanjiajie, Bailong Elevator), Tianzi Mountain, Tianmen"},
-    {naam:"Shanghai", n:5, lat:31.23, lng:121.47, vervoer:"Binnenlandse vlucht ±2 u", note:"Bund, Yu Garden, French Concession, Suzhou-option"}
+    {naam:"Beijing", n:5, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing", note:"Zelfde programma als China 1", wiki:"Beijing"},
+    {naam:"Xi'an", n:3, lat:34.34, lng:108.94, vervoer:"Hogesnelheidstrein ±4–6 u", note:"Terracottaleger + oude stad", wiki:"Xi'an"},
+    {naam:"Chengdu", n:4, lat:30.57, lng:104.07, vervoer:"Hogesnelheidstrein ±3–4 u", note:"Panda's + theehuizen + bufferdag", wiki:"Chengdu"},
+    {naam:"Zhangjiajie", n:4, lat:29.13, lng:110.48, vervoer:"Trein ± halve dag deur-tot-deur", note:"Forest Park (Yuanjiajie, Bailong Elevator), Tianzi Mountain, Tianmen", wiki:"Zhangjiajie"},
+    {naam:"Shanghai", n:5, lat:31.23, lng:121.47, vervoer:"Binnenlandse vlucht ±2 u", note:"Bund, Yu Garden, French Concession, Suzhou-option", wiki:"Shanghai"}
   ],
   dagen:[
     {d:1,t:"Amsterdam → Beijing",x:"Overnight vlucht"},
@@ -464,12 +468,12 @@ const ROUTES = [
   quote:"Wij worden juist blij van om de 3–4 dagen een nieuwe plek en vinden vijf bases te weinig voor drie weken.",
   letop:["Zhangjiajie → Yangshuo wordt een volle reisdag (rechtstreekse snelle trein ±7 u naar Guilin + transfer) — geen sightseeingdag maken","in Chengdu géén Leshan-dagtrip in deze variant — die rustdag is nodig","visumstatus december 2026 herchecken","zelfde praktische punten als China 1","Variant-slot: Shanghai is bewust de finale (goedkoopste binnenlandse vlucht, geen extra grens, modern-China-thema). Wil je Hongkong: er rijdt een directe hogesnelheidstrein Guilin → West Kowloon (±3,5–4 u, 2026-netwerk) — ruilt Shanghai dan in voor 2 nachten Hongkong + vlucht AMS. Meerprijs hotels, extra immigratiestop en aparte SAR-regels; wel een wereldstad-finale. Aan te passen via ✏️ Bewerken of in dit bestand"],
   stops:[
-    {naam:"Beijing", n:4, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing", note:"3 echte dagen na aankomst"},
-    {naam:"Xi'an", n:3, lat:34.34, lng:108.94, vervoer:"Hogesnelheidstrein ±4–6 u", note:"Precies genoeg"},
-    {naam:"Chengdu", n:3, lat:30.57, lng:104.07, vervoer:"Hogesnelheidstrein ±3–4 u", note:"Panda's + 1 vrije dag"},
-    {naam:"Zhangjiajie", n:3, lat:29.13, lng:110.48, vervoer:"Trein ± halve dag deur-tot-deur", note:"2 volle natuurdagen (Forest Park + Tianzi óf Tianmen)"},
-    {naam:"Yangshuo", n:4, lat:24.78, lng:110.49, vervoer:"Snelle trein ±7 u naar Guilin + transfer — de concessiedag", note:"Herstelblok: zwembad, Yulong River, Xingping, regendag"},
-    {naam:"Shanghai", n:4, lat:31.23, lng:121.47, vervoer:"Binnenlandse vlucht ±2–2,5 u", note:"3 volle dagen / buffer vóór terugvlucht"}
+    {naam:"Beijing", n:4, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing", note:"3 echte dagen na aankomst", wiki:"Beijing"},
+    {naam:"Xi'an", n:3, lat:34.34, lng:108.94, vervoer:"Hogesnelheidstrein ±4–6 u", note:"Precies genoeg", wiki:"Xi'an"},
+    {naam:"Chengdu", n:3, lat:30.57, lng:104.07, vervoer:"Hogesnelheidstrein ±3–4 u", note:"Panda's + 1 vrije dag", wiki:"Chengdu"},
+    {naam:"Zhangjiajie", n:3, lat:29.13, lng:110.48, vervoer:"Trein ± halve dag deur-tot-deur", note:"2 volle natuurdagen (Forest Park + Tianzi óf Tianmen)", wiki:"Zhangjiajie"},
+    {naam:"Yangshuo", n:4, lat:24.78, lng:110.49, vervoer:"Snelle trein ±7 u naar Guilin + transfer — de concessiedag", note:"Herstelblok: zwembad, Yulong River, Xingping, regendag", wiki:"Yangshuo County"},
+    {naam:"Shanghai", n:4, lat:31.23, lng:121.47, vervoer:"Binnenlandse vlucht ±2–2,5 u", note:"3 volle dagen / buffer vóór terugvlucht", wiki:"Shanghai"}
   ],
   dagen:[
     {d:1,t:"Amsterdam → Beijing",x:"Overnight vlucht"},
