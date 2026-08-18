@@ -235,14 +235,13 @@
   .cmpbar .track{height:10px;border-radius:99px;background:var(--bg2);display:flex;overflow:hidden}
   .cmpbar .fill{height:100%;transition:width .6s cubic-bezier(.16,1,.3,1)}
 
-  /* ── variant-schakelaar (Hongkong-finale) ──────────── */
-  .vrow{display:flex;align-items:center;justify-content:center;gap:11px;margin:14px 0 4px;font-size:15px;color:var(--soft)}
-  .switch{position:relative;display:inline-block;width:46px;height:28px;flex:0 0 auto}
-  .switch input{opacity:0;width:0;height:0}
-  .switch span{position:absolute;inset:0;border-radius:99px;background:var(--line);transition:.25s;cursor:pointer}
-  .switch span::before{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.25s;box-shadow:0 1px 4px rgba(0,0,0,.25)}
-  .switch input:checked + span{background:var(--c,var(--usa))}
-  .switch input:checked + span::before{transform:translateX(18px)}
+  /* ── variantkeuze (Hongkong) ───────────────────────── */
+  .segrow{display:flex;flex-direction:column;align-items:center;gap:10px;margin:16px 0 4px}
+  .vlbl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .seg{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;background:var(--bg2);border:1px solid var(--hair);border-radius:12px;padding:4px}
+  .seg button{border:0;background:transparent;border-radius:9px;padding:8px 14px;font-size:13.5px;color:var(--soft);cursor:pointer;font-family:inherit}
+  .seg button:hover{color:var(--ink)}
+  .seg button.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 5px rgba(0,0,0,.12)}
   .vnote{background:#fffdf5;border:1px solid #ecd9b5;border-radius:var(--r);padding:14px 20px;font-size:14.5px;color:#7a5a1e;margin:10px auto 18px;max-width:780px}
   .vnote small{color:#a5843f}
 
@@ -664,15 +663,26 @@ function ensureOverview() {
 }
 
 /* ═══════════════ routepagina-template ═══════════════ */
+function hkModus(r) {
+  if (!r.varianten) return null;
+  let m = localStorage.getItem("reis27-hkmodus");
+  if (!m && localStorage.getItem("reis27-hk") === "1") m = "vervang";
+  return r.varianten.find((v) => v.modus === m) || null;
+}
 function effectieveStops(r) {
-  if (r.variant && localStorage.getItem("reis27-hk") === "1")
-    return r.stops.map((s) => s.naam === r.variant.vervangStop ? Object.assign({}, s, r.variant.door) : s);
-  return r.stops;
+  const v = hkModus(r); if (!v) return r.stops;
+  const st = r.stops.map((s) => Object.assign({}, s));
+  if (v.modus === "vervang") {
+    return st.map((s) => s.naam === v.vervangStop ? Object.assign({}, s, v.door) : s);
+  }
+  if (v.setNachten) st.forEach((s) => { if (v.setNachten[s.naam] !== undefined) s.n = v.setNachten[s.naam]; });
+  if (v.voegInNa) { const i = st.findIndex((s) => s.naam === v.voegInNa); if (i >= 0) st.splice(i + 1, 0, Object.assign({}, v.nieuwStop)); }
+  return st;
 }
 function routePageHTML(r) {
   const idx = ROUTES.indexOf(r);
   const st = effectieveStops(r);
-  const varAan = r.variant && localStorage.getItem("reis27-hk") === "1";
+  const v = hkModus(r);
   const n = st.reduce((t, s) => t + (s.n || 0), 0);
   const nb = st.filter((s) => (s.n || 0) > 0).length;
   const maxN = Math.max(...st.map((s) => s.n || 0));
@@ -702,7 +712,11 @@ function routePageHTML(r) {
         </div>
       </div>
       ${r.geparkeerd ? `<div class="parked-banner">⚠️ ${esc(r.geparkeerd)}</div>` : ""}
-      ${r.variant ? `<div class="vrow" style="--c:${r.kleur}"><label class="switch" style="--c:${r.kleur}"><input type="checkbox" id="hkToggle"${varAan ? " checked" : ""}><span></span></label><span>${esc(r.variant.label)}</span></div>${varAan ? `<div class="vnote">🏙 ${r.variant.dagtekst}<br><small>${esc(r.variant.tip)}</small></div>` : ""}` : ""}
+      ${r.varianten ? `<div class="segrow" style="--c:${r.kleur}"><div class="vlbl">Hongkong-opties</div><div class="seg" id="hkSeg">
+          <button type="button" data-modus=""${!v ? ' class="on"' : ""}>Standaard (Shanghai-finale)</button>
+          <button type="button" data-modus="vervang"${v && v.modus === "vervang" ? ' class="on"' : ""}>Hongkong-finale</button>
+          <button type="button" data-modus="extra"${v && v.modus === "extra" ? ' class="on"' : ""}>Hongkong als 7e bestemming</button>
+        </div></div>${v ? `<div class="vnote">🏙 ${v.dagtekst}<br><small>${esc(v.tip)}</small></div>` : ""}` : ""}
       <div class="statgrid">
         <div class="stat"><b>${r.soort === "China" ? r.treinkm.toLocaleString("nl") + " km" : r.km.toLocaleString("nl") + " km"}</b><span>${r.soort === "China" ? "trein + binnenlandse vlucht" : "camperritten incl. dagtochten"}</span></div>
         <div class="stat"><b>${n}</b><span>nachten · ${nb} bases</span></div>
@@ -852,8 +866,13 @@ function showRoute(id, viaHash) {
   wireEdit(pageEl, r);
   makeRouteMap(r);
   if (r.fotos) laadFotos(r);
-  const hk = $("#hkToggle");
-  if (hk) hk.onchange = () => { localStorage.setItem("reis27-hk", hk.checked ? "1" : "0"); showRoute(r.id, true); };
+  const seg = $("#hkSeg");
+  if (seg) seg.addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-modus]"); if (!b) return;
+    if (b.dataset.modus) localStorage.setItem("reis27-hkmodus", b.dataset.modus);
+    else localStorage.removeItem("reis27-hkmodus");
+    showRoute(r.id, true);
+  });
   document.querySelectorAll("[data-nav]").forEach((a) => a.classList.toggle("active", a.dataset.nav === id));
   scrollTo({ top: 0 });
   if (!viaHash) location.hash = "route-" + id;
