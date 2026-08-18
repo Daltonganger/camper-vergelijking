@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Route 4-plus — Atlanta rondreis mei/juni 2027</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+  :root{
+    --ink:#1f2422; --ink-soft:#5a635f; --line:#e2e0da; --bg:#faf9f6; --card:#ffffff;
+    --night:#c0553b; --water:#2b7fb8; --day:#3f8f5f; --accent:#8a6d3b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 72px}
+  header{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:24px}
+  .backlink{display:inline-block;font-size:12.5px;font-weight:600;color:var(--ink-soft);text-decoration:none;
+    margin-bottom:14px;padding:5px 0;transition:color .15s}
+  .backlink:hover{color:var(--ink)}
+  .route-ref{color:var(--accent);font-weight:600}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+  h1{font-size:30px;line-height:1.15;margin:8px 0 6px;letter-spacing:-.02em}
+  .sub{color:var(--ink-soft);font-size:15px;margin:0}
+  h2{font-size:20px;margin:38px 0 12px;letter-spacing:-.01em}
+  h3{font-size:15px;margin:26px 0 8px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+  p{margin:0 0 12px}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0 4px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+  .stat .v{font-size:22px;font-weight:650;letter-spacing:-.02em}
+  .stat .l{font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+
+  #map{height:560px;border-radius:12px;border:1px solid var(--line);margin:6px 0 10px;background:#e8eae6}
+  .maphint{font-size:12.5px;color:var(--ink-soft);margin:0 0 18px}
+
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin:10px 0 18px;font-size:13px}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .dot{width:15px;height:15px;border-radius:50%;display:inline-block;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.18)}
+
+  .btns{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 6px}
+  .btn{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);
+    border-left:4px solid var(--night);border-radius:10px;padding:12px 16px;color:var(--ink);
+    flex:1 1 280px;transition:.15s}
+  .btn:hover{border-color:#c9c5bb;transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.06)}
+  .btn b{display:block;font-size:14.5px;margin-bottom:2px}
+  .btn small{color:var(--ink-soft);font-size:12.5px}
+
+  table{width:100%;border-collapse:collapse;margin:10px 0 18px;font-size:13.5px;background:var(--card)}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#f2f0ea;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:650}
+  tbody tr:hover{background:#fbfaf7}
+  td.num{white-space:nowrap;font-variant-numeric:tabular-nums}
+  .tag{display:inline-block;font-size:10.5px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;
+    padding:2px 7px;border-radius:20px;white-space:nowrap}
+  .t-water{background:#e2f0f9;color:#1c5f8a}
+  .t-park{background:#e6f2ea;color:#2c6a45}
+  .t-drive{background:#f3efe4;color:#7a6127}
+  .t-plug{background:#efe7f5;color:#5c3f78}
+
+  .note{background:#fff8ea;border:1px solid #ecdfc0;border-left:4px solid var(--accent);
+    border-radius:10px;padding:14px 17px;margin:16px 0;font-size:13.5px}
+  .note b{display:block;margin-bottom:4px}
+  .warn{background:#fdf0ec;border-color:#f0d3c9;border-left-color:var(--night)}
+  .good{background:#eef6f0;border-color:#cfe3d6;border-left-color:var(--day)}
+
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-soft)}
+  #stoplist{list-style:none;padding:0;margin:8px 0 20px;columns:2;column-gap:26px;font-size:13px}
+  #stoplist li{display:flex;gap:9px;align-items:flex-start;break-inside:avoid;
+    padding:8px 0;border-bottom:1px solid var(--line)}
+  #stoplist li .dot{flex:0 0 auto;margin-top:4px}
+  #stoplist b{font-size:13px;color:var(--ink)}
+  #stoplist span{color:var(--ink-soft);line-height:1.45}
+  @media(max-width:760px){ #stoplist{columns:1} }
+  .marker-pin{border-radius:50%;border:2.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);
+    color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .leaflet-popup-content{font-family:inherit;font-size:13px;line-height:1.45}
+  @media(max-width:640px){ #map{height:420px} h1{font-size:24px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="backlink" href="index.html">← Terug naar de routevergelijking</a>
+  <div class="kicker">Route 4-plus &middot; geoptimaliseerde versie &middot; <span class="route-ref">Route 2 uit de vergelijking: Oostkust Zuid (Atlanta)</span></div>
+  <h1>Atlanta &rarr; Atlanta: Appalachen, Blue Ridge Parkway &amp; de kust van South Carolina</h1>
+  <p class="sub">21 dagen &middot; 20 nachten &middot; mei/juni 2027 &middot; 2 volwassenen + dochter van &plusmn;1 jaar</p>
+</header>
+
+<div class="stats">
+  <div class="stat"><div class="v">4.150 km</div><div class="l">totaal incl. dagtochten</div></div>
+  <div class="stat"><div class="v">3.860 km</div><div class="l">doorgaande kilometers</div></div>
+  <div class="stat"><div class="v">15 van 20</div><div class="l">nachten in een park</div></div>
+  <div class="stat"><div class="v">4 nachten</div><div class="l">aan het strand, water 27&nbsp;&deg;C</div></div>
+  <div class="stat"><div class="v">755 km</div><div class="l">Blue Ridge Parkway</div></div>
+  <div class="stat"><div class="v">&plusmn;&euro;1.200</div><div class="l">goedkoper dan 6B</div></div>
+</div>
+
+<div class="note warn">
+  <b>Eerst een correctie op jullie eigen kilometerstand</b>
+  Jullie noemden 3.267 km voor deze route. Dat is wat Google Maps berekent, maar Google stuurt je tussen Shenandoah en de Smokies over de <b>snelweg I-81</b>, niet over de Blue Ridge Parkway zelf. Rijd je de Parkway daadwerkelijk &mdash; en dat is de hele reden dat hij op je lijstje staat &mdash; dan zijn dat 755 km extra scenic road met een <b>maximumsnelheid van 72 km/u</b>. Realistisch kom je uit op <b>ruim 4.100 km en drie tot vier volle dagen alleen al voor de Parkway</b>. Dat is geen probleem binnen jullie kader van 3.000&ndash;4.000 km, maar het is wel goed om te weten vóórdat je de dagen indeelt.
+</div>
+
+<h2>De kaart</h2>
+<div id="map"></div>
+<p class="maphint">Klik op een marker voor details.</p>
+
+<div class="legend">
+  <span><i class="dot" style="background:#c0553b"></i> Overnachting</span>
+  <span><i class="dot" style="background:#2b7fb8"></i> Strand of zwemwater</span>
+  <span><i class="dot" style="background:#3f8f5f"></i> Dagstop, geen overnachting</span>
+</div>
+
+<h3>Alle 20 stops op volgorde</h3>
+<ol id="stoplist"></ol>
+
+<h2>Openen in Google Maps</h2>
+<p>Drie etappes, omdat Google maximaal tien punten per route toestaat. <b>Belangrijk:</b> in etappe&nbsp;2 zijn de tussenpunten bewust gekozen op mijlpalen langs de Blue Ridge Parkway (Peaks of Otter, Mabry Mill, Doughton, Julian Price, Mount Pisgah). Zonder die punten stuurt Google je automatisch over de snelweg en mis je de hele Parkway.</p>
+
+<div class="btns">
+  <a class="btn" target="_blank" rel="noopener"
+     href="https://www.google.com/maps/dir/Atlanta,+GA/Cloudland+Canyon+State+Park,+GA/Mammoth+Cave+National+Park,+KY/Natural+Bridge+State+Resort+Park,+KY/New+River+Gorge+Bridge,+WV/Babcock+State+Park,+WV/Big+Meadows,+Shenandoah+National+Park,+VA">
+    <b>Etappe 1 &middot; Dag 1&ndash;7</b>
+    <small>Atlanta &rarr; Cloudland Canyon &rarr; Mammoth Cave &rarr; Red River Gorge &rarr; New River Gorge &rarr; Shenandoah &middot; ca. 1.660 km</small>
+  </a>
+  <a class="btn" target="_blank" rel="noopener"
+     href="https://www.google.com/maps/dir/Big+Meadows,+Shenandoah+National+Park,+VA/Peaks+of+Otter,+VA/Mabry+Mill,+VA/Doughton+Park,+NC/Julian+Price+Park,+NC/Mount+Mitchell+State+Park,+NC/Mount+Pisgah,+Blue+Ridge+Parkway,+NC/Smokemont+Campground,+NC/Kuwohi,+Great+Smoky+Mountains+National+Park/Cades+Cove,+TN">
+    <b>Etappe 2 &middot; Dag 8&ndash;14</b>
+    <small>Skyline Drive &rarr; volledige Blue Ridge Parkway &rarr; Great Smoky Mountains &middot; ca. 970 km, waarvan 755 km Parkway</small>
+  </a>
+  <a class="btn" target="_blank" rel="noopener"
+     href="https://www.google.com/maps/dir/Cades+Cove,+TN/Congaree+National+Park,+SC/James+Island+County+Park,+Charleston,+SC/Hunting+Island+State+Park,+SC/Beaufort,+SC/Skidaway+Island+State+Park,+GA/Savannah,+GA/Atlanta,+GA">
+    <b>Etappe 3 &middot; Dag 15&ndash;21</b>
+    <small>Smokies &rarr; Congaree &rarr; Charleston &rarr; Hunting Island &rarr; Savannah &rarr; Atlanta &middot; ca. 1.230 km</small>
+  </a>
+</div>
+
+<div class="note">
+  <b>De hele reis in één kaart</b>
+  Bij dit bericht zit <em>route-4-plus.kml</em>. Ga naar <strong>google.com/mymaps</strong> &rarr; Nieuwe kaart maken &rarr; Importeren &rarr; kies het bestand. Alle stops met omschrijving plus de routelijn in één opslaanbare kaart, ook terug te vinden in de Google Maps-app onder &bdquo;Jouw plaatsen&ldquo;.
+</div>
+
+<h2>Wat ik heb aangepast aan jullie route 4</h2>
+<table>
+<thead><tr><th>Aanpassing</th><th>Waarom</th></tr></thead>
+<tbody>
+<tr><td><b>Congaree van overnachting naar middagstop</b></td><td>Het park heeft een officiële Mosquito Meter met zes standen tot en met &bdquo;War Zone&ldquo; en spuit bewust niet, om de 20+ muggensoorten te beschermen. Het ligt wel pal langs I-26 op de route naar Charleston. Doe de vlonderpad-lus van 40 minuten midden op de dag en rijd door &mdash; je hebt het park gezien, zonder er te slapen</td></tr>
+<tr><td><b>Hunting Island van 3 naar 4 nachten</b></td><td>Dit is het onderdeel waar deze route zijn voorsprong heeft. Vier nachten maakt er een vakantie-in-de-vakantie van in plaats van een tussenstop</td></tr>
+<tr><td><b>Cloudland Canyon als eerste nacht</b></td><td>180 km in plaats van 620 km op de jetlagdag. Kost slechts 10 km extra op de hele route</td></tr>
+<tr><td><b>Natural Bridge / Red River Gorge toegevoegd</b></td><td>Breekt de 600 km tussen Mammoth Cave en New River Gorge in twee. Kost 30 km extra</td></tr>
+<tr><td><b>Smokies opgesplitst over beide zijden</b></td><td>Eén nacht Smokemont aan de NC-kant (wapitikudde bij Oconaluftee, vrijwel gegarandeerd wildlife zonder wandelen) en twee nachten Cades Cove aan de TN-kant (beren, herten)</td></tr>
+<tr><td><b>Savannah als laatste nacht in plaats van doorrijden</b></td><td>Anders wordt de laatste dag 475 km inclusief inleveren en vliegen</td></tr>
+</tbody>
+</table>
+
+<h2>Dag voor dag</h2>
+<table>
+<thead>
+<tr><th>Dag</th><th>Etappe</th><th class="num">km</th><th>Overnachting</th><th>Wat je doet</th></tr>
+</thead>
+<tbody>
+<tr><td class="num">1</td><td>Atlanta &rarr; Cloudland Canyon SP</td><td class="num">180</td><td>Cloudland Canyon <span class="tag t-plug">stroom</span></td><td>Camper ophalen, boodschappen. Diepe kloof met twee watervallen, vlakke paden langs de rand</td></tr>
+<tr><td class="num">2</td><td>&rarr; Mammoth Cave NP, KY</td><td class="num">450</td><td>Mammoth Cave CG <span class="tag t-park">in het park</span></td><td>Via Chattanooga en Nashville</td></tr>
+<tr><td class="num">3</td><td>Grottour &rarr; Red River Gorge, KY</td><td class="num">300</td><td>Natural Bridge SRP <span class="tag t-plug">stroom</span></td><td>Langste grottenstelsel ter wereld, jaarrond 12&nbsp;&deg;C. Frozen Niagara is de kortste tour</td></tr>
+<tr><td class="num">4</td><td>&rarr; New River Gorge NP, WV</td><td class="num">330</td><td>Babcock SP <span class="tag t-plug">stroom</span></td><td>New River Gorge Bridge: 267 m boven de rivier, vlakke boardwalk bij het Canyon Rim Visitor Center</td></tr>
+<tr><td class="num">5</td><td>New River Gorge</td><td class="num">80</td><td>Babcock SP <span class="tag t-plug">stroom</span></td><td>Glade Creek Grist Mill, Sandstone Falls, Grandview Overlook</td></tr>
+<tr><td class="num">6</td><td>&rarr; Shenandoah NP, VA</td><td class="num">400</td><td>Big Meadows <span class="tag t-park">in het park</span></td><td>Via Lewisburg en Staunton, dan Skyline Drive op bij Rockfish Gap</td></tr>
+<tr><td class="num">7</td><td>Skyline Drive</td><td class="num">90</td><td>Big Meadows <span class="tag t-park">in het park</span></td><td>Dark Hollow Falls, Big Meadows: herten en zwarte beren op de open vlakte</td></tr>
+<tr><td class="num">8</td><td>Skyline Drive zuid &rarr; BRP MP 86</td><td class="num">190</td><td>Peaks of Otter <span class="tag t-park">op de Parkway</span></td><td>Start van de Blue Ridge Parkway bij MP 0. Camping aan Abbott Lake onder Sharp Top</td></tr>
+<tr><td class="num">9</td><td>BRP MP 86 &rarr; 239</td><td class="num">250</td><td>Doughton Park <span class="tag t-park">op de Parkway</span></td><td>Mabry Mill (MP 176), Blue Ridge Music Center met gratis livemuziek (MP 213). <b>Langste Parkway-dag, ruim 5 uur rijden</b></td></tr>
+<tr><td class="num">10</td><td>BRP MP 239 &rarr; 297</td><td class="num">110</td><td>Julian Price <span class="tag t-park">op de Parkway</span></td><td>Korte dag. Linville Falls, Linn Cove Viaduct, Grandfather Mountain, camping aan Price Lake</td></tr>
+<tr><td class="num">11</td><td>BRP MP 297 &rarr; 408</td><td class="num">180</td><td>Mount Pisgah <span class="tag t-park">op de Parkway</span></td><td>Mount Mitchell (2.037 m, hoogste punt ten oosten van de Mississippi), Craggy Gardens, Asheville</td></tr>
+<tr><td class="num">12</td><td>BRP finale &rarr; Great Smoky Mts</td><td class="num">160</td><td>Smokemont <span class="tag t-park">in het park</span></td><td>Waterrock Knob, einde Parkway bij MP 469. Oconaluftee: <b>wapitikudde op de weide</b>, wildlife zonder wandelen</td></tr>
+<tr><td class="num">13</td><td>Kuwohi &rarr; Cades Cove</td><td class="num">110</td><td>Cades Cove <span class="tag t-park">in het park</span></td><td>Kuwohi (2.025 m, voorheen Clingmans Dome): 17&nbsp;&deg;C terwijl het beneden 30&nbsp;&deg;C is. Newfound Gap Road</td></tr>
+<tr><td class="num">14</td><td>Cades Cove</td><td class="num">60</td><td>Cades Cove <span class="tag t-park">in het park</span></td><td>De 18 km lange Loop: zwarte beren, herten, historische boerderijen. Zwemmen in de Little River bij de Townsend Y</td></tr>
+<tr><td class="num">15</td><td>&rarr; Congaree &rarr; Charleston</td><td class="num">640</td><td>James Island CP <span class="tag t-plug">volle hookups</span></td><td><span class="tag t-drive">langste rijdag</span> Congaree als korte vlonderpad-stop midden op de dag. Daarna eerste keer stroom sinds dag 5</td></tr>
+<tr><td class="num">16</td><td>Charleston &rarr; Hunting Island SP</td><td class="num">110</td><td>Hunting Island <span class="tag t-water">strand</span></td><td>Ochtend in het historische centrum van Charleston, middag naar het eiland</td></tr>
+<tr><td class="num">17&ndash;19</td><td>Hunting Island</td><td class="num">60</td><td>Hunting Island <span class="tag t-water">strand</span></td><td><b>Drie volle stranddagen.</b> Water 26,9&nbsp;&deg;C, 5 km strand, vuurtoren uit 1875, palmettobos, lagune. Uitstapje naar Beaufort</td></tr>
+<tr><td class="num">20</td><td>&rarr; Savannah</td><td class="num">90</td><td>Skidaway Island SP <span class="tag t-plug">stroom</span></td><td>Historisch centrum van Savannah, Spaans mos, zoutmoerassen</td></tr>
+<tr><td class="num">21</td><td>&rarr; Atlanta, camper inleveren</td><td class="num">400</td><td>vlucht naar huis</td><td>Ongeveer 4 uur. Plan dit alleen bij een avondvlucht</td></tr>
+</tbody>
+</table>
+
+<h2>Weer en water</h2>
+<table>
+<thead><tr><th>Plek</th><th class="num">Hoogte</th><th class="num">Mei</th><th class="num">Juni</th><th>Opmerking</th></tr></thead>
+<tbody>
+<tr><td>Gatlinburg / dalen Smokies</td><td class="num">440 m</td><td class="num">&plusmn;26 / 12&nbsp;&deg;C</td><td class="num">&plusmn;30 / 17&nbsp;&deg;C</td><td>Regen: 114 mm in mei, 132 mm in juni</td></tr>
+<tr><td>Kuwohi, Great Smoky Mts</td><td class="num">2.025 m</td><td class="num">14 / 6&nbsp;&deg;C</td><td class="num">17&nbsp;&deg;C</td><td><b>175 mm regen in juni</b> &mdash; dit is technisch gematigd regenwoud</td></tr>
+<tr><td>Big Meadows, Shenandoah</td><td class="num">1.070 m</td><td class="num">&plusmn;20 / 9&nbsp;&deg;C</td><td class="num">&plusmn;24 / 14&nbsp;&deg;C</td><td>Indicatief, nog te bevestigen</td></tr>
+<tr><td>Blue Ridge Parkway, hoge delen</td><td class="num">1.100&ndash;1.800 m</td><td class="num">&plusmn;18 / 8&nbsp;&deg;C</td><td class="num">&plusmn;22 / 13&nbsp;&deg;C</td><td>Rododendron- en laurierbloei eind mei tot half juni</td></tr>
+<tr><td>Charleston / Beaufort</td><td class="num">3 m</td><td class="num">29 / 17&nbsp;&deg;C</td><td class="num">31 / 21&nbsp;&deg;C</td><td>In juni gemiddeld <b>14 dagen boven 32&nbsp;&deg;C</b>, hoge luchtvochtigheid</td></tr>
+<tr><td><b>Hunting Island, zeewater</b></td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num"><b>26,9&nbsp;&deg;C</b></td><td>Bereik in juni 22,4 tot 29,6&nbsp;&deg;C. Comfortabel zwemwater voor een 1-jarige</td></tr>
+</tbody>
+</table>
+
+<div class="note good">
+  <b>De grote troef van deze route</b>
+  Geen enkele wegafsluiting, geen sneeuwrisico, geen pas die te laat opengaat. Waar optie 6B staat of valt met Trail Ridge Road en Dunraven Pass, is hier in mei én juni alles gewoon open. Dat maakt deze route de enige van de zeven die je zonder seizoensrisico kunt plannen &mdash; en de enige waarbij half mei net zo goed werkt als half juni.
+</div>
+
+<h2>Waar het misgaat als je niet oplet</h2>
+
+<div class="note warn">
+  <b>1. Tien nachten zonder stroom</b>
+  Dit is het grootste praktische verschil met wat mensen verwachten. <b>Geen enkele camping van de National Park Service op deze route heeft hookups</b> &mdash; niet Mammoth Cave, niet Big Meadows, geen van de vier Parkway-campings, niet Smokemont of Cades Cove. Wel overal stromend water, toiletten en dumpstations. Van nacht 6 tot en met nacht 14 draai je dus op accu, gas en generator. Check bij het ophalen de accucapaciteit en de generatoruren, en plan de koelkast op gas.
+</div>
+
+<div class="note warn">
+  <b>2. De Smokies-parkeervergunning is níet gedekt door de parkpas</b>
+  Great Smoky Mountains heft geen entree, maar sinds 2023 heb je een <b>parking tag</b> nodig zodra je langer dan 15 minuten parkeert: $5 per dag, <b>$15 per week</b>, $40 per jaar. De America the Beautiful-pas geldt hier uitdrukkelijk niet voor. Koop de weekvergunning meteen bij Oconaluftee.
+</div>
+
+<div class="note warn">
+  <b>3. Cades Cove Loop is elke woensdag autovrij</b>
+  Van mei tot en met september is de 18 km lange lus op woensdag gesloten voor auto's. Met een 1-jarige ga je die niet fietsen, dus zorg dat je er niet uitsluitend op een woensdag bent &mdash; of gebruik die dag juist om een stuk te wandelen zonder verkeer, wat met een kinderwagen op de vlakke lus prima gaat.
+</div>
+
+<div class="note warn">
+  <b>4. Reserveren: twee verschillende systemen, allebei vroeg</b>
+  De parkcampings (Mammoth Cave, Big Meadows, alle Parkway-campings, Smokemont, Cades Cove) gaan via Recreation.gov, doorgaans <b>zes maanden rollend</b>. Big Meadows is volledig op reservering. Hunting Island valt onder South Carolina State Parks met een eigen, veel ruimer boekvenster en is een van de populairste parken van de staat &mdash; de oceaanplekken gaan het eerst. Zoek dit venster uit zodra jullie de datum vastzetten.
+</div>
+
+<div class="note">
+  <b>5. Knutjes op de kust, teken in de bergen</b>
+  Aan de kust zijn niet de muggen maar de <b>no-see-ums</b> het punt: ze komen door standaard vliegengaas heen en zijn het ergst bij zonsopgang en zonsondergang. Het zijn zwakke vliegers, dus <b>zeebries stopt ze</b> &mdash; reserveer op Hunting Island bewust aan de oceaanzijde in plaats van tussen de bomen landinwaarts. In het Appalachen-deel zijn <b>teken</b> met een kruipend kind het echte aandachtspunt: lange broek, dagelijkse controle, permethrine op kleding.
+</div>
+
+<h2>Route 4-plus naast optie 6B</h2>
+<table>
+<thead><tr><th>Criterium</th><th>Route 4-plus (Atlanta)</th><th>Optie 6B-light (Denver)</th></tr></thead>
+<tbody>
+<tr><td>Kilometers</td><td class="num">4.150</td><td class="num">3.700</td></tr>
+<tr><td>Nachten in een park</td><td>15 van 20</td><td>14 van 20</td></tr>
+<tr><td>Nachten met stroom</td><td><b>8 van 20</b></td><td>11 van 20</td></tr>
+<tr><td>Strand</td><td><b>4 nachten, oceaan 26,9&nbsp;&deg;C</b></td><td>1 strandavond, meer 20&nbsp;&deg;C</td></tr>
+<tr><td>Wildlife</td><td>Zwarte beren, wapiti, herten</td><td><b>Bizons, wolven, grizzly's, wapiti</b></td></tr>
+<tr><td>Landschappelijke top</td><td>Blue Ridge Parkway, 755 km scenic road</td><td><b>Yellowstone en Grand Teton</b></td></tr>
+<tr><td>Seizoensrisico</td><td><b>Vrijwel nul</b></td><td>Middel: Trail Ridge, Dunraven, sneeuw</td></tr>
+<tr><td>Koudste nacht</td><td><b>&plusmn;6&nbsp;&deg;C</b> (Kuwohi-hoogte)</td><td>&minus;3&nbsp;&deg;C (Yellowstone Lake)</td></tr>
+<tr><td>Heetste dag</td><td>31&nbsp;&deg;C met hoge luchtvochtigheid</td><td><b>29&nbsp;&deg;C, droog</b></td></tr>
+<tr><td>Regen</td><td>132&ndash;175 mm in juni in de Smokies</td><td><b>32&ndash;68 mm in Yellowstone</b></td></tr>
+<tr><td>Vlucht vanuit Amsterdam</td><td><b>Nonstop, 124 vluchten/maand</b></td><td>Geen nonstop, altijd overstappen</td></tr>
+<tr><td>Vluchtkosten, 2 volw. + baby</td><td><b>&euro; 1.000 &ndash; 1.400</b></td><td>&euro; 1.500 &ndash; 2.000</td></tr>
+<tr><td>Totaal excl. eten</td><td><b>&euro; 5.300 &ndash; 7.000</b></td><td>&euro; 5.900 &ndash; 8.200</td></tr>
+<tr><td>Beste vertrekmoment</td><td><b>Flexibel: half mei tot half juni</b></td><td>Rond 24 mei, niet eerder</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+  <b>De keuze in één zin</b>
+  Route 4-plus is goedkoper, warmer, risicolozer en heeft het enige echte strand; optie 6B heeft het spectaculairdere landschap en veruit de betere wildlife. Het strand is niet de tiebreaker &mdash; de vraag is of Yellowstone en Grand Teton voor jullie in een andere klasse spelen dan de Blue Ridge Parkway en de Smokies. Zo ja, dan is 6B het geld en het seizoensrisico waard. Zo nee, dan is route 4-plus op vrijwel elke praktische as de betere reis, en met een 1-jarige zeker.
+</div>
+
+<footer>
+Opgesteld 17 augustus 2026. Openingsdata, tarieven en reserveringsvensters zijn die van seizoen 2026 en moeten voor 2027 opnieuw gecontroleerd worden.<br>
+Bronnen: NPS (Great Smoky Mountains, Shenandoah, Blue Ridge Parkway, Congaree, Mammoth Cave, New River Gorge), South Carolina State Parks, Recreation.gov, Current Results, SeaTemperature.info, FlightConnections.<br>
+Kaartdata &copy; OpenStreetMap-bijdragers.
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+const STOPS = [
+ {n:"1",  t:"day",   lat:33.7490, lon:-84.3880, name:"Dag 1 — Atlanta, camper ophalen", d:"Nonstop vanuit Amsterdam, 124 vluchten per maand — de goedkoopste gateway van alle zeven routes."},
+ {n:"2",  t:"night", lat:34.8360, lon:-85.4810, name:"Nacht 1 — Cloudland Canyon SP, GA", d:"550 m. Elektra en water. Diepe kloof met twee watervallen, vlakke paden langs de rand. 180 km in plaats van 620 km op de jetlagdag."},
+ {n:"3",  t:"night", lat:37.1866, lon:-86.1010, name:"Nacht 2 — Mammoth Cave NP, KY", d:"Langste grottenstelsel ter wereld, jaarrond 12 °C. Camping in het park, geen hookups. Frozen Niagara is de kortste tour."},
+ {n:"4",  t:"night", lat:37.7770, lon:-83.6830, name:"Nacht 3 — Natural Bridge SRP / Red River Gorge, KY", d:"Natuurlijke zandsteenboog, korte paden, elektra. Breekt de 600 km tussen Mammoth Cave en New River Gorge."},
+ {n:"5",  t:"day",   lat:38.0700, lon:-81.0770, name:"Dag 4 — New River Gorge Bridge, WV", d:"267 m boven de rivier. Vlakke boardwalk vanaf het Canyon Rim Visitor Center."},
+ {n:"6",  t:"night", lat:37.9776, lon:-80.9540, name:"Nacht 4–5 — Babcock State Park, WV", d:"Elektra en water. Glade Creek Grist Mill, het meest gefotografeerde molentje van Amerika. Basis voor Sandstone Falls en Grandview."},
+ {n:"7",  t:"night", lat:38.5220, lon:-78.4370, name:"Nacht 6–7 — Shenandoah NP, Big Meadows CG", d:"1.070 m, Skyline Drive MP 51. Ruim 200 plekken, alleen op reservering, geen hookups maar wel dumpstation. Herten en zwarte beren op de open vlakte."},
+ {n:"8",  t:"night", lat:37.4430, lon:-79.6060, name:"Nacht 8 — Peaks of Otter CG, BRP MP 86", d:"Aan Abbott Lake onder Sharp Top. Parkway-campings zijn open van mei tot eind oktober, zonder hookups."},
+ {n:"9",  t:"day",   lat:36.7480, lon:-80.4030, name:"Dag 9 — Mabry Mill, BRP MP 176", d:"Het bekendste beeld van de hele Parkway. Verderop bij MP 213 het Blue Ridge Music Center met gratis livemuziek."},
+ {n:"10", t:"night", lat:36.4290, lon:-81.1770, name:"Nacht 9 — Doughton Park CG, BRP MP 239", d:"Open hooglandweiden met lange vergezichten. Rustigste camping van de Parkway. Langste Parkway-dag: ruim 5 uur rijden."},
+ {n:"11", t:"night", lat:36.1370, lon:-81.7300, name:"Nacht 10 — Julian Price CG, BRP MP 297", d:"1.100 m, aan Price Lake. Korte dag: Linville Falls, Linn Cove Viaduct, Grandfather Mountain."},
+ {n:"12", t:"day",   lat:35.7650, lon:-82.2650, name:"Dag 11 — Mount Mitchell SP, 2.037 m", d:"Hoogste punt ten oosten van de Mississippi. Vanaf de parkeerplaats nog 280 m naar de top. Sparrenbos, voelt als Canada."},
+ {n:"13", t:"night", lat:35.4200, lon:-82.7500, name:"Nacht 11 — Mount Pisgah CG, BRP MP 408", d:"1.500 m, hoogste camping van de Parkway. Onderweg Craggy Gardens (rododendronbloei eind mei tot half juni) en Asheville."},
+ {n:"14", t:"night", lat:35.5580, lon:-83.3120, name:"Nacht 12 — Great Smoky Mts, Smokemont CG (NC)", d:"Einde van de Parkway bij MP 469. Oconaluftee Visitor Center met de wapitikudde op de weide — wildlife zonder wandelen."},
+ {n:"15", t:"day",   lat:35.5628, lon:-83.4986, name:"Dag 13 — Kuwohi (voorheen Clingmans Dome), 2.025 m", d:"Hoogste punt van het park, sinds 2024 officieel Kuwohi. 17 °C in juni terwijl het beneden 30 °C is. Steile oprit van 800 m naar de toren."},
+ {n:"16", t:"night", lat:35.6030, lon:-83.7750, name:"Nacht 13–14 — Great Smoky Mts, Cades Cove CG (TN)", d:"Ruim 150 plekken, geen hookups. De 18 km lange Loop: zwarte beren, herten, historische boerderijen. LET OP: elke woensdag autovrij, mei t/m september. Zwemmen in de Little River bij de Townsend Y."},
+ {n:"17", t:"day",   lat:33.7900, lon:-80.7800, name:"Dag 15 — Congaree NP, SC (korte middagstop)", d:"Bewust geen overnachting: officiële Mosquito Meter met zes standen tot en met 'War Zone', en het park spuit bewust niet. Vlonderpad-lus van 40 minuten midden op de dag, pal langs I-26."},
+ {n:"18", t:"water", lat:32.7420, lon:-79.9900, name:"Nacht 15 — Charleston, James Island County Park", d:"Volledige hookups, 20 min van het historische centrum en van Folly Beach. Eerste stroom sinds nacht 5."},
+ {n:"19", t:"water", lat:32.3750, lon:-80.4400, name:"Nacht 16–19 — HUNTING ISLAND SP (4 nachten strand)", d:"Oceaanwater in juni 26,9 °C, lucht 31 °C. 5 km strand, palmettobos, vuurtoren uit 1875. 102 plekken met 20/30/50 amp elektra en water. Reserveer aan de oceaanzijde: de zeebries houdt de knutjes weg."},
+ {n:"20", t:"night", lat:31.9370, lon:-81.0470, name:"Nacht 20 — Skidaway Island SP, Savannah GA", d:"Elektra en water, 20 min van het historische centrum. Spaans mos, vlakke paden door de zoutmoerassen. Dag 21: 400 km terug naar Atlanta."}
+];
+
+const COLORS = {night:"#c0553b", water:"#2b7fb8", day:"#3f8f5f"};
+const mapEl = document.getElementById('map');
+
+function drawSvgMap(){
+  const LON0=-87.6, LON1=-77.4, LAT0=30.6, LAT1=39.6;
+  const K = Math.cos(35*Math.PI/180);
+  const W = 900, H = Math.round(W * (LAT1-LAT0) / ((LON1-LON0)*K));
+  const X = lon => (lon-LON0)/(LON1-LON0)*W;
+  const Y = lat => (LAT1-lat)/(LAT1-LAT0)*H;
+
+  const borders = [
+    [[-85.61,35.00],[-83.11,35.00]],   // noordgrens Georgia
+    [[-85.61,31.00],[-85.61,35.00]],   // Georgia / Alabama
+    [[-88.20,36.50],[-81.95,36.50]],   // Tennessee / Kentucky
+    [[-83.68,36.55],[-75.80,36.55]],   // North Carolina / Virginia
+    [[-84.32,35.00],[-81.70,36.60]],   // Tennessee / North Carolina (bergkam, benadering)
+    [[-83.11,35.00],[-78.55,33.85]],   // North Carolina / South Carolina (benadering)
+    [[-83.35,34.98],[-80.85,32.03]]    // South Carolina / Georgia, Savannah River (benadering)
+  ];
+  const coast = [[-75.7,35.9],[-76.4,34.7],[-77.9,34.0],[-79.0,33.3],[-80.0,32.6],[-80.9,32.0],[-81.4,31.3],[-81.5,30.6]];
+  const labels = [
+    ["GEORGIA",-83.6,32.9],["SOUTH CAROLINA",-80.9,34.2],["NORTH CAROLINA",-79.3,35.7],
+    ["TENNESSEE",-86.2,35.9],["KENTUCKY",-85.2,37.5],["VIRGINIA",-78.6,37.9],
+    ["WEST VIRGINIA",-80.9,38.9],["ALABAMA",-86.8,32.9],["ATLANTIC",-77.9,32.2]
+  ];
+
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" style="display:block;background:#eef1ec">`;
+  s += `<rect width="${W}" height="${H}" fill="#eef1ec"/>`;
+  // oceaan rechts van de kustlijn
+  const coastPts = coast.map(c=>`${X(c[0])},${Y(c[1])}`).join(' ');
+  s += `<polygon points="${coastPts} ${W},${H} ${W},0" fill="#dfe8ee"/>`;
+  s += `<polyline points="${coastPts}" fill="none" stroke="#b9c8d2" stroke-width="2.5"/>`;
+  borders.forEach(b => s += `<line x1="${X(b[0][0])}" y1="${Y(b[0][1])}" x2="${X(b[1][0])}" y2="${Y(b[1][1])}" stroke="#c6cdc4" stroke-width="2"/>`);
+  labels.forEach(l => s += `<text x="${X(l[1])}" y="${Y(l[2])}" fill="#a9b2a6" font-size="15" font-weight="700" letter-spacing="1.6" text-anchor="middle">${l[0]}</text>`);
+
+  const pts = STOPS.map(p => `${X(p.lon)},${Y(p.lat)}`).join(' ') + ` ${X(STOPS[0].lon)},${Y(STOPS[0].lat)}`;
+  s += `<polyline points="${pts}" fill="none" stroke="#2e6be6" stroke-width="3.5" stroke-opacity=".6" stroke-linejoin="round"/>`;
+
+  STOPS.forEach(p => {
+    const r = p.t === 'day' ? 10 : 12.5;
+    s += `<g><title>${p.name.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</title>`
+      +  `<circle cx="${X(p.lon)}" cy="${Y(p.lat)}" r="${r}" fill="${COLORS[p.t]}" stroke="#fff" stroke-width="2.5"/>`
+      +  `<text x="${X(p.lon)}" y="${Y(p.lat)+3.8}" fill="#fff" font-size="${p.t==='day'?10:11}" font-weight="700" text-anchor="middle">${p.n}</text></g>`;
+  });
+  s += `</svg>`;
+  mapEl.innerHTML = s;
+  mapEl.style.height = 'auto';
+  mapEl.style.overflow = 'hidden';
+}
+
+function drawLeaflet(){
+  const map = L.map('map', {scrollWheelZoom:false}).setView([35.5,-82.0], 6);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:17, attribution:'&copy; OpenStreetMap'}).addTo(map);
+  const line = STOPS.map(s => [s.lat, s.lon]);
+  line.push([STOPS[0].lat, STOPS[0].lon]);
+  L.polyline(line, {color:'#2e6be6', weight:3.5, opacity:.65}).addTo(map);
+  STOPS.forEach(s => {
+    const size = s.t === 'day' ? 22 : 26;
+    const icon = L.divIcon({className:'',
+      html:'<div class="marker-pin" style="width:'+size+'px;height:'+size+'px;background:'+COLORS[s.t]+'">'+s.n+'</div>',
+      iconSize:[size,size], iconAnchor:[size/2,size/2]});
+    L.marker([s.lat, s.lon], {icon}).addTo(map).bindPopup('<b>'+s.name+'</b><br>'+s.d);
+  });
+  map.fitBounds(L.polyline(line).getBounds(), {padding:[30,30]});
+  map.on('click', () => map.scrollWheelZoom.enable());
+}
+
+if (typeof L !== 'undefined' && L.map) { try { drawLeaflet(); } catch(e) { drawSvgMap(); } }
+else { drawSvgMap(); }
+
+(function(){
+  const box = document.getElementById('stoplist');
+  if (!box) return;
+  box.innerHTML = STOPS.map(s =>
+    '<li><i class="dot" style="background:'+COLORS[s.t]+'"></i><span><b>'+s.n+'. '+s.name+'</b><br>'+s.d+'</span></li>'
+  ).join('');
+})();
+</script>
+</body>
+</html>

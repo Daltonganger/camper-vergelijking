@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Camperreis 6B-light — Denver rondreis mei/juni 2027</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+  :root{
+    --ink:#1f2422; --ink-soft:#5a635f; --line:#e2e0da; --bg:#faf9f6; --card:#ffffff;
+    --night:#c0553b; --water:#2b7fb8; --day:#3f8f5f; --accent:#8a6d3b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 72px}
+  header{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:24px}
+  .backlink{display:inline-block;font-size:12.5px;font-weight:600;color:var(--ink-soft);text-decoration:none;
+    margin-bottom:14px;padding:5px 0;transition:color .15s}
+  .backlink:hover{color:var(--ink)}
+  .route-ref{color:var(--accent);font-weight:600}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+  h1{font-size:30px;line-height:1.15;margin:8px 0 6px;letter-spacing:-.02em}
+  .sub{color:var(--ink-soft);font-size:15px;margin:0}
+  h2{font-size:20px;margin:38px 0 12px;letter-spacing:-.01em}
+  h3{font-size:15px;margin:26px 0 8px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+  p{margin:0 0 12px}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0 4px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+  .stat .v{font-size:22px;font-weight:650;letter-spacing:-.02em}
+  .stat .l{font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+
+  #map{height:520px;border-radius:12px;border:1px solid var(--line);margin:6px 0 10px;background:#e8eae6}
+  .maphint{font-size:12.5px;color:var(--ink-soft);margin:0 0 18px}
+
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin:10px 0 18px;font-size:13px}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .dot{width:15px;height:15px;border-radius:50%;display:inline-block;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.18)}
+
+  .btns{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 6px}
+  .btn{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);
+    border-left:4px solid var(--night);border-radius:10px;padding:12px 16px;color:var(--ink);
+    flex:1 1 280px;transition:.15s}
+  .btn:hover{border-color:#c9c5bb;transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.06)}
+  .btn b{display:block;font-size:14.5px;margin-bottom:2px}
+  .btn small{color:var(--ink-soft);font-size:12.5px}
+
+  table{width:100%;border-collapse:collapse;margin:10px 0 18px;font-size:13.5px;background:var(--card)}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#f2f0ea;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:650}
+  tbody tr:hover{background:#fbfaf7}
+  td.num{white-space:nowrap;font-variant-numeric:tabular-nums}
+  .tag{display:inline-block;font-size:10.5px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;
+    padding:2px 7px;border-radius:20px;white-space:nowrap}
+  .t-water{background:#e2f0f9;color:#1c5f8a}
+  .t-park{background:#e6f2ea;color:#2c6a45}
+  .t-drive{background:#f3efe4;color:#7a6127}
+
+  .note{background:#fff8ea;border:1px solid #ecdfc0;border-left:4px solid var(--accent);
+    border-radius:10px;padding:14px 17px;margin:16px 0;font-size:13.5px}
+  .note b{display:block;margin-bottom:4px}
+  .warn{background:#fdf0ec;border-color:#f0d3c9;border-left-color:var(--night)}
+
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-soft)}
+  #stoplist{list-style:none;padding:0;margin:8px 0 20px;columns:2;column-gap:26px;font-size:13px}
+  #stoplist li{display:flex;gap:9px;align-items:flex-start;break-inside:avoid;
+    padding:8px 0;border-bottom:1px solid var(--line)}
+  #stoplist li .dot{flex:0 0 auto;margin-top:4px}
+  #stoplist b{font-size:13px}
+  #stoplist span{color:var(--ink-soft);line-height:1.45}
+  #stoplist b{color:var(--ink)}
+  @media(max-width:760px){ #stoplist{columns:1} }
+  .marker-pin{border-radius:50%;border:2.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);
+    color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .leaflet-popup-content{font-family:inherit;font-size:13px;line-height:1.45}
+  .leaflet-popup-content b{font-size:13.5px}
+  @media(max-width:640px){ #map{height:380px} h1{font-size:24px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="backlink" href="index.html">← Terug naar de routevergelijking</a>
+  <div class="kicker">Optie 6B-light &middot; definitieve route &middot; <span class="route-ref">Route 1 uit de vergelijking: Rockies (Denver)</span></div>
+  <h1>Denver &rarr; Denver: Rockies, Yellowstone &amp; Black Hills</h1>
+  <p class="sub">21 dagen &middot; 20 nachten &middot; mei/juni 2027 &middot; 2 volwassenen + dochter van &plusmn;1 jaar</p>
+</header>
+
+<div class="stats">
+  <div class="stat"><div class="v">3.700 km</div><div class="l">totaal incl. dagtochten</div></div>
+  <div class="stat"><div class="v">2.940 km</div><div class="l">doorgaande kilometers</div></div>
+  <div class="stat"><div class="v">14 van 20</div><div class="l">nachten in een park</div></div>
+  <div class="stat"><div class="v">5 NP</div><div class="l">+ 2 monumenten, 3 state parks</div></div>
+  <div class="stat"><div class="v">4</div><div class="l">warme watermomenten</div></div>
+  <div class="stat"><div class="v">+1 dag</div><div class="l">t.o.v. kale optie 6</div></div>
+</div>
+
+<h2>De kaart</h2>
+<div id="map"></div>
+<p class="maphint">Klik op een marker voor details. Sleep en zoom om in te zoomen op een etappe.</p>
+
+<div class="legend">
+  <span><i class="dot" style="background:#c0553b"></i> Overnachting</span>
+  <span><i class="dot" style="background:#2b7fb8"></i> Water: strand of warm bad</span>
+  <span><i class="dot" style="background:#3f8f5f"></i> Dagstop, geen overnachting</span>
+</div>
+
+<h3>Alle 25 stops op volgorde</h3>
+<ol id="stoplist"></ol>
+
+<h2>Openen in Google Maps</h2>
+<p>Google Maps staat maximaal tien punten per route toe, dus de reis is opgeknipt in drie etappes. Klik een knop en de route opent direct met alle tussenstops.</p>
+
+<div class="btns">
+  <a class="btn" target="_blank" rel="noopener"
+     href="https://www.google.com/maps/dir/Denver,+CO/Cherry+Creek+State+Park,+Aurora,+CO/Lake+McConaughy,+Ogallala,+NE/Badlands+National+Park,+SD/Custer+State+Park,+SD/Wind+Cave+National+Park,+SD/Devils+Tower+National+Monument,+WY/Meadowlark+Lake,+WY/Hot+Springs+State+Park,+Thermopolis,+WY/Cody,+WY">
+    <b>Etappe 1 &middot; Dag 1&ndash;9</b>
+    <small>Denver &rarr; McConaughy &rarr; Badlands &rarr; Black Hills &rarr; Devils Tower &rarr; Bighorn &rarr; Thermopolis &rarr; Cody &middot; ca. 1.850 km</small>
+  </a>
+  <a class="btn" target="_blank" rel="noopener"
+     href="https://www.google.com/maps/dir/Cody,+WY/Fishing+Bridge,+Yellowstone+National+Park,+WY/Canyon+Village,+Yellowstone+National+Park,+WY/Lamar+Valley,+Yellowstone+National+Park,+WY/Mammoth+Hot+Springs,+WY/Madison+Campground,+Yellowstone+National+Park,+WY/Old+Faithful,+WY/Colter+Bay+Village,+WY/Jenny+Lake,+WY/Astoria+Hot+Springs+Park,+Jackson,+WY">
+    <b>Etappe 2 &middot; Dag 10&ndash;17</b>
+    <small>Cody &rarr; Yellowstone (5 nachten) &rarr; Grand Teton (3 nachten) &rarr; Astoria Hot Springs &middot; ca. 875 km</small>
+  </a>
+  <a class="btn" target="_blank" rel="noopener"
+     href="https://www.google.com/maps/dir/Jackson,+WY/Pinedale,+WY/Rawlins,+WY/Walden,+CO/Grand+Lake,+CO/Alpine+Visitor+Center,+Estes+Park,+CO/Moraine+Park+Campground,+Estes+Park,+CO/Denver,+CO">
+    <b>Etappe 3 &middot; Dag 18&ndash;21</b>
+    <small>Jackson &rarr; Pinedale &rarr; Rawlins &rarr; Grand Lake &rarr; Trail Ridge Road &rarr; Estes Park &rarr; Denver &middot; ca. 975 km</small>
+  </a>
+</div>
+
+<div class="note">
+  <b>Wil je de hele reis als één kaart?</b>
+  Bij dit bericht zit ook <em>route-6b-light.kml</em>. Ga naar <strong>google.com/mymaps</strong> &rarr; Nieuwe kaart maken &rarr; Importeren &rarr; kies het KML-bestand. Je krijgt dan alle 25 stops met omschrijving én de routelijn in één opslaanbare kaart, ook offline te gebruiken in de Google Maps-app onder &bdquo;Jouw plaatsen&ldquo;.
+</div>
+
+<h2>Dag voor dag</h2>
+
+<table>
+<thead>
+<tr><th>Dag</th><th>Etappe</th><th class="num">km</th><th class="num">Rijtijd</th><th>Overnachting</th><th>Wat je doet</th></tr>
+</thead>
+<tbody>
+<tr><td class="num">1</td><td>Denver &rarr; Cherry Creek SP</td><td class="num">30</td><td class="num">0:30</td><td>Cherry Creek SP <span class="tag t-water">zwemstrand</span></td><td>Camper ophalen, boodschappen, zachte landing op 25 min van het depot. 133 plekken, zwemstrand aan het reservoir</td></tr>
+
+<tr><td class="num">2</td><td>&rarr; Lake McConaughy, NE</td><td class="num">375</td><td class="num">4:00</td><td>Lake McConaughy <span class="tag t-water">strandavond</span></td><td>Wit zandstrand, water &plusmn;20&nbsp;&deg;C half juni. Kamperen op het zand of met hookups op Lone Eagle / Cedar View</td></tr>
+
+<tr><td class="num">3</td><td>&rarr; Badlands NP</td><td class="num">400</td><td class="num">4:15</td><td>Cedar Pass CG <span class="tag t-park">in het park</span></td><td>Aankomst eind van de middag; gouden licht op de hoodoos</td></tr>
+
+<tr><td class="num">4</td><td>Badlands NP</td><td class="num">60</td><td class="num">1:00</td><td>Cedar Pass CG <span class="tag t-park">in het park</span></td><td>Badlands Loop Road, Notch Trail, prairiehondenstad, bighorn sheep. Volledige parkdag</td></tr>
+
+<tr><td class="num">5</td><td>&rarr; Custer State Park, SD</td><td class="num">180</td><td class="num">2:00</td><td>Game Lodge CG <span class="tag t-park">in het park</span></td><td>Via Wall Drug. Aankomst in de Black Hills</td></tr>
+
+<tr><td class="num">6</td><td>Custer SP + Wind Cave</td><td class="num">120</td><td class="num">2:30</td><td>Game Lodge CG <span class="tag t-water">zwemmen</span></td><td>Wildlife Loop (bizons), Needles Highway, Wind Cave. Zwemmen in Legion Lake of Stockade Lake &mdash; de laagste en warmste van de vier zwemmeren in het park</td></tr>
+
+<tr><td class="num">7</td><td>&rarr; Devils Tower NM</td><td class="num">200</td><td class="num">2:30</td><td>Belle Fourche River CG <span class="tag t-park">in het monument</span></td><td>Tower Trail: 2,1 km vlak rond de rots, goed met kinderwagen. Prairiehondenstad bij de ingang</td></tr>
+
+<tr><td class="num">8</td><td>&rarr; Bighorn Mountains</td><td class="num">250</td><td class="num">3:00</td><td>Meadowlark Lake, US-16</td><td>Cloud Peak Skyway over 2.750 m. <strong>Campings hier openen deels pas eind mei/juni</strong> &mdash; uitwijken naar Ten Sleep of Buffalo</td></tr>
+
+<tr><td class="num">9</td><td>&rarr; Thermopolis &rarr; Cody</td><td class="num">235</td><td class="num">3:00</td><td>Cody, WY</td><td><span class="tag t-water">gratis bad 40&nbsp;&deg;C</span> Hot Springs State Park: grootste minerale bron ter wereld, gratis staatsbadhuis. Kost 5 km omrijden. Daarna tanken en boodschappen in Cody</td></tr>
+
+<tr><td class="num">10</td><td>&rarr; Yellowstone East Entrance</td><td class="num">145</td><td class="num">2:00</td><td>Bridge Bay / Fishing Bridge <span class="tag t-park">in het park</span></td><td>Wapiti Valley en Sylvan Pass. Fishing Bridge RV is de enige plek in het park met volledige hookups</td></tr>
+
+<tr><td class="num">11</td><td>Yellowstone Lake &amp; Hayden</td><td class="num">100</td><td class="num">2:00</td><td>Bridge Bay <span class="tag t-park">in het park</span></td><td>West Thumb Geyser Basin, Hayden Valley, Mud Volcano</td></tr>
+
+<tr><td class="num">12</td><td>&rarr; Canyon Village</td><td class="num">30</td><td class="num">0:40</td><td>Canyon CG <span class="tag t-park">in het park</span></td><td>Grand Canyon of the Yellowstone: Artist Point, Lower Falls</td></tr>
+
+<tr><td class="num">13</td><td>Lamar Valley &amp; Mammoth</td><td class="num">200</td><td class="num">4:00</td><td>Canyon CG <span class="tag t-park">in het park</span></td><td><strong>Vertrek voor zonsopgang naar Lamar Valley</strong> &mdash; wolven, beren, bizonkalveren. Terug via Tower Fall en Mammoth Hot Springs</td></tr>
+
+<tr><td class="num">14</td><td>&rarr; Norris &rarr; Madison</td><td class="num">80</td><td class="num">1:30</td><td>Madison CG <span class="tag t-park">in het park</span></td><td>Norris Geyser Basin. Madison ligt het laagst en is de warmste nacht in het park; elanden langs de rivier</td></tr>
+
+<tr><td class="num">15</td><td>Old Faithful &rarr; Grand Teton</td><td class="num">150</td><td class="num">3:00</td><td>Colter Bay <span class="tag t-park">in het park</span></td><td>Old Faithful, Grand Prismatic, dan zuidwaarts langs Lewis Falls naar de Tetons</td></tr>
+
+<tr><td class="num">16</td><td>Grand Teton noord</td><td class="num">60</td><td class="num">1:15</td><td>Colter Bay <span class="tag t-park">in het park</span></td><td>Jackson Lake, Signal Mountain, Oxbow Bend bij zonsopgang</td></tr>
+
+<tr><td class="num">17</td><td>Jenny Lake &rarr; Astoria &rarr; Gros Ventre</td><td class="num">110</td><td class="num">2:15</td><td>Gros Ventre CG <span class="tag t-water">warm bad</span></td><td>Jenny Lake, Schwabacher Landing, middag in <strong>Astoria Hot Springs</strong>: kinderbad van 60 cm op 27&ndash;32&nbsp;&deg;C, kind onder 2 gratis</td></tr>
+
+<tr><td class="num">18</td><td>&rarr; Pinedale &rarr; Rawlins</td><td class="num">460</td><td class="num">5:00</td><td>Rawlins, WY <span class="tag t-drive">lange rijdag</span></td><td>Wind River Range en Red Desert. Alternatief met meer sfeer: Saratoga, met een gratis openbaar warmwaterbad</td></tr>
+
+<tr><td class="num">19</td><td>&rarr; Walden &rarr; Grand Lake</td><td class="num">330</td><td class="num">4:00</td><td>Timber Creek CG <span class="tag t-park">in RMNP</span></td><td>Rustige westkant van Rocky Mountain NP, elanden in de Kawuneeche Valley. Koudste nacht van de reis op 2.680 m</td></tr>
+
+<tr><td class="num">20</td><td>Trail Ridge Road &rarr; Estes Park</td><td class="num">77</td><td class="num">1:30</td><td>Moraine Park CG <span class="tag t-park">in RMNP</span></td><td>Hele dag boven de boomgrens, hoogste punt 3.713 m. Alpine Visitor Center op 3.595 m</td></tr>
+
+<tr><td class="num">21</td><td>&rarr; Denver, camper inleveren</td><td class="num">110</td><td class="num">1:30</td><td>vlucht naar huis</td><td>Bij een late vlucht: laatste zwem bij Chatfield State Park, 20 min van het depot</td></tr>
+</tbody>
+</table>
+
+<h2>De vier watermomenten &mdash; en wat ze kosten</h2>
+
+<table>
+<thead>
+<tr><th>Moment</th><th>Dag</th><th>Water</th><th>Kosten in reistijd</th></tr>
+</thead>
+<tbody>
+<tr><td><b>Cherry Creek SP</b>, Aurora CO</td><td class="num">1</td><td>Zwemstrand, &plusmn;20&nbsp;&deg;C</td><td><b>0 dagen</b> &mdash; je moet toch ergens de eerste nacht slapen</td></tr>
+<tr><td><b>Lake McConaughy</b>, NE</td><td class="num">2</td><td>Wit zandstrand, &plusmn;20&nbsp;&deg;C in juni (16&nbsp;&deg;C in mei)</td><td><b>+1 dag</b> &mdash; de enige echte kosten, en het breekt de rit van 640 km met jetlag doormidden</td></tr>
+<tr><td><b>Legion / Stockade Lake</b>, Custer SP</td><td class="num">6</td><td>Zwemstrand op &plusmn;1.600 m</td><td><b>0 dagen, 0 km</b> &mdash; je slaapt er al en rijdt er langs</td></tr>
+<tr><td><b>Hot Springs SP</b>, Thermopolis WY</td><td class="num">9</td><td><b>40&nbsp;&deg;C</b>, gratis staatsbadhuis</td><td><b>0 dagen, +5 km</b></td></tr>
+<tr><td><b>Astoria Hot Springs</b>, Hoback WY</td><td class="num">17</td><td>Kinderbad 27&ndash;32&nbsp;&deg;C, max 60 cm diep</td><td><b>0 dagen</b>, wel een halve dag Teton-tijd</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+  <b>Wat je hiermee behoudt ten opzichte van de volledige 6B</b>
+  Yellowstone blijft <b>5 nachten</b>, Rocky Mountain blijft <b>2 nachten</b>, Grand Teton wordt 3 nachten waarvan een halve dag naar Astoria gaat. De volledige 6B kostte je een dag Yellowstone, een dag Teton én een dag RMNP. Deze versie kost je één dag, en die dag krijg je terug als een gebroken openingsrit.
+</div>
+
+<h2>Waar het misgaat als je niet oplet</h2>
+
+<div class="note warn">
+  <b>1. Reserveringen &mdash; zet dit nu in de agenda</b>
+  Yellowstone en Grand Teton openen <b>zes maanden rollend</b> via Recreation.gov en Yellowstone National Park Lodges. Voor een aankomst op 10 juni 2027 moet je dus <b>vanaf ca. 10 december 2026</b> boeken, dag voor dag. Canyon en Colter Bay zijn binnen uren vol. Lake McConaughy vraagt reserveringen vanaf 20 mei; strandplekken pas 30 dagen vooraf.
+</div>
+
+<div class="note warn">
+  <b>2. Trail Ridge Road op dag 20</b>
+  Opende in 2023 op 26 mei, in 2025 op 30 mei en in 2026 op 29 mei. Vroegste ooit 7 mei 2002, laatste ooit 26 juni 1943 (oorlogsjaar zonder sneeuwruimen). Kan ook ná opening tijdelijk dicht bij sneeuw. <b>Uitwijkroute:</b> Grand Lake &rarr; Berthoud Pass &rarr; Denver, en RMNP als dagbezoek vanaf Estes Park.
+</div>
+
+<div class="note warn">
+  <b>3. Timed entry Rocky Mountain NP</b>
+  Vanaf ca. 22 mei is een tijdslotreservering verplicht: 9&ndash;14 uur voor het park, 5&ndash;18 uur voor de Bear Lake-corridor. $2 via Recreation.gov. Zonder reservering kom je er op dag 20 niet in.
+</div>
+
+<div class="note warn">
+  <b>4. Koude nachten in het middenblok</b>
+  Yellowstone Lake heeft in mei een gemiddelde nachttemperatuur van &minus;3,2&nbsp;&deg;C en in juni van +0,6&nbsp;&deg;C; Old Faithful &minus;1,8&nbsp;&deg;C en +1,5&nbsp;&deg;C. Timber Creek ligt op 2.680 m. Controleer bij het ophalen de <b>verwarming en de propaanvoorraad</b>, en neem een extra slaapzak voor je dochter. Alleen Fishing Bridge RV heeft stroom in Yellowstone.
+</div>
+
+<div class="note">
+  <b>5. Bighorn National Forest op dag 8</b>
+  US-16 is jaarrond open, maar de bergcampings op 2.500 m openen deels pas eind mei of juni. Controleer op Recreation.gov, en houd Ten Sleep of Buffalo achter de hand &mdash; die liggen lager en warmer.
+</div>
+
+<h2>Vertrekmoment</h2>
+<table>
+<thead><tr><th>Start</th><th>Yellowstone valt op</th><th>Trail Ridge op</th><th>Water McConaughy</th><th>Oordeel</th></tr></thead>
+<tbody>
+<tr><td class="num">17 mei</td><td>28 mei &ndash; 1 juni</td><td>7 juni</td><td>&plusmn;16&nbsp;&deg;C</td><td>Werkt. Rustiger, goedkoper, beste wildlife &mdash; maar het strand is te koud</td></tr>
+<tr><td class="num"><b>24 mei</b></td><td>4&ndash;8 juni</td><td>14 juni</td><td>&plusmn;18&nbsp;&deg;C</td><td><b>Het optimum.</b> Alles zeker open, nog vóór de drukte, water bruikbaar</td></tr>
+<tr><td class="num">31 mei</td><td>11&ndash;15 juni</td><td>21 juni</td><td>&plusmn;20&nbsp;&deg;C</td><td>Warmste water, maar de drukte in Yellowstone begint dan echt</td></tr>
+</tbody>
+</table>
+
+<footer>
+Opgesteld 17 augustus 2026. Openingsdata, tarieven en reserveringsvensters zijn die van seizoen 2026 en moeten voor 2027 opnieuw gecontroleerd worden.<br>
+Bronnen: NPS (Yellowstone, Rocky Mountain, Grand Teton, Badlands), South Dakota GFP, Wyoming State Parks, Nebraska Game &amp; Parks, Colorado Parks &amp; Wildlife, Astoria Hot Springs Park, National Parks Traveler.<br>
+Kaartdata &copy; OpenStreetMap-bijdragers.
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+const STOPS = [
+ {n:"1",  t:"day",   lat:39.7756, lon:-104.8375, name:"Dag 1 — Denver, camper ophalen", d:"Verhuurdepot. Boodschappen doen, daarna 30 km naar Cherry Creek SP."},
+ {n:"2",  t:"water", lat:39.6413, lon:-104.8462, name:"Nacht 1 — Cherry Creek SP, Aurora CO", d:"1.660 m. 133 plekken, zwemstrand aan het reservoir, 25 min van het depot."},
+ {n:"3",  t:"water", lat:41.2270, lon:-101.7180, name:"Nacht 2 — Lake McConaughy, NE", d:"1.000 m. Wit zandstrand, water ±20 °C half juni. Kamperen op het zand of Lone Eagle / Cedar View met hookups."},
+ {n:"4",  t:"night", lat:43.7480, lon:-101.9410, name:"Nacht 3–4 — Badlands NP, Cedar Pass CG", d:"750 m. In het park, elektra, ±$37. Loop Road, Notch Trail, prairiehonden."},
+ {n:"5",  t:"water", lat:43.7639, lon:-103.4022, name:"Nacht 5–6 — Custer State Park, Game Lodge CG", d:"1.200 m. Vier zwemmeren in het park; Legion en Stockade zijn het laagst en warmst. Wildlife Loop met bizons, Needles Highway."},
+ {n:"6",  t:"day",   lat:43.5700, lon:-103.4780, name:"Dag 6 — Wind Cave NP", d:"Grotrondleiding, prairiehonden, bizons. Dagstop vanuit Custer SP."},
+ {n:"7",  t:"night", lat:44.5872, lon:-104.6975, name:"Nacht 7 — Devils Tower NM, Belle Fourche River CG", d:"1.280 m. In het monument, geen hookups, ±$20. Tower Trail is 2,1 km vlak."},
+ {n:"8",  t:"night", lat:44.0442, lon:-107.1958, name:"Nacht 8 — Bighorn Mts, Meadowlark Lake (US-16)", d:"2.500 m. Cloud Peak Skyway. Let op: campings openen deels pas eind mei/juni. Uitwijken naar Ten Sleep of Buffalo."},
+ {n:"9",  t:"water", lat:43.6500, lon:-108.2050, name:"Dag 9 — Hot Springs SP, Thermopolis — GRATIS BAD 40 °C", d:"Grootste minerale bron ter wereld: 6,8 miljoen liter per dag op 53 °C. Gratis staatsbadhuis. Dagpark, geen camping. Kost 5 km omrijden."},
+ {n:"10", t:"night", lat:44.5263, lon:-109.0565, name:"Nacht 9 — Cody, WY", d:"1.520 m. Buffalo Bill Center. Laatste boodschappen en volle tank vóór Yellowstone."},
+ {n:"11", t:"night", lat:44.5386, lon:-110.4383, name:"Nacht 10–11 — Yellowstone, Bridge Bay / Fishing Bridge", d:"2.360 m. Bridge Bay opent 15 mei ($38). Fishing Bridge RV opent 8 mei ($94) en is de enige plek in het park met volledige hookups."},
+ {n:"12", t:"night", lat:44.7350, lon:-110.4900, name:"Nacht 12–13 — Yellowstone, Canyon Village", d:"2.400 m. Opent ±29 mei, $45. Basis voor Grand Canyon of the Yellowstone en de vroege rit naar Lamar."},
+ {n:"13", t:"day",   lat:44.8990, lon:-110.2200, name:"Dag 13 — Lamar Valley", d:"Vertrek vóór zonsopgang. Wolven, beren, bizonkalveren. Beste wildlifeplek van het continent buiten Alaska."},
+ {n:"14", t:"day",   lat:44.9766, lon:-110.7036, name:"Dag 13 — Mammoth Hot Springs", d:"1.900 m, warmste en droogste deel van het park. Terrassen via vlakke vlonderpaden."},
+ {n:"15", t:"night", lat:44.6450, lon:-110.8600, name:"Nacht 14 — Yellowstone, Madison CG", d:"2.070 m. Opent 1 mei, $38. Laagste en warmste campingnacht in het park; elanden langs de rivier."},
+ {n:"16", t:"day",   lat:44.4605, lon:-110.8281, name:"Dag 15 — Old Faithful & Grand Prismatic", d:"Geiserbekkens via vlonderpaden, deels met kinderwagen te doen."},
+ {n:"17", t:"night", lat:43.9020, lon:-110.6420, name:"Nacht 15–16 — Grand Teton, Colter Bay", d:"2.070 m. Opent 21 mei. RV-plekken met hookups aan Jackson Lake, uitzicht op de Teton Range."},
+ {n:"18", t:"day",   lat:43.7500, lon:-110.7220, name:"Dag 17 — Jenny Lake & Schwabacher Landing", d:"Vlakke wandeling langs Jenny Lake; Schwabacher bij zonsopgang voor de spiegeling."},
+ {n:"19", t:"night", lat:43.5810, lon:-110.6650, name:"Nacht 17 — Grand Teton, Gros Ventre CG", d:"2.030 m. Opent eind april. Laagste en warmste camping van het park, elanden in de wilgen."},
+ {n:"20", t:"water", lat:43.3230, lon:-110.7530, name:"Dag 17 — Astoria Hot Springs — KINDERBAD", d:"1.850 m. Zes baden aan de Snake River. Kinderbad 27–32 °C, max 60 cm diep. Onder 2 jaar gratis. Reserveren; woensdag gesloten."},
+ {n:"21", t:"night", lat:41.7911, lon:-107.2387, name:"Nacht 18 — Rawlins, WY", d:"2.080 m. Doorrijnacht na 460 km. Alternatief: Saratoga, met een gratis openbaar warmwaterbad."},
+ {n:"22", t:"night", lat:40.3830, lon:-105.8520, name:"Nacht 19 — RMNP west, Timber Creek CG", d:"2.680 m. Rustige westkant bij Grand Lake, elanden in de Kawuneeche Valley. Koudste nacht van de reis."},
+ {n:"23", t:"day",   lat:40.4436, lon:-105.7550, name:"Dag 20 — Alpine Visitor Center, Trail Ridge Road", d:"3.595 m. Trail Ridge opende in 2023/2025/2026 op 26, 30 en 29 mei. Uitwijkroute bij sneeuw: Berthoud Pass."},
+ {n:"24", t:"night", lat:40.3600, lon:-105.5900, name:"Nacht 20 — RMNP oost, Moraine Park CG", d:"2.480 m. Laatste nacht in het park. Timed-entry reservering nodig vanaf ±22 mei."},
+ {n:"25", t:"day",   lat:40.3772, lon:-105.5217, name:"Dag 21 — Estes Park → Denver", d:"110 km naar het depot. Optioneel bij een late vlucht: zwemmen bij Chatfield SP, 20 min van het depot."}
+];
+
+const COLORS = {night:"#c0553b", water:"#2b7fb8", day:"#3f8f5f"};
+const mapEl = document.getElementById('map');
+
+/* ---------- Altijd werkende SVG-kaart (geen externe bestanden nodig) ---------- */
+function drawSvgMap(){
+  const LON0=-111.6, LON1=-100.2, LAT0=38.7, LAT1=45.7;
+  const K = Math.cos(42*Math.PI/180);                 // aspectcorrectie
+  const W = 1000, H = Math.round(W * (LAT1-LAT0) / ((LON1-LON0)*K));
+  const X = lon => (lon-LON0)/(LON1-LON0)*W;
+  const Y = lat => (LAT1-lat)/(LAT1-LAT0)*H;
+
+  // Staatsgrenzen: in dit deel van de VS zijn ze vrijwel allemaal recht
+  const borders = [
+    [[-111.05,41.00],[-102.05,41.00]],   // zuidgrens Wyoming / noordgrens Colorado
+    [[-111.05,45.00],[-104.05,45.00]],   // Wyoming / Montana
+    [[-111.05,41.00],[-111.05,45.00]],   // Wyoming / Idaho-Utah
+    [[-104.05,41.00],[-104.05,45.00]],   // Wyoming / South Dakota-Nebraska
+    [[-104.05,43.00],[-98.60,43.00]],    // South Dakota / Nebraska
+    [[-102.05,40.00],[-102.05,41.00]],   // Colorado / Kansas-Nebraska
+    [[-109.05,38.70],[-109.05,41.00]],   // Colorado / Utah
+    [[-104.05,45.00],[-98.60,45.00]]     // noordgrens South Dakota (indicatief)
+  ];
+  const labels = [
+    ["COLORADO",-105.6,39.4],["WYOMING",-107.6,43.4],["MONTANA",-109.4,45.35],
+    ["SOUTH DAKOTA",-102.2,44.2],["NEBRASKA",-101.2,41.3],["IDAHO",-111.35,44.2],["UTAH",-110.4,40.2]
+  ];
+
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" style="display:block;background:#eef1ec">`;
+  s += `<rect width="${W}" height="${H}" fill="#eef1ec"/>`;
+  borders.forEach(b => s += `<line x1="${X(b[0][0])}" y1="${Y(b[0][1])}" x2="${X(b[1][0])}" y2="${Y(b[1][1])}" stroke="#c6cdc4" stroke-width="2"/>`);
+  labels.forEach(l => s += `<text x="${X(l[1])}" y="${Y(l[2])}" fill="#a9b2a6" font-size="17" font-weight="700" letter-spacing="2" text-anchor="middle">${l[0]}</text>`);
+
+  const pts = STOPS.map(p => `${X(p.lon)},${Y(p.lat)}`).join(' ') + ` ${X(STOPS[0].lon)},${Y(STOPS[0].lat)}`;
+  s += `<polyline points="${pts}" fill="none" stroke="#2e6be6" stroke-width="3.5" stroke-opacity=".6" stroke-linejoin="round"/>`;
+
+  STOPS.forEach(p => {
+    const r = p.t === 'day' ? 10 : 12.5;
+    s += `<g><title>${p.name.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</title>`
+      +  `<circle cx="${X(p.lon)}" cy="${Y(p.lat)}" r="${r}" fill="${COLORS[p.t]}" stroke="#fff" stroke-width="2.5"/>`
+      +  `<text x="${X(p.lon)}" y="${Y(p.lat)+3.8}" fill="#fff" font-size="${p.t==='day'?10:11}" font-weight="700" text-anchor="middle">${p.n}</text></g>`;
+  });
+  s += `</svg>`;
+  mapEl.innerHTML = s;
+  mapEl.style.height = 'auto';
+  mapEl.style.overflow = 'hidden';
+}
+
+/* ---------- Interactieve kaart als die geladen kan worden ---------- */
+function drawLeaflet(){
+  const map = L.map('map', {scrollWheelZoom:false}).setView([43.2,-106.5], 5);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17, attribution:'&copy; OpenStreetMap'
+  }).addTo(map);
+
+  const line = STOPS.map(s => [s.lat, s.lon]);
+  line.push([STOPS[0].lat, STOPS[0].lon]);
+  L.polyline(line, {color:'#2e6be6', weight:3.5, opacity:.65}).addTo(map);
+
+  STOPS.forEach(s => {
+    const size = s.t === 'day' ? 22 : 26;
+    const icon = L.divIcon({
+      className: '',
+      html: '<div class="marker-pin" style="width:'+size+'px;height:'+size+'px;background:'+COLORS[s.t]+'">'+s.n+'</div>',
+      iconSize: [size, size], iconAnchor: [size/2, size/2]
+    });
+    L.marker([s.lat, s.lon], {icon}).addTo(map).bindPopup('<b>'+s.name+'</b><br>'+s.d);
+  });
+
+  map.fitBounds(L.polyline(line).getBounds(), {padding:[30,30]});
+  map.on('click', () => map.scrollWheelZoom.enable());
+}
+
+if (typeof L !== 'undefined' && L.map) {
+  try { drawLeaflet(); } catch(e) { drawSvgMap(); }
+} else {
+  drawSvgMap();
+}
+
+/* ---------- Stoppenlijst onder de kaart, altijd zichtbaar ---------- */
+(function(){
+  const box = document.getElementById('stoplist');
+  if (!box) return;
+  box.innerHTML = STOPS.map(s =>
+    '<li><i class="dot" style="background:'+COLORS[s.t]+'"></i><span><b>'+s.n+'. '+s.name+'</b><br>'+s.d+'</span></li>'
+  ).join('');
+})();
+</script>
+</body>
+</html>
