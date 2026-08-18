@@ -27,6 +27,8 @@ for (const r of ROUTES) {
     if (!s.naam) err(label + ` stop ${i + 1}: geen naam`);
     if (s.n < 0) err(label + ` stop ${i + 1} (${s.naam}): negatieve nachten`);
     if (!s.wiki) warn(label + ` stop ${i + 1} (${s.naam}): geen wiki-artikel → 📖 valt terug op zoeklink`);
+    if (!s.klimaat) warn(label + ` stop ${i + 1} (${s.naam}): geen klimaat → ☀️/🌙 valt weg op de routepagina`);
+    else if (s.klimaat.d < s.klimaat.n) err(label + ` stop ${i + 1} (${s.naam}): dagtemperatuur lager dan nachttemperatuur`);
   });
 
   // "al geweest"-filter: geen bezochte plek mag actief in een route zitten

@@ -148,6 +148,8 @@
   .stops .n{font-size:12.5px;color:var(--faint);white-space:nowrap}
   .stops .nt{display:block;font-size:13.5px;color:var(--soft)}
   .stops .vt{display:inline-block;font-size:11.5px;background:#fff;border:1px solid var(--hair);border-radius:99px;padding:2px 11px;color:var(--soft);margin-top:5px}
+  .stops .k{display:inline-block;font-size:12px;color:var(--soft);background:#fff;border:1px solid var(--hair);border-radius:99px;padding:2px 11px;margin-left:6px;white-space:nowrap}
+  .klegend{font-size:12.5px;color:var(--faint);margin-top:-6px;margin-bottom:8px}
   .media{display:flex;gap:5px;flex:0 0 auto;margin-left:4px}
   .media a{font-size:11.5px;text-decoration:none;border:1px solid var(--hair);border-radius:99px;padding:4px 10px;background:#fff;color:var(--soft);transition:.15s}
   .media a:hover{border-color:var(--c);color:var(--ink)}
@@ -435,7 +437,7 @@ function makeRouteMap(r) {
   r.stops.forEach((s, i) => {
     if (s.lat === undefined) return;
     L.circleMarker([s.lat, s.lng], { radius: 10, color: "#fff", weight: 2, fillColor: r.kleur, fillOpacity: 1 })
-      .addTo(map).bindTooltip(`<b>${i + 1}. ${esc(s.naam)}</b><br>${s.n === 0 ? "dagstop" : s.n + " nachten"}${s.note ? "<br><span style='opacity:.75'>" + esc(s.note) + "</span>" : ""}`);
+      .addTo(map).bindTooltip(`<b>${i + 1}. ${esc(s.naam)}</b><br>${s.n === 0 ? "dagstop" : s.n + " nachten"}${s.klimaat ? "<br>☀️ " + s.klimaat.d + "° · 🌙 " + s.klimaat.n + "°" : ""}${s.note ? "<br><span style='opacity:.75'>" + esc(s.note) + "</span>" : ""}`);
   });
   map.fitBounds(L.latLngBounds(pts.map((s) => [s.lat, s.lng])).pad(0.18));
 }
@@ -477,6 +479,7 @@ function routePageHTML(r) {
   const stops = r.stops.map((s, i) => `
     <li><span class="no">${i + 1}</span>
       <div class="body"><span class="nm">${esc(s.naam)}</span> <span class="n">· ${s.n === 0 ? "dagstop" : s.n + (s.n === 1 ? " nacht" : " nachten")}</span>
+        ${s.klimaat ? `<span class="k" title="Gemiddelde dag- en nachttemperatuur, eind mei–juni">☀️ ${s.klimaat.d}° · 🌙 ${s.klimaat.n}°</span>` : ""}
         ${s.note ? `<span class="nt">${esc(s.note)}</span>` : ""}
         ${s.vervoer ? `<span class="vt">🚄 ${esc(s.vervoer)}</span>` : ""}
       </div>${mediaHTML(s.naam, s.wiki)}</li>`).join("");
@@ -510,7 +513,9 @@ function routePageHTML(r) {
         <div class="nightsbar">${bar}</div>
         <div style="font-size:13px;color:var(--faint)">Som: ${n} nachten (vergelijkingsmodel: 21).</div></div>
       <div class="cols">
-        <div class="panel"><h3>Stops ${r.soort === "China" ? "& vervoer" : "& campings"}</h3><ul class="stops" style="margin-top:8px">${stops}</ul></div>
+        <div class="panel"><h3>Stops ${r.soort === "China" ? "& vervoer" : "& campings"}</h3>
+          <div class="klegend">☀️ dag · 🌙 nacht — gemiddelde temperaturen voor eind mei–juni (klimatologisch gemiddelde, geen garantie)</div>
+          <ul class="stops" style="margin-top:8px">${stops}</ul></div>
         <div class="panel"><h3>Dag voor dag</h3><div class="timeline">${dagen}</div></div>
       </div>
       <div class="cols">

@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/rubenbeuker/Library/Mobile Documents/com~apple~CloudDocs/Camperreis27/logs/.b864aa1ae19c387f35ed06eefbfbcc80221a4678-audit.json",
+    "files": [
+        {
+            "date": 1787067236953,
+            "name": "/Users/rubenbeuker/Library/Mobile Documents/com~apple~CloudDocs/Camperreis27/logs/error-2026-08-18.log",
+            "hash": "4b0dd3aa0affce426de6c7a4aea25c651c46a5b3b3bdf9372482ae9d6572a141"
+        }
+    ],
+    "hashType": "sha256"
+}
