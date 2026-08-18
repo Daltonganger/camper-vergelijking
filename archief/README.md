@@ -20,9 +20,9 @@ Geparkeerd voor een ander seizoen: **Dallas/Big Bend** (39–42 °C in mei/juni 
 | `routes-data.js` | **De enige bron van waarheid voor de site.** Alle 9 routes: stops, nachten, dagen, kosten, scores, al-geweest-lijst. Hier pas je routes aan (of via de bewerkmodus + export). |
 | `check-routes.js` | Controlescript: `node check-routes.js` valideert de data (nachtensom, verplichte velden, geen bezochte parken actief). |
 | `PLAN-website-2027.md` | Plan van aanpak + actuele status van de ombouw. |
-| `route-6b-light.kml` / `route-4-plus.kml` | Google My Maps-exports van de twee finalisten (exacte stops + coördinaten). |
-| `archief/` | **Oude site-generaties** (18 aug 2026 verplaatst): `camper-vergelijking.html` (generatie 1, verouderde routetekeningen), `routekaart-6b-light.html` + `routekaart-route-4-plus.html` (generatie 2), `samenvatting-camperreis-2027.html` en `camper-vergelijking-SAMENVATTING.md`. |
-| `og-card.png` / `og-card.svg` | WhatsApp-preview in de stijl van de site. |
+| `archief/route-6b-light.kml` / `archief/route-4-plus.kml` | Google My Maps-exports van de twee finalisten (exacte stops + coördinaten). |
+| `archief/` | **Oude site-generaties en hulpbestanden** (18 aug 2026): `camper-vergelijking.html` (generatie 1), `routekaart-6b-light.html` + `routekaart-route-4-plus.html` (generatie 2), `samenvatting-camperreis-2027.html`, `camper-vergelijking-SAMENVATTING.md`, de twee KML's en de og-cards. |
+| `archief/og-card.png` / `archief/og-card.svg` | WhatsApp-preview in de stijl van de site (de site verwijst ernaar via de og:image-meta-tag). |
 
 ## Routenummering: let op de vertaling
 
