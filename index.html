@@ -284,7 +284,7 @@
     <p>Drie finalisten, gerangschikt op totaalcijfer. De rest is eerlijk uitgewerkt, zodat je ziet waaróm deze drie boven liggen.</p>
   </div>
   <div class="cards stagger" id="finalists"></div>
-  <div class="quote reveal">Wil je dat Amelie het makkelijkst heeft → Atlanta. Het meeste wow → Denver. De reis die we niet zomaar later herhalen → China 3.</div>
+  <div class="quote reveal">Wil je dat Amelie het makkelijkst heeft → Appalachen &amp; Oceaan. Het meeste wow → Rockies &amp; Yellowstone. De reis die we niet zomaar later herhalen → China Compleet.</div>
 </div></section>
 
 <section id="vergelijk" class="tint"><div class="wrap wide">
@@ -321,18 +321,18 @@
   <div class="panel reveal" style="max-width:880px;margin:0 auto 22px">
     <ul>
       <li><b>De deelscores (1–10)</b> beoordelen elk één ding: Wow (natuur &amp; verbazing), Comfort Amelie, Tempo, Weer in mei/juni en Prijs/kwaliteit.</li>
-      <li><b>Tempo</b> meet of het ritme past bij de gewenste rondreis — om de 3–4 dagen iets nieuws. Hoog ≠ langzaam. China 1 is comfortabel, maar 5 bases in 3 weken is te statisch (tempo 6). China 3 is actief op het gewenste ritme (tempo 9).</li>
-      <li><b>Het totaalcijfer is de formule</b> 40% wow + 20% tempo + 20% Amelie + 12% weer + 8% prijs, afgerond op één decimaal. Rang 1–3 is die som: China 3, Denver, Atlanta. China 1 en 2 scoren lager omdat hun tempo niet past.</li>
+      <li><b>Tempo</b> meet of het ritme past bij de gewenste rondreis — om de 3–4 dagen iets nieuws. Hoog ≠ langzaam. Het Klassieke China is comfortabel, maar 5 bases in 3 weken is te statisch (tempo 6). China Compleet is actief op het gewenste ritme (tempo 9).</li>
+      <li><b>Het totaalcijfer is de formule</b> 40% wow + 20% tempo + 20% Amelie + 12% weer + 8% prijs, afgerond op één decimaal. Rang 1–3 is die som: China Compleet, Rockies &amp; Yellowstone, Appalachen &amp; Oceaan. De andere China-routes scoren lager omdat hun tempo niet past.</li>
     </ul>
   </div>
   <div class="tablewrap reveal"><table id="scoreTable"></table></div>
   <p class="fnoot reveal">* Totaal = 0,40×wow + 0,20×tempo + 0,20×Amelie + 0,12×weer + 0,08×prijs.</p>
   <div class="panel reveal" style="max-width:880px;margin:22px auto 0;border:1px solid #ecd9b5;background:#fffdf5">
-    <h3>Waarom China 3 boven China 1 en 2 staat</h3>
+    <h3>Waarom China Compleet boven de andere China-routes staat</h3>
     <ul>
-      <li>China 3 heeft wow 10 (Zhangjiajie <i>én</i> Yangshuo) en tempo 9 — het 4-3-3-3-4-4 ritme waar jullie om vroegen. Totaal <b>8,7</b>.</li>
-      <li>China 1 wint nog op Amelie (9 vs 7,5) en prijs (9 vs 8), maar verliest hard op tempo (6 vs 9): vijf bases is te statisch. Totaal <b>8,2</b>. B-lijst als Amelie meer rust nodig heeft.</li>
-      <li>China 2 heeft wel Zhangjiajie, maar dezelfde vijf-bases-sleep én geen Yangshuo. Totaal <b>8,1</b>.</li>
+      <li>China Compleet heeft wow 10 (Zhangjiajie <i>én</i> Yangshuo) en tempo 9 — het 4-3-3-3-4-4 ritme waar jullie om vroegen. Totaal <b>8,7</b>.</li>
+      <li>Het Klassieke China wint nog op Amelie (9 vs 7,5) en prijs (9 vs 8), maar verliest hard op tempo (6 vs 9): vijf bases is te statisch. Totaal <b>8,2</b>. B-lijst als Amelie meer rust nodig heeft.</li>
+      <li>Keizersteden &amp; Avatarbergen heeft wel Zhangjiajie, maar dezelfde vijf-bases-sleep én geen Yangshuo. Totaal <b>8,1</b>.</li>
     </ul>
   </div>
 </div></section>
@@ -405,7 +405,7 @@ function mediaHTML(naam, wiki) {
 }
 
 /* ═══════════════ nav ═══════════════ */
-const navKort = { "usa1":"Denver", "usa2":"Atlanta", "usa3":"Gulf", "usa4":"Vancouver", "usa5":"Toronto", "usa6":"Dallas", "china1":"China 1", "china2":"China 2", "china3":"China 3" };
+const navKort = { "usa1":"Rockies", "usa2":"Appalachen", "usa3":"Golf", "usa4":"Vancouver", "usa5":"Toronto", "usa6":"Texas", "china1":"Klassiek China", "china2":"Avatarbergen", "china3":"China Compleet" };
 $("#navRoutes").innerHTML = ROUTES.map((r) =>
   `<a class="chip" style="--c:${r.kleur}" href="#route-${r.id}" data-nav="${r.id}"><span class="dot"></span>${navKort[r.id] || esc(r.naam.split("—")[0].trim())}</a>`).join("");
 
@@ -483,9 +483,12 @@ async function laadFotos(r) {
     const u = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=thumbnail&pithumbsize=1000&redirects=1&format=json&origin=*&titles=" + encodeURIComponent(r.fotos.join("|"));
     const d = await (await fetch(u)).json();
     const m = {}; Object.values(d.query?.pages || {}).forEach((p) => { if (p.thumbnail) m[p.title] = p.thumbnail.source; });
-    el.innerHTML = r.fotos.map((t) => m[t]
-      ? `<a href="https://en.wikipedia.org/wiki/${encodeURIComponent(t.replace(/ /g, "_"))}" target="_blank" rel="noopener" title="Bron & achtergrond: Wikipedia"><img src="${m[t]}" alt="${esc(t)}" loading="lazy"><span>${esc(t)}</span></a>`
-      : "").join("");
+    const alias = {}; (d.query?.redirects || []).forEach((x) => alias[x.from] = x.to);
+    (d.query?.normalized || []).forEach((x) => alias[x.from] = x.to);
+    el.innerHTML = r.fotos.map((t) => {
+      const src = m[alias[t] || t];
+      return src ? `<a href="https://en.wikipedia.org/wiki/${encodeURIComponent((alias[t] || t).replace(/ /g, "_"))}" target="_blank" rel="noopener" title="Bron & achtergrond: Wikipedia"><img src="${src}" alt="${esc(t)}" loading="lazy"><span>${esc(t)}</span></a>` : "";
+    }).join("");
     if (!el.innerHTML) el.remove();
   } catch { el.remove(); }
 }

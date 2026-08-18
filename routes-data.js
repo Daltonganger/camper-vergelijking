@@ -34,7 +34,7 @@ const ROUTES = [
 
 // ════════════════════════════════ USA 1 ═══════════════════════════════════
 {
-  id:"usa1", soort:"USA", naam:"Denver 6B-light", lijst:"A",
+  id:"usa1", soort:"USA", naam:"Rockies & Yellowstone", lijst:"A",
   alias:"Rockies, Yellowstone & Black Hills",
   kleur:"#1f6f63", km:3700, tempo:"gemiddeld-actief", finalist:true,
   gmaps:"https://maps.app.goo.gl/L62sySaPAxtigzqg9",
@@ -99,7 +99,7 @@ const ROUTES = [
 
 // ════════════════════════════════ USA 2 ═══════════════════════════════════
 {
-  id:"usa2", soort:"USA", naam:"Atlanta 4-plus", lijst:"A",
+  id:"usa2", soort:"USA", naam:"Appalachen & Oceaan", lijst:"A",
   alias:"Appalachen, Blue Ridge Parkway & Hunting Island",
   kleur:"#2d7f9e", km:4150, tempo:"gemiddeld", finalist:true,
   gmaps:"https://maps.app.goo.gl/M35kMhxU27LkTkx36",
@@ -159,7 +159,7 @@ const ROUTES = [
 
 // ════════════════════════════════ USA 3 ═══════════════════════════════════
 {
-  id:"usa3", soort:"USA", naam:"Atlanta Gulf", lijst:"C",
+  id:"usa3", soort:"USA", naam:"Deep South & Golfstrand", lijst:"C",
   alias:"Smokies, Nashville, New Orleans & Florida-strand",
   kleur:"#7a8f3d", km:3100, tempo:"gemiddeld", finalist:false,
   gmaps:"https://maps.app.goo.gl/YvP9XnLt2238JZUW6",
@@ -277,7 +277,7 @@ const ROUTES = [
   weer:"Redelijk gunstig: Ontario/Finger Lakes fris tot aangenaam, Appalachen warm, minder kusthitte, kans op regen",
   amelie:"Meren, veel korte stops, Toronto aan het eind geeft rust. Lastig: internationale grens met de camper en de lange aansluiting Finger Lakes → Shenandoah en weer terug.",
   plus:["Niagara + wijnstreek Finger Lakes geeft iets dat Atlanta niet heeft","sterke bergcomponent","Toronto als rustige finale"],
-  min:["geografisch inefficiënt: honderden km aanvoer naar dezelfde Appalachen-as als route 4-plus","geen oceaanstrand","grenslogistiek"],
+  min:["geografisch inefficiënt: honderden km aanvoer naar dezelfde Appalachen-as als Appalachen & Oceaan","geen oceaanstrand","grenslogistiek"],
   quote:"Niagara en Toronto horen net zo sterk op onze wishlist als de Smokies.",
   letop:["camper meenemen over de grens: voorwaarden verhuurder checken","Washington DC: gratis maar tijdslot-museums ver van tevoren reserveren","Parkway-status (Helene-herstel) checken"],
   stops:[
@@ -373,7 +373,7 @@ const ROUTES = [
 
 // ═══════════════════════════════ CHINA 1 ══════════════════════════════════
 {
-  id:"china1", soort:"China", naam:"China 1 — keizersteden, panda's en karst", lijst:"B",
+  id:"china1", soort:"China", naam:"Het Klassieke China", lijst:"B",
   alias:"Beijing · Xi'an · Chengdu · Yangshuo · Shanghai",
   kleur:"#9c2030", km:0, treinkm:5800, tempo:"rustig", finalist:false,
   gmaps:"",
@@ -422,7 +422,7 @@ const ROUTES = [
 
 // ═══════════════════════════════ CHINA 2 ══════════════════════════════════
 {
-  id:"china2", soort:"China", naam:"China 2 — keizersteden en Zhangjiajie", lijst:"B",
+  id:"china2", soort:"China", naam:"Keizersteden & Avatarbergen", lijst:"B",
   alias:"Beijing · Xi'an · Chengdu · Zhangjiajie · Shanghai",
   kleur:"#c03a2b", km:0, treinkm:6000, tempo:"rustig-gemiddeld", finalist:false,
   gmaps:"",
@@ -434,9 +434,9 @@ const ROUTES = [
   plus:["spectaculairste landschap van de drie China-varianten","nog steeds vijf bases met veel rust ertussen","geen extra Yangshuo-transfer"],
   min:["minder vakantiegevoel dan Yangshuo (geen zwembad/resortblok)","sterkere weersafhankelijkheid","minder buggyvriendelijk","5-nachten-blokken blijven"],
   quote:"We willen niet sneller reizen, maar wél het spectaculairste landschap.",
-  letop:["visumstatus december 2026 herchecken","trein Chengdu → Zhangjiajie: ± halve dag deur-tot-deur","Tianmen Mountain: bij mist niet forceren — flexdag inbouwen (zit erin)","zelfde praktische punten als China 1 (Alipay, 12306, kinderzitjes)"],
+  letop:["visumstatus december 2026 herchecken","trein Chengdu → Zhangjiajie: ± halve dag deur-tot-deur","Tianmen Mountain: bij mist niet forceren — flexdag inbouwen (zit erin)","zelfde praktische punten als Het Klassieke China (Alipay, 12306, kinderzitjes)"],
   stops:[
-    {naam:"Beijing", n:5, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing", note:"Zelfde programma als China 1", wiki:"Beijing", klimaat:{d:28,n:17}},
+    {naam:"Beijing", n:5, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing", note:"Zelfde programma als Het Klassieke China", wiki:"Beijing", klimaat:{d:28,n:17}},
     {naam:"Xi'an", n:3, lat:34.34, lng:108.94, vervoer:"Hogesnelheidstrein ±4–6 u", note:"Terracottaleger + oude stad", wiki:"Xi'an", klimaat:{d:28,n:17}},
     {naam:"Chengdu", n:4, lat:30.57, lng:104.07, vervoer:"Hogesnelheidstrein ±3–4 u", note:"Panda's + theehuizen + bufferdag", wiki:"Chengdu", klimaat:{d:27,n:19}},
     {naam:"Zhangjiajie", n:4, lat:29.13, lng:110.48, vervoer:"Trein ± halve dag deur-tot-deur", note:"Forest Park (Yuanjiajie, Bailong Elevator), Tianzi Mountain, Tianmen", wiki:"Zhangjiajie", klimaat:{d:26,n:18}},
@@ -471,7 +471,7 @@ const ROUTES = [
 
 // ═══════════════════════════════ CHINA 3 ══════════════════════════════════
 {
-  id:"china3", soort:"China", naam:"China 3 — de echte rondreis", lijst:"A",
+  id:"china3", soort:"China", naam:"China Compleet", lijst:"A",
   alias:"Beijing · Xi'an · Chengdu · Zhangjiajie · Yangshuo · Shanghai",
   kleur:"#6e1423", km:0, treinkm:6600, tempo:"actief", finalist:true,
   gmaps:"",
@@ -485,7 +485,7 @@ const ROUTES = [
   plus:["meest complete China-ervaring: keizerrijk → oud → panda's → Avatar-bergen → karst → megastad","tempo voelt écht als rondreis (4-3-3-3-4-4)","beide natuuriconen zitten erin","Shanghai en Yangshuo geven aan het eind stabiliteit en herstel"],
   min:["zwaarste China-variant (5× volledig inpakken)","één treinrit van ±7 uur","twee natte regio's","minder ruimte om een dag volledig te verliezen"],
   quote:"Wij worden juist blij van om de 3–4 dagen een nieuwe plek en vinden vijf bases te weinig voor drie weken.",
-  letop:["Zhangjiajie → Yangshuo wordt een volle reisdag (rechtstreekse snelle trein ±7 u naar Guilin + transfer) — geen sightseeingdag maken","in Chengdu géén Leshan-dagtrip in deze variant — die rustdag is nodig","visumstatus december 2026 herchecken","zelfde praktische punten als China 1","Variant-slot: Shanghai is bewust de finale (goedkoopste binnenlandse vlucht, geen extra grens, modern-China-thema). Wil je Hongkong: er rijdt een directe hogesnelheidstrein Guilin → West Kowloon (±3,5–4 u, 2026-netwerk) — ruilt Shanghai dan in voor 2 nachten Hongkong + vlucht AMS. Meerprijs hotels, extra immigratiestop en aparte SAR-regels; wel een wereldstad-finale. Aan te passen via ✏️ Bewerken of in dit bestand"],
+  letop:["Zhangjiajie → Yangshuo wordt een volle reisdag (rechtstreekse snelle trein ±7 u naar Guilin + transfer) — geen sightseeingdag maken","in Chengdu géén Leshan-dagtrip in deze variant — die rustdag is nodig","visumstatus december 2026 herchecken","zelfde praktische punten als Het Klassieke China","Variant-slot: Shanghai is bewust de finale (goedkoopste binnenlandse vlucht, geen extra grens, modern-China-thema). Wil je Hongkong: er rijdt een directe hogesnelheidstrein Guilin → West Kowloon (±3,5–4 u, 2026-netwerk) — ruilt Shanghai dan in voor 2 nachten Hongkong + vlucht AMS. Meerprijs hotels, extra immigratiestop en aparte SAR-regels; wel een wereldstad-finale. Aan te passen via ✏️ Bewerken of in dit bestand"],
   stops:[
     {naam:"Beijing", n:4, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing", note:"3 echte dagen na aankomst", wiki:"Beijing", klimaat:{d:28,n:17}},
     {naam:"Xi'an", n:3, lat:34.34, lng:108.94, vervoer:"Hogesnelheidstrein ±4–6 u", note:"Precies genoeg", wiki:"Xi'an", klimaat:{d:28,n:17}},
