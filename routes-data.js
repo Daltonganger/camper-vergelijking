@@ -478,6 +478,15 @@ const ROUTES = [
   parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP","Li River / Yangshuo-karst"],
   fotos:["Mutianyu","Zhangjiajie National Forest Park","Li River","Shanghai"],
   video:{id:"8KbiBD_1tl4", titel:"10 Days in China — Family Trip: Beijing, Xi'an, Chengdu, Shanghai"},
+  variant:{
+    label:"Hongkong-finale i.p.v. Shanghai",
+    vervangStop:"Shanghai",
+    door:{naam:"Hongkong", n:4, lat:22.30, lng:114.17, wiki:"Hong Kong", klimaat:{d:30,n:25},
+      vervoer:"Hogesnelheidstrein Guilin → West Kowloon ±3,5–4 u (2026-netwerk)",
+      note:"Victoria Harbour, skyline, Star Ferry, The Peak; aparte SAR-immigratie en regelgeving, duidelijk duurdere hotels; terugvlucht vanaf HKG"},
+    dagtekst:"Aan? Dan worden dag 20–22: hogesnelheidstrein naar West Kowloon, Victoria Harbour &amp; skyline, Star Ferry / Central / The Peak, en dag 23 de terugvlucht vanuit Hongkong. Het weer is er prachtig (☀️ 30° / 🌙 25°), maar de hotelprijzen en de extra immigratiestap zijn de prijs van de wereldstad-finale.",
+    tip:"Hongkong heeft een eigen visumregeling (NL-paspoort: 90 dagen visumvrij) — de mainland-visumstatus apart checken."
+  },
   score:{wow:10,amelie:7.5,tempo:9,weer:6.5,prijs:8,totaal:8.7},
   kosten:{excl:"€4.900–€7.600",incl:"€5.600–€8.700",bron:"planningsbandbreedte (extra transfer + extra natuurblok)"},
   weer:"Twee vochtige natuurregio's mee = hogere kans op een regendag, maar ook kleinere kans dat één regio de natuurcomponent verpest",

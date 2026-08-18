@@ -235,6 +235,33 @@
   .cmpbar .track{height:10px;border-radius:99px;background:var(--bg2);display:flex;overflow:hidden}
   .cmpbar .fill{height:100%;transition:width .6s cubic-bezier(.16,1,.3,1)}
 
+  /* ── variant-schakelaar (Hongkong-finale) ──────────── */
+  .vrow{display:flex;align-items:center;justify-content:center;gap:11px;margin:14px 0 4px;font-size:15px;color:var(--soft)}
+  .switch{position:relative;display:inline-block;width:46px;height:28px;flex:0 0 auto}
+  .switch input{opacity:0;width:0;height:0}
+  .switch span{position:absolute;inset:0;border-radius:99px;background:var(--line);transition:.25s;cursor:pointer}
+  .switch span::before{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.25s;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+  .switch input:checked + span{background:var(--c,var(--usa))}
+  .switch input:checked + span::before{transform:translateX(18px)}
+  .vnote{background:#fffdf5;border:1px solid #ecd9b5;border-radius:var(--r);padding:14px 20px;font-size:14.5px;color:#7a5a1e;margin:10px auto 18px;max-width:780px}
+  .vnote small{color:#a5843f}
+
+  /* ── weegfactoren ──────────────────────────────────── */
+  .sliders{display:grid;gap:12px;margin-top:8px}
+  .srow{display:grid;grid-template-columns:180px 1fr 64px;gap:14px;align-items:center;font-size:14.5px;color:var(--soft)}
+  .srow input{width:100%;accent-color:var(--ink)}
+  .srow b{text-align:right;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+  .wegingresultaat{font-size:16px;margin-top:16px;color:var(--ink)}
+  .wegingresultaat b{font-weight:700}
+
+  /* ── boekingschecklist ─────────────────────────────── */
+  .chkgroup{margin:20px 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  label.chk{display:flex;gap:12px;align-items:flex-start;padding:9px 4px;border-bottom:1px solid var(--hair);font-size:15px;cursor:pointer}
+  label.chk:last-of-type{border-bottom:0}
+  label.chk input{width:20px;height:20px;margin-top:3px;accent-color:var(--usa);flex:0 0 auto;cursor:pointer}
+  label.chk input:checked + span{color:var(--faint);text-decoration:line-through}
+  .ckprog{font-size:15px;color:var(--soft);text-align:center;margin-top:14px}
+
   @media (max-width:640px){
     .map{height:330px}.map.big{height:400px}
     section{padding:60px 0}
@@ -243,6 +270,8 @@
     .pager .next{text-align:center}
     .fotostrip{grid-template-columns:repeat(2,1fr)}
     .duogrid{grid-template-columns:1fr}
+    .srow{grid-template-columns:1fr;gap:4px}
+    .srow b{text-align:left}
   }
 </style>
 </head>
@@ -252,6 +281,7 @@
   <a class="chip" href="#intro">Overzicht</a>
   <a class="chip" href="#vergelijk">Vergelijk</a>
   <a class="chip" href="#vergelijk2">⇄ Vergelijk 2</a>
+  <a class="chip" href="#plannen">✓ Planner</a>
   <a class="chip" href="#kaart">Kaart</a>
   <span id="navRoutes"></span>
   <a class="chip" href="#geweest">Al geweest</a>
@@ -325,6 +355,12 @@
       <li><b>Het totaalcijfer is de formule</b> 40% wow + 20% tempo + 20% Amelie + 12% weer + 8% prijs, afgerond op één decimaal. Rang 1–3 is die som: China Compleet, Rockies &amp; Yellowstone, Appalachen &amp; Oceaan. De andere China-routes scoren lager omdat hun tempo niet past.</li>
     </ul>
   </div>
+  <div class="panel reveal" style="max-width:880px;margin:0 auto 22px">
+    <h3>Schuif met de weging — wat telt het zwaarst voor jullie?</h3>
+    <div class="sliders" id="wegingSliders"></div>
+    <div class="wegingresultaat" id="wegingResultaat"></div>
+    <button class="btn sec" id="wegingReset" style="margin-top:12px">↺ Herstel officiële weging (40/20/20/12/8)</button>
+  </div>
   <div class="tablewrap reveal"><table id="scoreTable"></table></div>
   <p class="fnoot reveal">* Totaal = 0,40×wow + 0,20×tempo + 0,20×Amelie + 0,12×weer + 0,08×prijs.</p>
   <div class="panel reveal" style="max-width:880px;margin:22px auto 0;border:1px solid #ecd9b5;background:#fffdf5">
@@ -335,6 +371,15 @@
       <li>Keizersteden &amp; Avatarbergen heeft wel Zhangjiajie, maar dezelfde vijf-bases-sleep én geen Yangshuo. Totaal <b>8,1</b>.</li>
     </ul>
   </div>
+</div></section>
+
+<section id="plannen" class="tint"><div class="wrap">
+  <div class="secthead reveal"><span class="eyebrow">Na de keuze</span>
+    <h2>De boekingskalender.</h2>
+    <p>Wanneer jullie gekozen hebben, is dit het spoor van nú tot vertrek — vinkjes blijven in deze browser bewaard.</p>
+    <div class="ckprog" id="ckProg"></div>
+  </div>
+  <div class="panel reveal" style="max-width:880px;margin:0 auto" id="checklist"></div>
 </div></section>
 
 <section id="bewerken"><div class="wrap">
@@ -441,20 +486,118 @@ $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => b.sc
   $("#cmpTable").innerHTML = `<thead><tr><th>Route</th><th>Afstand</th><th>Nachten / bases</th><th>Parken</th><th>Ritme</th><th>Score</th><th>Grootste kracht</th></tr></thead><tbody>${rows}</tbody>`;
 
   const nl = (x) => x.toLocaleString("nl");
-  const srows = [...ROUTES].sort((a, b) => b.score.totaal - a.score.totaal).map((r) => `
-    <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
-      <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
-        <div style="margin-top:5px">${lijstBadge(r)}</div></td>
-      <td>${nl(r.score.wow)}</td>
-      <td>${nl(r.score.amelie)}</td>
-      <td>${nl(r.score.tempo)}</td>
-      <td>${nl(r.score.weer)}</td>
-      <td>${nl(r.score.prijs)}</td>
-      <td><b>${nl(r.score.totaal)}</b><span style="color:var(--faint);font-size:12px"> *</span></td>
-    </tr>`).join("");
-  $("#scoreTable").innerHTML = `<thead><tr><th>Route</th><th>Wow</th><th>Comfort Amelie</th><th>Tempo</th><th>Weer mei/juni</th><th>Prijs/kwaliteit</th><th>Totaal*</th></tr></thead><tbody>${srows}</tbody>`;
+
+  const GW_KEYS = [["wow", "Wow"], ["tempo", "Tempo"], ["amelie", "Comfort Amelie"], ["weer", "Weer mei/juni"], ["prijs", "Prijs/kwaliteit"]];
+  const GW_DEF = { wow: .40, tempo: .20, amelie: .20, weer: .12, prijs: .08 };
+  let GW_USER = null;
+  try { const raw = JSON.parse(localStorage.getItem("reis27-weging") || "null"); if (raw && GW_KEYS.every(([k]) => typeof raw[k] === "number" && raw[k] >= 0)) GW_USER = raw; } catch {}
+  const wegingAan = () => !!GW_USER && GW_KEYS.some(([k]) => Math.round(GW_USER[k] * 100) !== Math.round(GW_DEF[k] * 100));
+  function factoren() {
+    if (!wegingAan()) return GW_DEF;
+    const som = GW_KEYS.reduce((t, [k]) => t + GW_USER[k], 0) || 1;
+    const f = {}; GW_KEYS.forEach(([k]) => f[k] = GW_USER[k] / som); return f;
+  }
+  const userTotaal = (r, f) => Math.round((r.score.wow * f.wow + r.score.tempo * f.tempo + r.score.amelie * f.amelie + r.score.weer * f.weer + r.score.prijs * f.prijs) * 10) / 10;
+
+  function renderScoreTable() {
+    const f = factoren(), aan = wegingAan();
+    const srows = [...ROUTES].sort((a, b) => b.score.totaal - a.score.totaal).map((r) => `
+      <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
+        <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
+          <div style="margin-top:5px">${lijstBadge(r)}</div></td>
+        <td>${nl(r.score.wow)}</td>
+        <td>${nl(r.score.amelie)}</td>
+        <td>${nl(r.score.tempo)}</td>
+        <td>${nl(r.score.weer)}</td>
+        <td>${nl(r.score.prijs)}</td>
+        <td><b>${nl(r.score.totaal)}</b><span style="color:var(--faint);font-size:12px"> *</span></td>
+        ${aan ? `<td><b style="color:${r.kleur}">${nl(userTotaal(r, f))}</b></td>` : ""}
+      </tr>`).join("");
+    $("#scoreTable").innerHTML = `<thead><tr><th>Route</th><th>Wow</th><th>Comfort Amelie</th><th>Tempo</th><th>Weer mei/juni</th><th>Prijs/kwaliteit</th><th>Totaal*</th>${aan ? "<th>Jouw weging</th>" : ""}</tr></thead><tbody>${srows}</tbody>`;
+    const uit = $("#wegingResultaat");
+    if (!uit) return;
+    if (aan) {
+      const win = [...ROUTES].sort((a, b) => userTotaal(b, f) - userTotaal(a, f))[0];
+      uit.innerHTML = `Met jullie weging staat bovenaan: <b style="color:${win.kleur}">${esc(win.naam.split("—")[0].trim())}</b> (${nl(userTotaal(win, f))}) — officiële weging geeft ${nl(win.score.totaal)}.`;
+    } else {
+      uit.textContent = "Schuif aan de knoppen om te zien hoe de ranglijst verschuift als jullie andere dingen zwaarder laten tellen. De tabel berekent live mee.";
+    }
+  }
+  renderScoreTable();
+
+  const sliderBox = $("#wegingSliders");
+  if (sliderBox) {
+    sliderBox.innerHTML = GW_KEYS.map(([k, lab]) => `
+      <div class="srow">
+        <span>${lab}</span>
+        <input type="range" min="0" max="50" step="1" value="${Math.round((GW_USER ? GW_USER[k] : GW_DEF[k]) * 100)}" data-gw="${k}" aria-label="Gewicht ${lab}">
+        <b>${Math.round((GW_USER ? GW_USER[k] : GW_DEF[k]) * 100)}%</b>
+      </div>`).join("");
+    const lees = () => { const o = {}; sliderBox.querySelectorAll("[data-gw]").forEach((el) => o[el.dataset.gw] = +el.value / 100); return o; };
+    const toonPct = () => sliderBox.querySelectorAll(".srow").forEach((row) => { row.querySelector("b").textContent = row.querySelector("input").value + "%"; });
+    sliderBox.addEventListener("input", (e) => {
+      const t = e.target.closest("[data-gw]"); if (!t) return;
+      GW_USER = lees(); localStorage.setItem("reis27-weging", JSON.stringify(GW_USER));
+      toonPct(); renderScoreTable();
+    });
+    const rst = $("#wegingReset");
+    if (rst) rst.onclick = () => {
+      GW_USER = null; localStorage.removeItem("reis27-weging");
+      sliderBox.querySelectorAll("[data-gw]").forEach((el) => el.value = Math.round(GW_DEF[el.dataset.gw] * 100));
+      toonPct(); renderScoreTable();
+    };
+  }
 }
 $("#visitedList").innerHTML = VISITED.map((v) => `<span>${esc(v)}</span>`).join("");
+
+/* ═══════════════ boekingschecklist ═══════════════ */
+const CHECKLIST = [
+  ["Nu — najaar 2026", [
+    ["vlucht-alerts", "Vliegtarieven volgen: open-jaw AMS–Beijing/Shanghai én retour Denver/Atlanta — alerts instellen (Skyscanner / Google Flights)"],
+    ["camper-offertes", "Camperoffertes Denver + Atlanta all-in vergelijken: vlucht, mileage, generator, inventaris, kinderzitje, campings, brandstof"],
+    ["keuze-maken", "De keuze maken — samen de vergelijk-pagina door en de A-lijst afronden"],
+  ]],
+  ["December 2026", [
+    ["visum-check", "Visumstatus China herchecken (visumvrije regeling loopt nominaal t/m 31 december 2026)"],
+    ["yellowstone-venster", "Reserveringsvensters Yellowstone / Grand Teton-campings volgen"],
+    ["hunting-venster", "Hunting Island + populairste parkcampings reserveren zodra het 2027-venster opent"],
+  ]],
+  ["Januari — februari 2027", [
+    ["vluchten-boeken", "Vluchten boeken"],
+    ["camper-definitief", "Camper definitief boeken"],
+    ["china-hotels", "Annuleerbare China-hotels boeken (indien China)"],
+    ["documenten", "Paspoorten / ESTA / visumaanvraag regelen"],
+    ["verzekering", "Reisverzekering met medische dekking + repatriëring afsluiten"],
+  ]],
+  ["Kort voor vertrek (bij China)", [
+    ["12306", "12306-account aanmaken + treinreserveringen zodra beschikbaar"],
+    ["alipay", "Alipay / WeChat Pay koppelen aan Nederlandse kaart"],
+    ["transfers", "Privétransfers + kinderzitjes schriftelijk bevestigen"],
+  ]],
+  ["Altijd geldig", [
+    ["seizoencheck", "Alle seizoensgegevens (wegopeningen, dienstregelingen, openingstijden) herchecken — checklist hoofddocument §29"],
+  ]],
+];
+{
+  let CK = {}; try { CK = JSON.parse(localStorage.getItem("reis27-checklist") || "{}"); } catch {}
+  const alle = CHECKLIST.flatMap(([, items]) => items);
+  const render = () => {
+    $("#checklist").innerHTML = CHECKLIST.map(([fase, items]) => `
+      <div class="chkgroup">${esc(fase)}</div>
+      ${items.map(([id, txt]) => `
+        <label class="chk"><input type="checkbox" data-ck="${id}"${CK[id] ? " checked" : ""}><span>${esc(txt)}</span></label>`).join("")}`).join("");
+    const klaar = alle.filter(([id]) => CK[id]).length;
+    $("#ckProg").textContent = `${klaar} van ${alle.length} afgevinkt`;
+  };
+  render();
+  $("#checklist").addEventListener("change", (e) => {
+    const t = e.target.closest("[data-ck]"); if (!t) return;
+    if (t.checked) CK[t.dataset.ck] = true; else delete CK[t.dataset.ck];
+    localStorage.setItem("reis27-checklist", JSON.stringify(CK));
+    const klaar = alle.filter(([id]) => CK[id]).length;
+    $("#ckProg").textContent = `${klaar} van ${alle.length} afgevinkt`;
+  });
+}
 
 /* ═══════════════ kaarten (lichte tegels) ═══════════════ */
 const tile = () => L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { maxZoom: 18, attribution: "© OpenStreetMap · © CARTO" });
@@ -464,11 +607,12 @@ const lineOpts = (r) => r.soort === "China"
 
 function makeRouteMap(r) {
   const div = $("#map-" + r.id); if (!div) return;
-  const pts = r.stops.filter((s) => s.lat !== undefined && s.lng !== undefined);
+  const st = effectieveStops(r);
+  const pts = st.filter((s) => s.lat !== undefined && s.lng !== undefined);
   if (!pts.length) { div.innerHTML = '<div style="padding:20px;color:var(--faint)">Geen coördinaten voor deze route.</div>'; return; }
   const map = L.map(div, { scrollWheelZoom: false }); tile().addTo(map);
   L.polyline(pts.map((s) => [s.lat, s.lng]), lineOpts(r)).addTo(map);
-  r.stops.forEach((s, i) => {
+  st.forEach((s, i) => {
     if (s.lat === undefined) return;
     L.circleMarker([s.lat, s.lng], { radius: 10, color: "#fff", weight: 2, fillColor: r.kleur, fillOpacity: 1 })
       .addTo(map).bindTooltip(`<b>${i + 1}. ${esc(s.naam)}</b><br>${s.n === 0 ? "dagstop" : s.n + " nachten"}${s.klimaat ? "<br>☀️ " + s.klimaat.d + "° · 🌙 " + s.klimaat.n + "°" : ""}${s.note ? "<br><span style='opacity:.75'>" + esc(s.note) + "</span>" : ""}`);
@@ -520,12 +664,20 @@ function ensureOverview() {
 }
 
 /* ═══════════════ routepagina-template ═══════════════ */
+function effectieveStops(r) {
+  if (r.variant && localStorage.getItem("reis27-hk") === "1")
+    return r.stops.map((s) => s.naam === r.variant.vervangStop ? Object.assign({}, s, r.variant.door) : s);
+  return r.stops;
+}
 function routePageHTML(r) {
   const idx = ROUTES.indexOf(r);
-  const n = sumNachten(r);
-  const maxN = Math.max(...r.stops.map((s) => s.n || 0));
-  const bar = r.stops.map((s) => s.n > 0 ? `<div class="${s.n === maxN ? "" : "dim"}" style="flex:${s.n}" title="${esc(s.naam)}: ${s.n}n">${s.n >= 2 ? esc(s.naam.split(",")[0].split("—")[0].trim()) + " · " + s.n : s.n}</div>` : "").join("");
-  const stops = r.stops.map((s, i) => `
+  const st = effectieveStops(r);
+  const varAan = r.variant && localStorage.getItem("reis27-hk") === "1";
+  const n = st.reduce((t, s) => t + (s.n || 0), 0);
+  const nb = st.filter((s) => (s.n || 0) > 0).length;
+  const maxN = Math.max(...st.map((s) => s.n || 0));
+  const bar = st.map((s) => s.n > 0 ? `<div class="${s.n === maxN ? "" : "dim"}" style="flex:${s.n}" title="${esc(s.naam)}: ${s.n}n">${s.n >= 2 ? esc(s.naam.split(",")[0].split("—")[0].trim()) + " · " + s.n : s.n}</div>` : "").join("");
+  const stops = st.map((s, i) => `
     <li><span class="no">${i + 1}</span>
       <div class="body"><span class="nm">${esc(s.naam)}</span> <span class="n">· ${s.n === 0 ? "dagstop" : s.n + (s.n === 1 ? " nacht" : " nachten")}</span>
         ${s.klimaat ? `<span class="k" title="Gemiddelde dag- en nachttemperatuur, eind mei–juni">☀️ ${s.klimaat.d}° · 🌙 ${s.klimaat.n}°</span>` : ""}
@@ -550,9 +702,10 @@ function routePageHTML(r) {
         </div>
       </div>
       ${r.geparkeerd ? `<div class="parked-banner">⚠️ ${esc(r.geparkeerd)}</div>` : ""}
+      ${r.variant ? `<div class="vrow" style="--c:${r.kleur}"><label class="switch" style="--c:${r.kleur}"><input type="checkbox" id="hkToggle"${varAan ? " checked" : ""}><span></span></label><span>${esc(r.variant.label)}</span></div>${varAan ? `<div class="vnote">🏙 ${r.variant.dagtekst}<br><small>${esc(r.variant.tip)}</small></div>` : ""}` : ""}
       <div class="statgrid">
         <div class="stat"><b>${r.soort === "China" ? r.treinkm.toLocaleString("nl") + " km" : r.km.toLocaleString("nl") + " km"}</b><span>${r.soort === "China" ? "trein + binnenlandse vlucht" : "camperritten incl. dagtochten"}</span></div>
-        <div class="stat"><b>${n}</b><span>nachten · ${bases(r)} bases</span></div>
+        <div class="stat"><b>${n}</b><span>nachten · ${nb} bases</span></div>
         <div class="stat"><b>${r.parks.length}</b><span>parken &amp; iconen</span></div>
         <div class="stat"><b>${r.score.totaal.toLocaleString("nl")}</b><span>totaalscore / 10</span></div>
       </div>
@@ -699,6 +852,8 @@ function showRoute(id, viaHash) {
   wireEdit(pageEl, r);
   makeRouteMap(r);
   if (r.fotos) laadFotos(r);
+  const hk = $("#hkToggle");
+  if (hk) hk.onchange = () => { localStorage.setItem("reis27-hk", hk.checked ? "1" : "0"); showRoute(r.id, true); };
   document.querySelectorAll("[data-nav]").forEach((a) => a.classList.toggle("active", a.dataset.nav === id));
   scrollTo({ top: 0 });
   if (!viaHash) location.hash = "route-" + id;
