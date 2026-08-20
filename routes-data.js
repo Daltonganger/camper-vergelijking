@@ -550,6 +550,67 @@ const ROUTES = [
     {d:22,t:"French Concession / Shanghai",x:"Eventueel laatste volle dag"},
     {d:23,t:"Terugreis",x:"Schema-afhankelijk"}
   ]
+},
+
+// ═══════════════════════════════ CHINA 4 ══════════════════════════════════
+{
+  id:"china4", soort:"China", naam:"Groot China & Yunnan", lijst:"D",
+  alias:"Beijing · Xi'an · Chengdu · Zhangjiajie · Yangshuo · Hongkong · Lijiang · Dali · Shanghai",
+  kleur:"#d4455a", km:0, treinkm:8500, tempo:"actief", finalist:false,
+  melding:"Deze route rekent met 26 nachten (28 dagen) — vijf nachten méér dan het vergelijkingsmodel van 21 nachten. De extra tijd betaalt het Hongkong-blok en Yunnan (Lijiang + Dali). Vergelijk de totaalscore daarom niet één-op-één met de negen 21-nachten-routes.",
+  gmaps:"",
+  parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP","Li River / Yangshuo-karst","Jade Dragon Snow Mountain","Erhai Lake"],
+  fotos:["Jade Dragon Snow Mountain","Lijiang","Victoria Harbour","Erhai Lake"],
+  video:{id:"nHug3VataZk", titel:"Yunnan Travel Guide — Dali & Lijiang (planning)"},
+  score:{wow:10,amelie:7,tempo:8,weer:7,prijs:6.5,totaal:8.4},
+  kosten:{excl:"€6.800–€9.800",incl:"€7.700–€11.200",bron:"planningsbandbreedte (5 extra nachten, Hongkong-hotels en 2 extra binnenlandse vluchten)"},
+  weer:"Beijing/Xi'an warm · Chengdu/Yangshuo vochtig · Hongkong heet en vochtig (30/25) · Yunnan op 2.000–2.400 m het prettigst van heel China: dag 24–25°, nacht 11–13°; mei nog droog, vanaf juni bouwt de regentijd op",
+  amelie:"Langste variant maar met rustige bouwstenen: overal minimaal 2 (meestal 3) nachten, herstelblokken in Yangshuo, Dali en Shanghai. Aandacht: 9 bases = 8× verhuizen, 2 extra vliegtrajecten (HKG→Lijiang vaak met tussenstop) en hoogte in Lijiang (2.400 m).",
+  plus:["wow 10: Zhangjiajie én Yangshuo én Jade Dragon én Erhai in één reis","Yunnan is in mei/juni klimatologisch het prettigste deel van China","tempo blijft human dankzij 3-nachtblokken","Shanghai-finale met buffer"],
+  min:["26 nachten = andere vakantie-indeling dan de 21-nachten-routes","duurste China-variant (meer nachten, Hongkong, extra vluchten)","9 bases met Amelie is de absolute bovengrens","HKG→Lijiang vaak met tussenstop — verbindingen 2027 checken"],
+  quote:"We hebben de tijd — dan pakken we ook het oude Lijiang en Erhai-meer erbij.",
+  letop:["visumstatus mainland én aparte SAR-regel Hongkong december 2026 herchecken","vlucht Hongkong → Lijiang: rechtstreeks bestaat niet altijd; reken op 1 tussenstop (Kunming/Guangzhou)","trein Lijiang → Dali ±2–3 u","Jade Dragon Snow Mountain: kabelbaan naar 4.506 m — met Amelie het bezoekerscentrum/lagere delen overwegen","hoogte Lijiang 2.400 m: eerste dag rustig doen"],
+  stops:[
+    {naam:"Beijing", n:4, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing", note:"Aankomst + Verboden Stad + Muur + Summer Palace", wiki:"Beijing", klimaat:{d:28,n:17}},
+    {naam:"Xi'an", n:2, lat:34.34, lng:108.94, vervoer:"Hogesnelheidstrein ±4–6 u", note:"Terracottaleger + oude stad op één dag", wiki:"Xi'an", klimaat:{d:28,n:17}},
+    {naam:"Chengdu", n:2, lat:30.57, lng:104.07, vervoer:"Hogesnelheidstrein ±3–4 u", note:"Panda Base + People's Park", wiki:"Chengdu", klimaat:{d:27,n:19}},
+    {naam:"Zhangjiajie", n:3, lat:29.13, lng:110.48, vervoer:"Trein ± halve dag deur-tot-deur", note:"Forest Park + Tianzi óf Tianmen (weer bepaalt)", wiki:"Zhangjiajie", klimaat:{d:26,n:18}},
+    {naam:"Yangshuo", n:3, lat:24.78, lng:110.49, vervoer:"Snelle trein ±7 u naar Guilin + transfer", note:"Yulong River, Xingping / Li River", wiki:"Yangshuo County", klimaat:{d:29,n:22}},
+    {naam:"Hongkong", n:3, lat:22.30, lng:114.17, vervoer:"Hogesnelheidstrein Guilin → West Kowloon ±3,5–4 u", note:"HK Island / Peak / Star Ferry; Kowloon + vrije middag", wiki:"Hong Kong", klimaat:{d:30,n:25}},
+    {naam:"Lijiang", n:3, lat:26.87, lng:100.23, vervoer:"Vlucht (vaak 1 tussenstop)", note:"Oude stad + Baisha; Jade Dragon-regio óf plattelandsdag; 2.400 m hoogte", wiki:"Lijiang", klimaat:{d:24,n:11}},
+    {naam:"Dali", n:3, lat:25.61, lng:100.27, vervoer:"Trein ±2–3 u", note:"Erhai Lake / Bai-dorpen; vrije dag / Cangshan", wiki:"Dali City", klimaat:{d:25,n:13}},
+    {naam:"Shanghai", n:3, lat:31.23, lng:121.47, vervoer:"Binnenlandse vlucht", note:"Bund + Yu Garden; French Concession + modern Shanghai", wiki:"Shanghai", klimaat:{d:26,n:19}}
+  ],
+  dagen:[
+    {d:1,t:"Amsterdam → Beijing",x:"Overnight vlucht"},
+    {d:2,t:"Aankomst Beijing",x:"Niets hoeven — landen, installeren, vroeg eten"},
+    {d:3,t:"Verboden Stad + Jingshan",x:"Eén groot hoogtepunt; Jingshan voor het overzicht"},
+    {d:4,t:"Mutianyu Great Wall",x:"Privéauto + kabelbaan"},
+    {d:5,t:"Summer Palace + hutongs",x:"Twee lichte blokken met middagrust"},
+    {d:6,t:"Trein → Xi'an",x:"Hogesnelheidstrein"},
+    {d:7,t:"Terracottaleger + Xi'an",x:"Vroeg naar het leger, middag oude stad"},
+    {d:8,t:"Trein → Chengdu",x:"Aankomst middag; theehuis als energie er is"},
+    {d:9,t:"Panda Base + People's Park",x:"Vroeg naar de panda's, middag park"},
+    {d:10,t:"Trein → Zhangjiajie",x:"± halve dag deur-tot-deur"},
+    {d:11,t:"Zhangjiajie Forest Park",x:"Yuanjiajie / viewpoints; draagzak"},
+    {d:12,t:"Tianzi óf Tianmen",x:"Weer en energie bepalen — niet beide"},
+    {d:13,t:"Trein → Guilin → Yangshuo",x:"Concessiedag ±7 u + transfer; geen sightseeing"},
+    {d:14,t:"Yulong River",x:"Rustig buitenprogramma"},
+    {d:15,t:"Xingping / Li River",x:"Karstlandschap, dorp, korte boot"},
+    {d:16,t:"Trein → Hongkong",x:"Guilin → West Kowloon ±3,5–4 u; immigratie op het station"},
+    {d:17,t:"Hong Kong Island",x:"Peak, Star Ferry, Victoria Harbour"},
+    {d:18,t:"Kowloon + vrije middag",x:"Markten, waterfront; rust voor de vlucht"},
+    {d:19,t:"Vlucht → Lijiang",x:"Vaak 1 tussenstop (Kunming/Guangzhou); aankomst = rusten op 2.400 m"},
+    {d:20,t:"Lijiang + Baisha",x:"Oude stad en Naxi-dorp Baisha"},
+    {d:21,t:"Jade Dragon-regio óf platteland",x:"Kabelbaan/lagere delen óf rustige dorpjesdag"},
+    {d:22,t:"Trein → Dali",x:"±2–3 u door Yunnan"},
+    {d:23,t:"Erhai Lake / Bai-dorpen",x:"Meer, dorpjes, fietsen of boot"},
+    {d:24,t:"Dali vrije dag / Cangshan",x:"Oude stad; optioneel Cangshan-bergen"},
+    {d:25,t:"Vlucht → Shanghai",x:"Binnenlandse vlucht"},
+    {d:26,t:"Bund + Yu Garden",x:"Vroege Bund, later oude stad"},
+    {d:27,t:"French Concession + modern Shanghai",x:"Wandelen, parken, laatste avond"},
+    {d:28,t:"Shanghai → Amsterdam",x:"Terugvlucht"}
+  ]
 }
 ];
 

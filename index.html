@@ -101,6 +101,7 @@
   .badge.b-park{background:#eee3f3;color:#6b4a8a}
   .badge.b-b{background:#e2ede8;color:#0f3d36}
   .badge.b-c{background:#ececef;color:#6e6e73}
+  .badge.b-d{background:#e4ecf7;color:#2c4d7a}
   .fnoot{font-size:13px;color:var(--faint);margin-top:10px;text-align:center}
 
   /* ── kaarten ───────────────────────────────────────── */
@@ -302,13 +303,13 @@
   <div class="wrap">
     <div class="kicker">Mei / juni 2027 · 21 nachten · 2 volwassenen + Amelie</div>
     <h1><span class="grad">China</span> of <span class="grad">Amerika</span>.</h1>
-    <p class="sub">Negen routes, volledig en gelijkwaardig uitgewerkt. Alles om samen één keuze te maken.</p>
+    <p class="sub">Tien routes, volledig en gelijkwaardig uitgewerkt. Alles om samen één keuze te maken.</p>
     <div>
       <a class="cta solid" href="#intro">Bekijk de shortlist</a>
-      <a class="cta link" href="#vergelijk">Alle 9 routes vergelijken</a>
+      <a class="cta link" href="#vergelijk">Alle 10 routes vergelijken</a>
     </div>
     <div class="heroStats">
-      <span class="hstat"><b>9</b> routes</span>
+      <span class="hstat"><b>10</b> routes</span>
       <span class="hstat"><b>6 + 3</b> camper vs. trein</span>
       <span class="hstat"><b>14–29 mei</b> vertrekvenster</span>
       <span class="hstat"><b>21</b> nachten</span>
@@ -327,7 +328,7 @@
 
 <section id="vergelijk" class="tint"><div class="wrap wide">
   <div class="secthead reveal"><span class="eyebrow">Op één meetlat</span>
-    <h2>Alle negen vergeleken.</h2>
+    <h2>Alle tien vergeleken.</h2>
     <p>Vijf deelscores, één formule: 40% wow + 20% tempo + 20% Amelie + 12% weer + 8% prijs. Rang 1–3 volgt uit dat cijfer.</p>
     <p style="margin-top:4px;font-size:15px"><a href="#score">Zo komen we aan deze cijfers ↓</a></p>
   </div>
@@ -337,7 +338,7 @@
 
 <section id="kaart"><div class="wrap wide">
   <div class="secthead reveal"><span class="eyebrow">Het grote plaatje</span>
-    <h2>Eén kaart, negen routes.</h2>
+    <h2>Eén kaart, tien routes.</h2>
     <p>Amerikaanse camperroutes als doorgetrokken lijn, China-routes als gestippelde trein/vlieg-verbinding. Tik een chip aan om routes aan of uit te zetten.</p>
   </div>
   <div class="map big reveal" id="overviewMap"></div>
@@ -347,7 +348,7 @@
 <section id="geweest" class="tint"><div class="wrap">
   <div class="secthead reveal"><span class="eyebrow">Voorgeschiedenis</span>
     <h2>Daar zijn we al geweest.</h2>
-    <p>Deze plekken hebben jullie al gezien. Geen van de negen routes raakt ze aan — deze reis wordt iets dat jullie nog niet gezien hebben.</p>
+    <p>Deze plekken hebben jullie al gezien. Geen van de tien routes raakt ze aan — deze reis wordt iets dat jullie nog niet gezien hebben.</p>
   </div>
   <div class="visited stagger" id="visitedList"></div>
 </div></section>
@@ -414,7 +415,7 @@
 </div></section>
 
 <footer><div class="wrap wide">
-  <div><b>REIS '27</b><br>Eén databron (<code>routes-data.js</code>), één bestand, negen routepagina's.</div>
+  <div><b>REIS '27</b><br>Eén databron (<code>routes-data.js</code>), één bestand, tien routepagina's.</div>
   <div>Bronnen: eigen projectdocumenten (17–18 aug 2026), Google Maps-routes als waarheid voor het verloop, NPS/Parks Canada voor seizoensfeiten.</div>
   <div>Alle openingsdata, tarieven en dienstregelingen zijn 2026-waarden — vóór boeken opnieuw verifiëren (checklist: hoofddocument §29).</div>
 </div></footer>
@@ -460,7 +461,7 @@ function mediaHTML(naam, wiki) {
 }
 
 /* ═══════════════ nav ═══════════════ */
-const navKort = { "usa1":"Rockies", "usa2":"Appalachen", "usa3":"Golf", "usa4":"Vancouver", "usa5":"Toronto", "usa6":"Texas", "china1":"Klassiek China", "china2":"Avatarbergen", "china3":"China Compleet" };
+const navKort = { "usa1":"Rockies", "usa2":"Appalachen", "usa3":"Golf", "usa4":"Vancouver", "usa5":"Toronto", "usa6":"Texas", "china1":"Klassiek China", "china2":"Avatarbergen", "china3":"China Compleet", "china4":"Groot China" };
 $("#navRoutes").innerHTML = ROUTES.map((r) =>
   `<a class="chip" style="--c:${r.kleur}" href="#route-${r.id}" data-nav="${r.id}"><span class="dot"></span>${navKort[r.id] || esc(r.naam.split("—")[0].trim())}</a>`).join("");
 
@@ -480,6 +481,7 @@ $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => b.sc
     r.lijst === "A" || r.finalist ? '<span class="badge b-fin">A-lijst · finalist</span>'
     : r.lijst === "B" ? '<span class="badge b-b">B-lijst · terugvaloptie</span>'
     : r.lijst === "C" ? '<span class="badge b-c">C-lijst</span>'
+    : r.lijst === "D" ? '<span class="badge b-d">scenario · 26 nachten</span>'
     : '<span class="badge b-park">geparkeerd — ander seizoen</span>';
 
   const rows = [...ROUTES].sort((a, b) => b.score.totaal - a.score.totaal).map((r) => `
@@ -708,7 +710,7 @@ function routePageHTML(r) {
   const dagen = r.dagen.map((d) => `<div class="tl"><div class="dag">Dag ${d.d}</div><div class="tt">${esc(d.t)}</div><div class="tx">${esc(d.x)}</div></div>`).join("");
   const etappes = (r.etappes || []).map((e) => `<a class="btn sec" target="_blank" rel="noopener" href="${e.url}">🗺 ${esc(e.van)}</a>`).join("");
   const prev = ROUTES[(idx - 1 + ROUTES.length) % ROUTES.length], next = ROUTES[(idx + 1) % ROUTES.length];
-  const eyebrow = `Route ${String(idx + 1).padStart(2, "0")} van 9 — ${r.soort === "China" ? "China · hotel & trein" : "USA / Canada · camper"}`;
+  const eyebrow = `Route ${String(idx + 1).padStart(2, "0")} van ${ROUTES.length} — ${r.soort === "China" ? "China · hotel & trein" : "USA / Canada · camper"}`;
   return `
   <article class="route pageIn" id="route-${r.id}" style="--c:${r.kleur}">
     <div class="wrap">
@@ -720,9 +722,11 @@ function routePageHTML(r) {
           <span class="flag">${esc(r.tempo)}</span>
           ${r.finalist ? '<span class="flag f-finalist">★ A-lijst finalist</span>' : ""}
           ${r.geparkeerd ? '<span class="flag f-parked">geparkeerd voor ander seizoen</span>' : ""}
+          ${r.melding ? '<span class="flag f-parked">26 nachten — buiten het 21-nachten-model</span>' : ""}
         </div>
       </div>
       ${r.geparkeerd ? `<div class="parked-banner">⚠️ ${esc(r.geparkeerd)}</div>` : ""}
+      ${r.melding ? `<div class="parked-banner" style="background:#e4ecf7;border-color:#c1d4ea;color:#2c4d7a">ℹ️ ${esc(r.melding)}</div>` : ""}
       ${r.varianten ? `<div class="segrow" style="--c:${r.kleur}"><div class="vlbl">Hongkong-opties</div><div class="seg" id="hkSeg">
           <button type="button" data-modus=""${!v ? ' class="on"' : ""}>Standaard (Shanghai-finale)</button>
           <button type="button" data-modus="vervang"${v && v.modus === "vervang" ? ' class="on"' : ""}>Hongkong-finale</button>
@@ -844,7 +848,7 @@ function compareHTML(a, b) {
             <div class="track"><div class="fill" style="width:${a.score.totaal * 10}%;background:${a.kleur}"></div><div class="fill" style="width:${b.score.totaal * 10}%;background:${b.kleur}"></div></div>
           </div>
         </div>
-        <p style="font-size:13.5px;color:var(--faint);margin:6px 0 0">Balklengtes = score × 10%. De route met de hogere som staat in de uitleg onder "Alle negen vergeleken" op de hoofdpagina.</p>
+        <p style="font-size:13.5px;color:var(--faint);margin:6px 0 0">Balklengtes = score × 10%. De route met de hogere som staat in de uitleg onder "Alle tien vergeleken" op de hoofdpagina.</p>
       </div>
       <div class="btnrow">
         <a class="btn prim" style="background:${a.kleur}" href="#route-${a.id}">Open ${esc(kortNaam(a))} ›</a>
