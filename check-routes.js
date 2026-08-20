@@ -17,7 +17,7 @@ for (const r of ROUTES) {
   for (const v of ["id","soort","naam","kleur","stops","dagen","score","kosten"]) {
     if (r[v] === undefined) { err(label + ": mist veld '" + v + "'"); ok = false; }
   }
-  if (r.soort !== "USA" && r.soort !== "China") { err(label + ": soort moet USA of China zijn"); ok = false; }
+  if (!["USA","China","Azie"].includes(r.soort)) { err(label + ": soort moet USA, China of Azie zijn"); ok = false; }
   if (!["A","B","C","D","park"].includes(r.lijst)) { err(label + ": lijst moet A, B, C, D of park zijn"); ok = false; }
   if (r.finalist && r.lijst !== "A") { err(label + ": finalist hoort op de A-lijst"); ok = false; }
 
