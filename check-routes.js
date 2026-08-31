@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Valideert routes-data.js vóór publicatie. Gebruik: node check-routes.js
-const { ROUTES, VISITED, scoreTotaal } = require("./routes-data.js");
+const { ROUTES, VISITED, scoreTotaal, prijsScore } = require("./routes-data.js");
 
 let fouten = 0, waarschuwingen = 0;
 const err = (m) => { console.error("  ✗ " + m); fouten++; };
@@ -47,8 +47,20 @@ for (const r of ROUTES) {
 
   const verwacht = scoreTotaal(r.score);
   if (r.score.totaal !== verwacht) {
-    err(label + `: totaal ${r.score.totaal} ≠ formule ${verwacht} (40% wow + 20% tempo + 20% amelie + 12% weer + 8% prijs)`);
+    err(label + `: totaal ${r.score.totaal} ≠ formule ${verwacht} (30% wow + 15% tempo + 20% amelie + 10% weer + 25% prijs)`);
     ok = false;
+  }
+
+  // prijsscore hoort uit kosten.ppd te volgen: €100 p.p./dag = 10, €190 = 4, lineair
+  if (!r.kosten.ppd) { err(label + ": kosten.ppd mist (p.p./dag laag/hoog)"); ok = false; }
+  else {
+    const midden = (r.kosten.ppd.laag + r.kosten.ppd.hoog) / 2;
+    const verwachtePrijs = Math.round(prijsScore(midden) * 10) / 10;
+    if (r.score.prijs !== verwachtePrijs) {
+      err(label + `: prijs ${r.score.prijs} ≠ ${verwachtePrijs} volgens €${midden} p.p./dag (midden van ${r.kosten.ppd.laag}–${r.kosten.ppd.hoog})`);
+      ok = false;
+    }
+    if (!(r.kosten.ppd.laag <= r.kosten.ppd.hoog)) { err(label + ": ppd laag > hoog"); ok = false; }
   }
 
   console.log(`${ok ? "✓" : "✗"} ${label}: ${r.stops.length} stops, ${nachten} nachten, ${r.dagen.length} dagen, score ${r.score.totaal}${r.finalist ? "  [FINALIST]" : ""}`);
@@ -56,8 +68,12 @@ for (const r of ROUTES) {
 
 {
   const tot = (id) => ROUTES.find((r) => r.id === id).score.totaal;
-  if (!(tot("china3") > tot("china1") && tot("china1") > tot("china2"))) {
-    err("China-rangorde moet 3 > 1 > 2 zijn op totaalcijfer");
+  // Spoor-familie is één route in vier lengtes: langer = meer rust en lagere prijs/dag
+  if (!(tot("spoor27") > tot("spoor24") && tot("spoor24") > tot("spoor21") && tot("spoor21") > tot("spoor18"))) {
+    err("Spoor-rangorde moet 27d > 24d > 21d > 18d zijn op totaalcijfer");
+  }
+  if (!(tot("china1") > tot("china2"))) {
+    err("China-rangorde: Het Klassieke China hoort boven Keizersteden & Avatarbergen");
   }
 }
 

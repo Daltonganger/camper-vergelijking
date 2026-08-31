@@ -24,9 +24,12 @@
 // Totaalcijfer = gewogen som, afgerond op 1 decimaal.
 // Tempo = past het ritme bij de gewenste rondreis (om de 3–4 dagen iets nieuws).
 // Hoog tempo ≠ langzaam/comfortabel. China 1 is rustig, maar te statisch → lage temposcore.
-const SCORE_GEWICHTEN = { wow: 0.40, tempo: 0.20, amelie: 0.20, weer: 0.12, prijs: 0.08 };
+// Prijs telt sinds 31-8-2026 voor 25% mee en volgt uit de werkelijke kosten:
+// € 100 p.p./dag = 10 punten, € 190 = 4, lineair ertussen (kosten.ppd, incl. eetmarge).
+const SCORE_GEWICHTEN = { wow: 0.30, tempo: 0.15, amelie: 0.20, weer: 0.10, prijs: 0.25 };
+function prijsScore(ppd) { return Math.max(0, Math.min(10, 10 - 6 * (ppd - 100) / 90)); }
 function scoreTotaal(s) {
-  const t = s.wow * 0.40 + s.tempo * 0.20 + s.amelie * 0.20 + s.weer * 0.12 + s.prijs * 0.08;
+  const t = Object.keys(SCORE_GEWICHTEN).reduce((a, k) => a + s[k] * SCORE_GEWICHTEN[k], 0);
   return Math.round(t * 10) / 10;
 }
 
@@ -46,8 +49,8 @@ const ROUTES = [
   parks:["Yellowstone NP","Grand Teton NP","Badlands NP","Rocky Mountain NP","Wind Cave NP","Devils Tower NM"],
   fotos:["Yellowstone National Park","Grand Prismatic Spring","Grand Teton National Park","Badlands National Park"],
   video:{id:"mpLJKAXJ9t0", titel:"Yellowstone & Grand Teton — Family Trip 2025 (4K)"},
-  score:{wow:10,amelie:8,tempo:8,weer:7,prijs:7,totaal:8.6},
-  kosten:{excl:"€5.900–€8.200",incl:"€6.700–€9.600",bron:"jullie eigen projectraming"},
+  score:{wow:10,amelie:8,tempo:8,weer:7,prijs:4.8,totaal:7.7},
+  kosten:{excl:"€5.900–€8.200",incl:"€6.700–€9.600",ppd:{laag:146,hoog:209},bron:"jullie eigen projectraming"},
   weer:"Badlands/Black Hills prettig voorseizoen · Yellowstone nachten rond/vroeg bevroren · Teton fris met sneeuw op de bergen · RMNP voorjaarscondities op hoogte",
   amelie:"Sterk: eigen bed elke nacht, wildlife vanaf de weg, korte boardwalks, eigen koelkast. Lastig: 3.700 km autostoel, hoogte, koude nachten — camperverwarming essentieel.",
   plus:["Yellowstone + Grand Teton achter elkaar","beste wildlife van het continent (bizons, beren, wolven vanaf de weg)","route klimt slim van laag naar hoog","warme baden in Thermopolis en Astoria als vaste watermomenten"],
@@ -111,8 +114,8 @@ const ROUTES = [
   parks:["Great Smoky Mountains NP","Shenandoah NP","Mammoth Cave NP","New River Gorge NP&P","Congaree NP","Blue Ridge Parkway"],
   fotos:["Great Smoky Mountains National Park","Craggy Gardens","Hunting Island State Park","Charleston, South Carolina"],
   video:{id:"ti2I616otFo", titel:"Blue Ridge Parkway — 18 things to do on the road trip"},
-  score:{wow:8.5,amelie:9,tempo:7,weer:9,prijs:8.5,totaal:8.4},
-  kosten:{excl:"€5.300–€7.000",incl:"€6.100–€8.400",bron:"jullie eigen projectraming"},
+  score:{wow:8.5,amelie:9,tempo:7,weer:9,prijs:6.1,totaal:7.8},
+  kosten:{excl:"€5.300–€7.000",incl:"€6.100–€8.400",ppd:{laag:133,hoog:183},bron:"jullie eigen projectraming"},
   weer:"Bergen aangenaam tot warm met regenkans · kust warm en vochtig · oceaan ±27 °C · géén sneeuw- of pasrisico",
   amelie:"De gemakkelijkste camperfinalist: geen hoogte, echte rustblokken, vier strandnachten, steden voor afwisseling. Aandacht: teken in de Appalachen, knutjes aan de kust, hitte/schaduw in steden.",
   plus:["volwaardig strandonderdeel (4 nachten oceaan)","nonstop vlucht uit Amsterdam — goedkoopste gateway","geen seizoensrisico: half mei werkt net zo goed als half juni","meest gevarieerd: bergen, parken, steden, strand"],
@@ -166,8 +169,8 @@ const ROUTES = [
   parks:["Great Smoky Mountains NP","Mammoth Cave NP","Gulf Islands NS"],
   fotos:["Great Smoky Mountains National Park","French Quarter","Natchez Trace Parkway","Gulf Islands National Seashore"],
   video:{id:"RqkTPY1zGz8", titel:"Southern Road to New Orleans — Smoky Mountains & Deep South"},
-  score:{wow:8,amelie:8,tempo:7.5,weer:6.5,prijs:8.5,totaal:7.8},
-  kosten:{excl:"€5.200–€7.100",incl:"€6.000–€8.500",bron:"planningsbandbreedte"},
+  score:{wow:8,amelie:8,tempo:7.5,weer:6.5,prijs:6.2,totaal:7.3},
+  kosten:{excl:"€5.200–€7.100",incl:"€6.000–€8.500",ppd:{laag:130,hoog:185},bron:"planningsbandbreedte"},
   weer:"Warm tot heet en vochtig naarmate je zuidelijker komt; vanaf 1 juni officieel Atlantisch orkaanseizoen (geen reden tot paniek, wél een extra factor)",
   amelie:"Korte natuurwandelingen, veel strand, camper als koele basis. Lastig: middaghitte — airco is geen luxe; Nashville/New Orleans zijn meer volwassen bestemmingen.",
   plus:["foodtrip: Nashville, Natchez, New Orleans","warm strand aan de Golf","logische lus zonder lange lege stukken"],
@@ -221,8 +224,8 @@ const ROUTES = [
   parks:["Banff NP","Olympic NP","Mount Rainier NP","North Cascades NP","Pacific Rim NP Reserve"],
   fotos:["Tofino","Olympic National Park","Moraine Lake","Banff National Park"],
   video:{id:"XPEQhmulA80", titel:"Canada — Cinematic Road Trip (Banff to Vancouver Island)"},
-  score:{wow:9.5,amelie:6.5,tempo:6,weer:7,prijs:6.5,totaal:7.7},
-  kosten:{excl:"€6.200–€8.800",incl:"€7.000–€10.200",bron:"planningsbandbreedte"},
+  score:{wow:9.5,amelie:6.5,tempo:6,weer:7,prijs:4.2,totaal:6.8},
+  kosten:{excl:"€6.200–€8.800",incl:"€7.000–€10.200",ppd:{laag:152,hoog:222},bron:"planningsbandbreedte"},
   weer:"Vier klimaatzones: regen aan de Pacifische kust, sneeuw op hoogte in Rainier/North Cascades, droger in Osoyoos, fris bergweer in Banff",
   amelie:"Grootste nadeel is niet de afstand maar de vele schakels: ferryplanning, twee grensovergangen met de camper, lange laatste week. Vancouver Island zelf is erg gezinsvriendelijk.",
   plus:["oceaan + regenwoud + vulkanen + Rockies in één reis","misschien wel de mooiste route op papier","weinig extreme hitte"],
@@ -278,8 +281,8 @@ const ROUTES = [
   parks:["Shenandoah NP","Great Smoky Mountains NP","New River Gorge NP&P","Blue Ridge Parkway","C&O Canal NHP"],
   fotos:["Niagara Falls","Finger Lakes","New River Gorge Bridge","Washington, D.C."],
   video:{id:"TzN4KthAEYM", titel:"Toronto + Niagara Falls — Travel Guide"},
-  score:{wow:8,amelie:7,tempo:6.5,weer:8,prijs:7,totaal:7.4},
-  kosten:{excl:"€5.900–€8.200",incl:"€6.700–€9.600",bron:"planningsbandbreedte"},
+  score:{wow:8,amelie:7,tempo:6.5,weer:8,prijs:4.8,totaal:6.8},
+  kosten:{excl:"€5.900–€8.200",incl:"€6.700–€9.600",ppd:{laag:146,hoog:209},bron:"planningsbandbreedte"},
   weer:"Redelijk gunstig: Ontario/Finger Lakes fris tot aangenaam, Appalachen warm, minder kusthitte, kans op regen",
   amelie:"Meren, veel korte stops, Toronto aan het eind geeft rust. Lastig: internationale grens met de camper en de lange aansluiting Finger Lakes → Shenandoah en weer terug.",
   plus:["Niagara + wijnstreek Finger Lakes geeft iets dat Atlanta niet heeft","sterke bergcomponent","Toronto als rustige finale"],
@@ -334,8 +337,8 @@ const ROUTES = [
   parks:["Big Bend NP","Guadalupe Mountains NP","Carlsbad Caverns NP","White Sands NP","Padre Island NS"],
   fotos:["Big Bend National Park","White Sands National Park","Carlsbad Caverns National Park","Guadalupe Mountains National Park"],
   video:{id:"XAicH2q5AW8", titel:"Big Bend — A Texas Size Adventure (4K)"},
-  score:{wow:9,amelie:4,tempo:7,weer:3,prijs:8,totaal:6.8},
-  kosten:{excl:"€5.400–€7.400",incl:"€6.200–€8.800",bron:"planningsbandbreedte"},
+  score:{wow:9,amelie:4,tempo:7,weer:3,prijs:5.8,totaal:6.3},
+  kosten:{excl:"€5.400–€7.400",incl:"€6.200–€8.800",ppd:{laag:135,hoog:191},bron:"planningsbandbreedte"},
   weer:"Extreem: Rio Grande Village gemiddeld 39 °C in mei, 42 °C in juni. Buitenleven alleen vroeg/laat; camperairco wordt overlevingsvoorwaarde",
   amelie:"Met een éénjarige niet verantwoord in mei/juni: middaghitte, weinig marge bij pech, laaggelegen canyon- en rivierdelen juist dan onbruikbaar.",
   plus:["vier unieke parken: Big Bend, Guadalupe, Carlsbad, White Sands","strandblok op Padre Island","financieel prima","heel andere natuur dan de andere routes"],
@@ -388,8 +391,8 @@ const ROUTES = [
   parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Li River / Yangshuo-karst"],
   fotos:["Forbidden City","Terracotta Army","Chengdu Research Base of Giant Panda Breeding","Li River"],
   video:{id:"03DFrojtwTk", titel:"12-Day China Highlights: Pandas, Great Wall, Guilin & Shanghai"},
-  score:{wow:9,amelie:9,tempo:6,weer:7,prijs:9,totaal:8.2},
-  kosten:{excl:"€4.400–€6.800",incl:"€5.100–€7.900",bron:"planningsbandbreedte (5 hotels, 3 treinen, 1 vlucht)"},
+  score:{wow:9,amelie:9,tempo:6,weer:7,prijs:7.6,totaal:8},
+  kosten:{excl:"€4.400–€6.800",incl:"€5.100–€7.900",ppd:{laag:106,hoog:165},bron:"planningsbandbreedte (5 hotels, 3 treinen, 1 vlucht)"},
   weer:"Beijing warm en vaak prima · Xi'an warm tot heet · Chengdu vochtig · Yangshuo nat seizoen (zwakke plek) · Shanghai vochtiger richting juni. Vier Yangshuo-nachten = regen mag één dag opeten",
   amelie:"Beste comfort van alle negen: weinig hotelwissels, trein i.p.v. autostoel, meerdere vrije middagen, centrale hotels. Aandacht: draagzak + lichte buggy, eigen treinstoel voor lange ritten, grotere kamers boeken, kinderzitje privétransfers schriftelijk regelen.",
   plus:["beste rust/afwisseling-verhouding van alle negen routes","cultuur totaal anders dan Noord-Amerika","weinig autostoeluren","zeer geschikt als eerste China-reis"],
@@ -439,8 +442,8 @@ const ROUTES = [
   parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP (Avatar-bergen)"],
   fotos:["Mutianyu","Zhangjiajie National Forest Park","Tianmen Mountain","The Bund"],
   video:{id:"MIWXK7fPRTY", titel:"Ultimate Zhangjiajie Travel Guide: The Avatar Mountains"},
-  score:{wow:9.5,amelie:8,tempo:6,weer:6.5,prijs:8.5,totaal:8.1},
-  kosten:{excl:"€4.700–€7.200",incl:"€5.400–€8.300",bron:"planningsbandbreedte (Zhangjiajie maakt excursies duurder)"},
+  score:{wow:9.5,amelie:8,tempo:6,weer:6.5,prijs:7.2,totaal:7.8},
+  kosten:{excl:"€4.700–€7.200",incl:"€5.400–€8.300",ppd:{laag:112,hoog:173},bron:"planningsbandbreedte (Zhangjiajie maakt excursies duurder)"},
   weer:"Zhangjiajie in mei/juni groen en fotogeniek, maar regen en mist mogelijk — uitzicht minder voorspelbaar dan in een stad. Daarom vier nachten en één flexdag",
   amelie:"Voordeel: weinig hotelwissels. Nadeel: Zhangjiajie is geen buggybestemming — draagzak essentieel; reken op wachtrijen, kabelbanen, liften en drukke shuttles.",
   plus:["spectaculairste landschap van de drie China-varianten","nog steeds vijf bases met veel rust ertussen","geen extra Yangshuo-transfer"],
@@ -509,8 +512,8 @@ const ROUTES = [
      dagtekst:"Zeven bases, elk exact drie nachten: 3-3-3-3-3-3-3 (sommen nog steeds 21). Na Yangshuo per hogesnelheidstrein naar Hongkong, drie nachten wereldstad, en per vlucht (±2,5 u) door naar Shanghai als slot. Beijing krimpt naar aankomst + 2 volle dagen (Muur en Verboden Stad blijven, Summer Palace wordt keuze) en Yangshuo verliest zijn regenbuffer.",
      tip:"Eerlijk: 7 verhuisdagen op 21 nachten = 33% — boven de ±24% die we elders als bovengrens met Amelie aanhielden. Dit is de maximaal-actieve versie: prachtig ritme, maar de krapste met een jong kind."}
   ],
-  score:{wow:10,amelie:7.5,tempo:9,weer:6.5,prijs:8,totaal:8.7},
-  kosten:{excl:"€4.900–€7.600",incl:"€5.600–€8.700",bron:"planningsbandbreedte (extra transfer + extra natuurblok)"},
+  score:{wow:10,amelie:7.5,tempo:9,weer:6.5,prijs:5.8,totaal:8},
+  kosten:{excl:"€4.900–€7.600",incl:"€5.600–€8.700",ppd:{laag:127,hoog:198},bron:"planningsbandbreedte (extra transfer + extra natuurblok)"},
   weer:"Twee vochtige natuurregio's mee = hogere kans op een regendag, maar ook kleinere kans dat één regio de natuurcomponent verpest",
   amelie:"De grens van wat verantwoord is: zes bases, nooit korter dan drie nachten, langste transfer per trein (±7 u) en Yangshuo direct daarna als herstelblok. Vijf verhuisdagen op 21 nachten is de bovengrens.",
   plus:["meest complete China-ervaring: keizerrijk → oud → panda's → Avatar-bergen → karst → megastad","tempo voelt écht als rondreis (4-3-3-3-4-4)","beide natuuriconen zitten erin","Shanghai en Yangshuo geven aan het eind stabiliteit en herstel"],
@@ -564,8 +567,8 @@ const ROUTES = [
   parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP","Li River / Yangshuo-karst","Jade Dragon Snow Mountain","Erhai Lake"],
   fotos:["Jade Dragon Snow Mountain","Lijiang","Victoria Harbour","Erhai Lake"],
   video:{id:"nHug3VataZk", titel:"Yunnan Travel Guide — Dali & Lijiang (planning)"},
-  score:{wow:10,amelie:7,tempo:8,weer:7,prijs:6.5,totaal:8.4},
-  kosten:{excl:"€6.800–€9.800",incl:"€7.700–€11.200",bron:"planningsbandbreedte (5 extra nachten, Hongkong-hotels en 2 extra binnenlandse vluchten)"},
+  score:{wow:10,amelie:7,tempo:8,weer:7,prijs:5,totaal:7.6},
+  kosten:{excl:"€6.800–€9.800",incl:"€7.700–€11.200",ppd:{laag:143,hoog:207},bron:"planningsbandbreedte (5 extra nachten, Hongkong-hotels en 2 extra binnenlandse vluchten)"},
   weer:"Beijing/Xi'an warm · Chengdu/Yangshuo vochtig · Hongkong heet en vochtig (30/25) · Yunnan op 2.000–2.400 m het prettigst van heel China: dag 24–25°, nacht 11–13°; mei nog droog, vanaf juni bouwt de regentijd op",
   amelie:"Langste variant maar met rustige bouwstenen: overal minimaal 2 (meestal 3) nachten, herstelblokken in Yangshuo, Dali en Shanghai. Aandacht: 9 bases = 8× verhuizen, 2 extra vliegtrajecten (HKG→Lijiang vaak met tussenstop) en hoogte in Lijiang (2.400 m).",
   plus:["wow 10: Zhangjiajie én Yangshuo én Jade Dragon én Erhai in één reis","Yunnan is in mei/juni klimatologisch het prettigste deel van China","tempo blijft human dankzij 3-nachtblokken","Shanghai-finale met buffer"],
@@ -615,6 +618,241 @@ const ROUTES = [
   ]
 },
 
+// ═══════════════════════════════ CHINA 5-8 ═════════════════════════════════
+// De vier "China per Spoor"-varianten (★): één route in vier lengtes, april 2027,
+// bottom-up geprijsd (geverifieerde vluchttarieven 31-8-2026, 2e-klas treinen,
+// hotels € 44–60). Bron: het document "China per Spoor 2027".
+// Let op: 16/19/22/25 nachten i.p.v. de 21 van het vergelijkingsmodel, en april
+// i.p.v. het venster 14–29 mei — vandaar melding + dLabel per route.
+
+// ═══════════════════════════════ CHINA 5 ═══════════════════════════════════
+{
+  id:"spoor27", soort:"China", naam:"China per Spoor 27 dagen", lijst:"A",
+  alias:"Shanghai · Hangzhou · Beijing · Xi'an · Chengdu · Chongqing · Zhangjiajie · Yangshuo · Longji",
+  kleur:"#7f1d33", km:0, treinkm:5300, tempo:"ruimst", finalist:true,
+  gmaps:"", klimaatLabel:"april",
+  dLabel:"★ scenario · 1–27 april",
+  melding:"Deze route valt buiten de standaardkaders van de vergelijking: 25 nachten i.p.v. 21, en uitgewerkt voor 1–27 april 2027 i.p.v. het venster 14–29 mei — vóór de Golden Week (1–5 mei) en vóór de moesson in Zuid-China. De prijzen zijn bottom-up opgebouwd met geverifieerde vluchttarieven (Google Flights, 31-8-2026).",
+  meldingKort:"★ 25 nachten · 1–27 april",
+  parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP","Li River / Yangshuo-karst","West Lake","Longji-rijstterrassen"],
+  fotos:["The Bund","West Lake","Zhangjiajie National Forest Park","Longji Terraces"],
+  video:{id:"-uJSab801Z4", titel:"Shanghai to Beijing on the World's Fastest High-Speed Train"},
+  score:{wow:9.5,amelie:9,tempo:8.5,weer:8.5,prijs:9.7,totaal:9.2},
+  kosten:{excl:"€4.390–€5.190",incl:"€5.087–€6.189",ppd:{laag:94,hoog:115},bron:"bottom-up: geverifieerde vluchttarieven (31-8-2026), 2e-klas treinen, hotels € 44–60"},
+  weer:"April is overal draaglijk: Beijing 22/7 °C, Chengdu 24/14, Zhangjiajie 20/12, Yangshuo 24/17, Guangzhou 26/19. Beijing-nachten fris (fleece en warme laag voor de kleine) en begin april kans op zandstorm uit Mongolië. Zhangjiajie-mist hoort erbij — reken op één dag zonder uitzicht. Guilin/Yangshuo: korte hevige buien, geen dagenlange regen. Alles vóór de moesson die vanaf ± 20 mei in het zuiden begint",
+  amelie:"Geen enkele binnenlandse vlucht, alleen treinen — en op elke trein reist de baby gratis (onder 120 cm, één kind per volwassene, zonder eigen stoel). Rijtuig 5 heeft doorgaans het invalidentoilet met inklapbare verschoontafel; aan het eind van elk rijtuig staat kokend water voor de fles. Negen bases, waarvan acht met twee of meer nachten. Draagzak verplicht voor Muur, Zhangjiajie en de trappen van Longji.",
+  plus:["winst van het dagbudget: € 94 p.p./dag — ruim onder de € 100-richtprijs","één doorlopende lijn: zee → Muur → panda's → Avatar-bergen → karst → rijstterrassen","meeste rust van alle zeventien routes (8 van 9 bases ≥ 2 nachten)","Longji in april: terrassen die net onder water staan en de hemel spiegelen"],
+  min:["25 nachten — past niet in het 21-nachten-model van de andere routes","27 dagen zit dicht tegen de grens van de 30-dagen visumvrije regeling","één treindag van 7 uur (of opsplitsen via Changsha, +€ 50)","vertrek op 1 april: de vroegste van allemaal"],
+  quote:"De vlucht kost hetzelfde of je 18 of 27 dagen gaat — dus waarom zou je de helft van China laten staan?",
+  letop:["treintickets komen 15 dagen vooruit vrij (Trip.com of 12306), vaste prijs maar populaire trajecten (Beijing–Xi'an, Zhangjiajie–Guilin) raken uitverkocht; boeken met paspoortnummer","HSR-stations werken als luchthavens: 45 minuten marge is realistisch, niet ruim","visumvrije regeling van 30 dagen loopt nominaal t/m 31 december 2026 — najaar 2026 herchecken; dochter heeft hoe dan ook een eigen paspoort nodig","Verboden Stad 7–14 dagen vooruit reserveren op paspoort","vluchtalert op AMS→PVG en CAN→AMS; boeken zodra er iets onder € 700 p.p. verschijnt (China Southern/China Eastern openen goedkope buckets meestal 6–9 maanden vooruit)","Golden Week 1–5 mei volledig vermijden — hotelprijzen ×2–3, treinen uitverkocht"],
+  stops:[
+    {naam:"Shanghai", n:3, lat:31.23, lng:121.47, vervoer:"Vlucht Amsterdam → Shanghai (open jaw: terug vanaf Guangzhou)", note:"Bund bij avond vanaf de veerboot (€ 0,30 p.p.), Yu-tuin, Franse Concessie; Zhujiajiao of Shanghai Tower als vierde dag", wiki:"Shanghai", klimaat:{d:20,n:12}},
+    {naam:"Hangzhou", n:2, lat:30.25, lng:120.17, vervoer:"HSR 32 min · € 9 p.p. — goedkoopste rit van de reis", note:"West Lake bij zonsopgang, Longjing-theeterrassen, Lingyin-klooster", wiki:"Hangzhou", klimaat:{d:22,n:12}},
+    {naam:"Beijing", n:4, lat:39.90, lng:116.41, vervoer:"HSR Hangzhou → Beijing 4 u 50 · € 80 p.p.", note:"Verboden Stad + Jingshan, Mutianyu met gesloten kabelbaan, Tempel van de Hemel, Zomerpaleis", wiki:"Beijing", klimaat:{d:22,n:7}},
+    {naam:"Xi'an", n:2, lat:34.34, lng:108.94, vervoer:"HSR 4 u 12 · € 61–76 p.p.", note:"Terracottaleger vroeg, stadsmuur, Moslimwijk", wiki:"Xi'an", klimaat:{d:22,n:10}},
+    {naam:"Chengdu", n:3, lat:30.57, lng:104.07, vervoer:"HSR 3 u 00 · € 34 p.p. — mooiste traject, tunnels door de Qinling", note:"Panda Base om 07.30, theehuizen in People's Park, Leshan of rustdag", wiki:"Chengdu", klimaat:{d:24,n:14}},
+    {naam:"Chongqing", n:1, lat:29.56, lng:106.55, vervoer:"HSR 1 u 04 · € 11–30 p.p. (halfuurdienst)", note:"Hongya Dong bij zonsondergang: 11 verdiepingen houten stad aan de rotswand", wiki:"Chongqing", klimaat:{d:23,n:15}},
+    {naam:"Zhangjiajie (Wulingyuan)", n:4, lat:29.13, lng:110.48, vervoer:"HSR 2 u 02 · € 25–34 → Zhangjiajie West + shuttle", note:"Yuanjiajie + Bailong-lift, Tianzi + Gouden Zweepbeek, Tianmen óf Grand Canyon; 4 nachten = regenbuffer", wiki:"Zhangjiajie", klimaat:{d:20,n:12}},
+    {naam:"Yangshuo", n:4, lat:24.78, lng:110.49, vervoer:"D-trein 7 u 01 · € 44 p.p. (of opsplitsen via Changsha)", note:"Bamboevlot op de Yulong, Li-cruise, Xingping (20-yuanbiljet-uitzicht), vrije dag", wiki:"Yangshuo County", klimaat:{d:24,n:17}},
+    {naam:"Longji-rijstterrassen (Ping'an)", n:2, lat:25.79, lng:110.21, vervoer:"Auto/shuttle vanaf Guilin ± 2 u · € 10 p.p.", note:"Houten gastenhuis tussen de terrassen; laatste 300 m trap — draagzak, geen buggy", wiki:"Longji Terraces", klimaat:{d:21,n:13}},
+    {naam:"Guangzhou (doorreis)", n:0, lat:23.13, lng:113.26, vervoer:"HSR Yangshuo → Guangzhou 1 u 54 · € 15–22", note:"Uitvalspoort: avondvlucht naar Amsterdam v.a. € 320 p.p. — de goedkoopste uitgang van China", wiki:"Guangzhou", klimaat:{d:26,n:19}}
+  ],
+  dagen:[
+    {d:1,t:"Amsterdam → Shanghai",x:"Directe vlucht ± 11 u; bassinet aanvragen bij boeking"},
+    {d:2,t:"Shanghai — landen en bijkomen",x:"Metro naar het hotel, korte wandeling Franse Concessie, vroeg eten"},
+    {d:3,t:"Shanghai — Bund en Yu-tuin",x:"Ochtend Yu-tuin, middag Bund, avond skyline vanaf de veerboot"},
+    {d:4,t:"Shanghai — Tower of Zhujiajiao",x:"Uitkijkdek 118e verdieping of waterdorp op 1 uur — met baby: kiezen"},
+    {d:5,t:"Trein → Hangzhou · 32 min",x:"Middag West Lake, avondwandeling langs de oever (park is gratis)"},
+    {d:6,t:"Hangzhou — thee en tempels",x:"Longjin-theeterrassen, Lingyin-klooster, vegetarisch tempeleten"},
+    {d:7,t:"Trein → Beijing · 4 u 50",x:"Ochtendtrein, middag aankomst, hutongs rond Nanluoguxiang"},
+    {d:8,t:"Beijing — Verboden Stad",x:"Tiananmen, Verboden Stad (€ 7,65), Jingshan voor het daken-uitzicht"},
+    {d:9,t:"Beijing — Grote Muur Mutianyu",x:"Privéauto, gesloten kabelbaan; toren 14 → 6 is het vlakst, draagzak mee"},
+    {d:10,t:"Beijing — Tempel van de Hemel + Zomerpaleis",x:"Vroeg tai-chi kijken, middag bootje over het Kunming-meer"},
+    {d:11,t:"Trein → Xi'an · 4 u 12",x:"Middag stadsmuur, avond Moslimwijk"},
+    {d:12,t:"Xi'an — Terracottaleger",x:"Vroeg vertrekken; middag Grote Wilde Ganzenpagode"},
+    {d:13,t:"Trein → Chengdu · 3 u 00",x:"Mooiste traject van de reis; avond theehuis in People's Park"},
+    {d:14,t:"Chengdu — Panda Base",x:"Om 07.30 open, panda's slapen na 10 uur; vlakke paden, kinderwagen kan"},
+    {d:15,t:"Chengdu — Leshan of rustdag",x:"Grote Boeddha op 1 uur, of niks — afhankelijk van hoe de week ging"},
+    {d:16,t:"Trein → Chongqing · 1 u 04",x:"Kortste verplaatsing; zonsondergang bij Hongya Dong"},
+    {d:17,t:"Trein → Zhangjiajie (Wulingyuan) · 2 u 02",x:"Doorrijden naar het dorp aan de parkingang — scheelt elke ochtend een uur"},
+    {d:18,t:"Zhangjiajie — Yuanjiajie en Bailong-lift",x:"Glazen lift van 326 m, Avatar-berg; draagzak, geen buggy"},
+    {d:19,t:"Zhangjiajie — Tianzi en Gouden Zweepbeek",x:"Ochtend kabelbaan, middag vlakke beekwandeling — enige buggyvriendelijke route"},
+    {d:20,t:"Zhangjiajie — Tianmen of Grand Canyon",x:"Langste kabelbaan ter wereld (7,5 km) of glazen brug; kies op weer"},
+    {d:21,t:"Trein → Guilin → Yangshuo · 7 u 01",x:"De lange dag; stoelen bij het balkon reserveren, of opsplitsen via Changsha"},
+    {d:22,t:"Yangshuo — bamboevlot op de Yulong",x:"Rustiger en korter dan de grote Li-cruise; middag fietsen door de velden"},
+    {d:23,t:"Yangshuo — Li-cruise of Xingping",x:"Guilin → Yangshuo € 27,40 p.p., of het 20-yuanbiljet-uitzicht bij Xingping"},
+    {d:24,t:"Yangshuo — extra dag",x:"Xingping te voet of een dag niksen aan de rivier"},
+    {d:25,t:"Naar Longji — Ping'an",x:"2 uur rijden; middag tussen de terrassen, slapen in een houten gastenhuis"},
+    {d:26,t:"Longji — terrassen",x:"Ochtend bij de uitkijkpunten; velden staan in april onder water en spiegelen"},
+    {d:27,t:"Guilin → Guangzhou → Amsterdam",x:"Ochtendtrein 1 u 54 (v.a. station Yangshuo), avondvlucht naar huis"}
+  ]
+},
+
+// ═══════════════════════════════ CHINA 6 ═══════════════════════════════════
+{
+  id:"spoor24", soort:"China", naam:"China per Spoor 24 dagen", lijst:"A",
+  alias:"Shanghai · Hangzhou · Beijing · Xi'an · Chengdu · Chongqing · Zhangjiajie · Yangshuo",
+  kleur:"#9c2740", km:0, treinkm:5300, tempo:"ruim", finalist:true,
+  gmaps:"", klimaatLabel:"april",
+  dLabel:"★ scenario · 4–27 april",
+  melding:"De aanbevolen lengte. 22 nachten i.p.v. de 21 van het vergelijkingsmodel, uitgewerkt voor 4–27 april 2027 i.p.v. het venster 14–29 mei — vóór de Golden Week en de moesson. Bottom-up geprijsd met geverifieerde vluchttarieven (31-8-2026): als enige route nét onder de € 100 p.p./dag behalve de 27-daagse.",
+  meldingKort:"★ 22 nachten · 4–27 april · aanbevolen",
+  parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP","Li River / Yangshuo-karst","West Lake"],
+  fotos:["West Lake","Mutianyu","Zhangjiajie National Forest Park","Li River"],
+  video:{id:"-uJSab801Z4", titel:"Shanghai to Beijing on the World's Fastest High-Speed Train"},
+  score:{wow:9.5,amelie:8.5,tempo:8.5,weer:8.5,prijs:9.3,totaal:9},
+  kosten:{excl:"€4.160–€4.910",incl:"€4.780–€5.789",ppd:{laag:100,hoog:121},bron:"bottom-up: geverifieerde vluchttarieven (31-8-2026), 2e-klas treinen, hotels € 44–60"},
+  weer:"April is overal draaglijk: Beijing 22/7 °C, Chengdu 24/14, Zhangjiajie 20/12, Yangshuo 24/17. Beijing-nachten fris; Zhangjiajie-mist hoort erbij — de vierde nacht daar is precies de buffer. Guilin/Yangshuo: korte hevige buien. Alles ruim vóór de Golden Week en de moesson",
+  amelie:"Alleen treinen, baby reist gratis (onder 120 cm, zonder eigen stoel). Invalidentoilet met verschoontafel in rijtuig 5, kokend water in elk rijtuig. Acht bases, zeven met twee of meer nachten. Draagzak voor Muur en Zhangjiajie; buggy werkt op vlakke delen.",
+  plus:["€ 100 p.p./dag — precies op de richtprijs, met dezelfde hoogtepunten als de 27-daagse minus Longji","hangt één blok samen met de 27-daagse: tot vlak voor boeken kun je schuiven","vier nachten Zhangjiajie = mist-buffer","trein i.p.v. binnenlandse vluchten: geen wachten op vliegvelden met een 1-jarige"],
+  min:["22 nachten — één nacht meer dan het vergelijkingsmodel","één treindag van 7 uur (of opsplitsen via Changsha, +€ 50)","géén Longji-rijstterrassen (die zitten alleen in de 27-daagse)","vertrek 4 april: ruim vóór het mei-venster van de andere routes"],
+  quote:"€ 2.390 p.p. voor Beijing, de Muur, panda's, Avatar-bergen én de karst — dat halen de mei-routes niet.",
+  letop:["treintickets 15 dagen vooruit (Trip.com/12306); Beijing–Xi'an en Zhangjiajie–Guilin raken uitverkocht","HSR-stations: 45 minuten marge","visumvrije regeling najaar 2026 herchecken; dochter eigen paspoort","Verboden Stad 7–14 dagen vooruit reserveren","vluchtalert AMS→PVG en CAN→AMS; boeken onder € 700 p.p.","Golden Week 1–5 mei vermijden"],
+  stops:[
+    {naam:"Shanghai", n:3, lat:31.23, lng:121.47, vervoer:"Vlucht Amsterdam → Shanghai (open jaw: terug vanaf Guangzhou)", note:"Bund, Yu-tuin, Franse Concessie; veerboot i.p.v. dure rondvaart", wiki:"Shanghai", klimaat:{d:20,n:12}},
+    {naam:"Hangzhou", n:2, lat:30.25, lng:120.17, vervoer:"HSR 32 min · € 9 p.p.", note:"West Lake, Longjing-thee, Lingyin-klooster", wiki:"Hangzhou", klimaat:{d:22,n:12}},
+    {naam:"Beijing", n:4, lat:39.90, lng:116.41, vervoer:"HSR Hangzhou → Beijing 4 u 50 · € 80 p.p.", note:"Verboden Stad, Mutianyu, Tempel van de Hemel, Zomerpaleis", wiki:"Beijing", klimaat:{d:22,n:7}},
+    {naam:"Xi'an", n:2, lat:34.34, lng:108.94, vervoer:"HSR 4 u 12 · € 61–76 p.p.", note:"Terracottaleger, stadsmuur, Moslimwijk", wiki:"Xi'an", klimaat:{d:22,n:10}},
+    {naam:"Chengdu", n:3, lat:30.57, lng:104.07, vervoer:"HSR 3 u 00 · € 34 p.p.", note:"Panda Base, theehuizen, Leshan of rustdag", wiki:"Chengdu", klimaat:{d:24,n:14}},
+    {naam:"Chongqing", n:1, lat:29.56, lng:106.55, vervoer:"HSR 1 u 04 · € 11–30 p.p.", note:"Hongya Dong bij zonsondergang", wiki:"Chongqing", klimaat:{d:23,n:15}},
+    {naam:"Zhangjiajie (Wulingyuan)", n:4, lat:29.13, lng:110.48, vervoer:"HSR 2 u 02 · € 25–34 → Zhangjiajie West + shuttle", note:"Yuanjiajie + Bailong-lift, Tianzi + Zweepbeek, Tianmen of Grand Canyon; 4 nachten = regenbuffer", wiki:"Zhangjiajie", klimaat:{d:20,n:12}},
+    {naam:"Yangshuo", n:3, lat:24.78, lng:110.49, vervoer:"D-trein 7 u 01 · € 44 p.p. (of opsplitsen via Changsha)", note:"Bamboevlot op de Yulong, Li-cruise of Xingping", wiki:"Yangshuo County", klimaat:{d:24,n:17}},
+    {naam:"Guangzhou (doorreis)", n:0, lat:23.13, lng:113.26, vervoer:"HSR Yangshuo → Guangzhou 1 u 54 · € 15–22", note:"Uitvalspoort: avondvlucht v.a. € 320 p.p.", wiki:"Guangzhou", klimaat:{d:26,n:19}}
+  ],
+  dagen:[
+    {d:1,t:"Amsterdam → Shanghai",x:"Directe vlucht ± 11 u; bassinet aanvragen"},
+    {d:2,t:"Shanghai — landen en bijkomen",x:"Niets forceren op dag één"},
+    {d:3,t:"Shanghai — Bund en Yu-tuin",x:"Ochtend Yu-tuin, avond skyline vanaf de veerboot"},
+    {d:4,t:"Shanghai — Tower of Zhujiajiao",x:"Uitkijkdek of waterdorp — kiezen"},
+    {d:5,t:"Trein → Hangzhou · 32 min",x:"Middag West Lake"},
+    {d:6,t:"Hangzhou — thee en tempels",x:"Longjin-terrassen, Lingyin-klooster"},
+    {d:7,t:"Trein → Beijing · 4 u 50",x:"Middag aankomst, hutongs"},
+    {d:8,t:"Beijing — Verboden Stad",x:"€ 7,65 p.p.; Jingshan voor het overzicht"},
+    {d:9,t:"Beijing — Grote Muur Mutianyu",x:"Gesloten kabelbaan; toren 14 → 6, draagzak"},
+    {d:10,t:"Beijing — Tempel + Zomerpaleis",x:"Tai-chi in het park, bootje op het meer"},
+    {d:11,t:"Trein → Xi'an · 4 u 12",x:"Stadsmuur, Moslimwijk"},
+    {d:12,t:"Xi'an — Terracottaleger",x:"Vroeg vertrekken; Ganzenpagode"},
+    {d:13,t:"Trein → Chengdu · 3 u 00",x:"Theehuis in People's Park"},
+    {d:14,t:"Chengdu — Panda Base",x:"07.30 open; kinderwagen kan hier"},
+    {d:15,t:"Chengdu — Leshan of rustdag",x:"Grote Boeddha of niks"},
+    {d:16,t:"Trein → Chongqing · 1 u 04",x:"Hongya Dong bij zonsondergang"},
+    {d:17,t:"Trein → Zhangjiajie (Wulingyuan) · 2 u 02",x:"Aan de parkingang slapen"},
+    {d:18,t:"Zhangjiajie — Yuanjiajie en Bailong-lift",x:"Avatar-berg; draagzak"},
+    {d:19,t:"Zhangjiajie — Tianzi en Gouden Zweepbeek",x:"Kabelbaan + vlakke beekwandeling"},
+    {d:20,t:"Zhangjiajie — Tianmen of Grand Canyon",x:"Kies op weer en energie — de andere is regenbuffer"},
+    {d:21,t:"Trein → Guilin → Yangshuo · 7 u 01",x:"De lange dag; of opsplitsen via Changsha"},
+    {d:22,t:"Yangshuo — bamboevlot op de Yulong",x:"Middag fietsen door de rijstvelden"},
+    {d:23,t:"Yangshuo — Li-cruise of Xingping",x:"€ 27,40 p.p. of het 20-yuanbiljet-uitzicht"},
+    {d:24,t:"Yangshuo → Guangzhou → Amsterdam",x:"HSR 1 u 54, avondvlucht naar huis"}
+  ]
+},
+
+// ═══════════════════════════════ CHINA 7 ═══════════════════════════════════
+{
+  id:"spoor21", soort:"China", naam:"China per Spoor 21 dagen", lijst:"B",
+  alias:"Shanghai · Beijing · Xi'an · Chengdu · Chongqing · Zhangjiajie · Yangshuo",
+  kleur:"#b53a55", km:0, treinkm:5150, tempo:"goed uitgebalanceerd", finalist:false,
+  gmaps:"", klimaatLabel:"april",
+  dLabel:"★ scenario · 6–26 april",
+  melding:"Past qua lengte het dichtst bij het vergelijkingsmodel (19 nachten i.p.v. 21), maar is uitgewerkt voor 6–26 april 2027 i.p.v. het venster 14–29 mei. Bottom-up geprijsd met geverifieerde vluchttarieven (31-8-2026).",
+  meldingKort:"★ 19 nachten · 6–26 april",
+  parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP","Li River / Yangshuo-karst"],
+  fotos:["The Bund","Mutianyu","Chengdu Research Base of Giant Panda Breeding","Li River"],
+  video:{id:"-uJSab801Z4", titel:"Shanghai to Beijing on the World's Fastest High-Speed Train"},
+  score:{wow:9,amelie:8,tempo:8,weer:8.5,prijs:8.9,totaal:8.6},
+  kosten:{excl:"€3.930–€4.620",incl:"€4.465–€5.381",ppd:{laag:106,hoog:128},bron:"bottom-up: geverifieerde vluchttarieven (31-8-2026), 2e-klas treinen, hotels € 44–60"},
+  weer:"April is overal draaglijk: Beijing 22/7 °C, Chengdu 24/14, Zhangjiajie 20/12, Yangshuo 24/17. Drie i.p.v. vier Zhangjiajie-nachten: bij mist is er géén bufferdag — daarom Tianmen of Grand Canyon overslaan als het troebel is. Alles ruim vóór de Golden Week en de moesson",
+  amelie:"Alleen treinen, baby reist gratis (onder 120 cm). Zeven bases, zes met twee of meer nachten; alleen Chongqing is één nacht. Draagzak voor Muur en Zhangjiajie. Iets hoger tempo dan de 24-daagse: om de twee dagen inpakken komt vaker voor.",
+  plus:["zélfde lijn als de 24-daagse, alleen zonder Hangzhou en de vierde Zhangjiajie-nacht","19 nachten: het dichtst bij het 21-nachten-model van de vergelijking","goed uitgebalanceerd tempo volgens het brondocument","€ 106 p.p./dag — nog altijd onder elke mei-route"],
+  min:["drie Zhangjiajie-nachten: géén mist-buffer","zonder Hangzhou mis je West Lake","tempo ligt hoger dan de 24/27-daagse","zelfde vlucht over minder dagen: p.p./dag stijgt naar € 106"],
+  quote:"Dezelfde reis, alleen zonder de randjes — handig als drie weken de grens is.",
+  letop:["treintickets 15 dagen vooruit (Trip.com/12306)","HSR-stations: 45 minuten marge","visumvrije regeling najaar 2026 herchecken; dochter eigen paspoort","Verboden Stad vooruit reserveren","vluchtalert AMS→PVG en CAN→AMS","Golden Week 1–5 mei vermijden"],
+  stops:[
+    {naam:"Shanghai", n:3, lat:31.23, lng:121.47, vervoer:"Vlucht Amsterdam → Shanghai (open jaw: terug vanaf Guangzhou)", note:"Bund, Yu-tuin, Franse Concessie", wiki:"Shanghai", klimaat:{d:20,n:12}},
+    {naam:"Beijing", n:4, lat:39.90, lng:116.41, vervoer:"HSR Shanghai → Beijing 4 u 18 · € 70 p.p.", note:"Verboden Stad, Mutianyu, Tempel van de Hemel, Zomerpaleis", wiki:"Beijing", klimaat:{d:22,n:7}},
+    {naam:"Xi'an", n:2, lat:34.34, lng:108.94, vervoer:"HSR 4 u 12 · € 61–76 p.p.", note:"Terracottaleger, stadsmuur, Moslimwijk", wiki:"Xi'an", klimaat:{d:22,n:10}},
+    {naam:"Chengdu", n:3, lat:30.57, lng:104.07, vervoer:"HSR 3 u 00 · € 34 p.p.", note:"Panda Base, theehuizen, Leshan of rustdag", wiki:"Chengdu", klimaat:{d:24,n:14}},
+    {naam:"Chongqing", n:1, lat:29.56, lng:106.55, vervoer:"HSR 1 u 04 · € 11–30 p.p.", note:"Hongya Dong bij zonsondergang", wiki:"Chongqing", klimaat:{d:23,n:15}},
+    {naam:"Zhangjiajie (Wulingyuan)", n:3, lat:29.13, lng:110.48, vervoer:"HSR 2 u 02 · € 25–34 → Zhangjiajie West + shuttle", note:"Yuanjiajie + Bailong-lift, Tianzi of Tianmen — kiezen, niet beide", wiki:"Zhangjiajie", klimaat:{d:20,n:12}},
+    {naam:"Yangshuo", n:3, lat:24.78, lng:110.49, vervoer:"D-trein 7 u 01 · € 44 p.p. (of opsplitsen via Changsha)", note:"Bamboevlot op de Yulong, Li-cruise of Longji-dagtrip", wiki:"Yangshuo County", klimaat:{d:24,n:17}},
+    {naam:"Guangzhou (doorreis)", n:0, lat:23.13, lng:113.26, vervoer:"HSR Yangshuo → Guangzhou 1 u 54 · € 15–22", note:"Uitvalspoort: avondvlucht v.a. € 320 p.p.", wiki:"Guangzhou", klimaat:{d:26,n:19}}
+  ],
+  dagen:[
+    {d:1,t:"Amsterdam → Shanghai",x:"Directe vlucht ± 11 u"},
+    {d:2,t:"Shanghai — landen en bijkomen",x:"Franse Concessie, vroeg eten"},
+    {d:3,t:"Shanghai — Bund en Yu-tuin",x:"Avond skyline vanaf de veerboot"},
+    {d:4,t:"Shanghai — Tower of Zhujiajiao",x:"Kiezen"},
+    {d:5,t:"Trein → Beijing · 4 u 18",x:"Hutongs bij aankomst"},
+    {d:6,t:"Beijing — Verboden Stad",x:"Jingshan voor het overzicht"},
+    {d:7,t:"Beijing — Grote Muur Mutianyu",x:"Gesloten kabelbaan, draagzak"},
+    {d:8,t:"Beijing — Tempel + Zomerpaleis",x:"Tai-chi, bootje op het meer"},
+    {d:9,t:"Trein → Xi'an · 4 u 12",x:"Stadsmuur, Moslimwijk"},
+    {d:10,t:"Xi'an — Terracottaleger",x:"Vroeg vertrekken"},
+    {d:11,t:"Trein → Chengdu · 3 u 00",x:"Theehuis in People's Park"},
+    {d:12,t:"Chengdu — Panda Base",x:"07.30 open"},
+    {d:13,t:"Chengdu — Leshan of rustdag",x:"Grote Boeddha of niks"},
+    {d:14,t:"Trein → Chongqing · 1 u 04",x:"Hongya Dong bij zonsondergang"},
+    {d:15,t:"Trein → Zhangjiajie (Wulingyuan) · 2 u 02",x:"Aan de parkingang slapen"},
+    {d:16,t:"Zhangjiajie — Yuanjiajie en Bailong-lift",x:"Avatar-berg; draagzak"},
+    {d:17,t:"Zhangjiajie — Tianzi of Tianmen",x:"Kiezen op weer en energie"},
+    {d:18,t:"Trein → Guilin → Yangshuo · 7 u 01",x:"De lange dag"},
+    {d:19,t:"Yangshuo — bamboevlot op de Yulong",x:"Middag fietsen"},
+    {d:20,t:"Yangshuo — Li-cruise of Longji-dagtrip",x:"€ 27,40 p.p. of rijstterrassen op 2 uur"},
+    {d:21,t:"Yangshuo → Guangzhou → Amsterdam",x:"HSR 1 u 54, avondvlucht naar huis"}
+  ]
+},
+
+// ═══════════════════════════════ CHINA 8 ═══════════════════════════════════
+{
+  id:"spoor18", soort:"China", naam:"China per Spoor 18 dagen", lijst:"B",
+  alias:"Beijing · Xi'an · Chengdu · Chongqing · Zhangjiajie · Yangshuo",
+  kleur:"#c94f66", km:0, treinkm:3850, tempo:"stevig", finalist:false,
+  gmaps:"", klimaatLabel:"april",
+  dLabel:"★ scenario · 9–26 april",
+  melding:"Kortste versie: geen Shanghai en Hangzhou — de vlucht gaat rechtstreeks naar Beijing. 16 nachten, uitgewerkt voor 9–26 april 2027. Bottom-up geprijsd met geverifieerde vluchttarieven (31-8-2026). Door dezelfde vlucht over minder dagen komt hij boven de € 100 p.p./dag uit.",
+  meldingKort:"★ 16 nachten · 9–26 april",
+  parks:["Grote Muur (Mutianyu)","Verboden Stad","Terracottaleger","Chengdu Panda Base","Zhangjiajie NP","Li River / Yangshuo-karst"],
+  fotos:["Mutianyu","Chengdu Research Base of Giant Panda Breeding","Zhangjiajie National Forest Park","Li River"],
+  video:{id:"-uJSab801Z4", titel:"Shanghai to Beijing on the World's Fastest High-Speed Train"},
+  score:{wow:9,amelie:7,tempo:7.5,weer:8.5,prijs:8.5,totaal:8.2},
+  kosten:{excl:"€3.570–€4.200",incl:"€4.018–€4.841",ppd:{laag:112,hoog:134},bron:"bottom-up: geverifieerde vluchttarieven (31-8-2026), 2e-klas treinen, hotels € 44–60"},
+  weer:"April is overal draaglijk: Beijing 22/7 °C, Chengdu 24/14, Zhangjiajie 20/12, Yangshuo 24/17. Drie Zhangjiajie-nachten zonder bufferdag bij mist. Alles ruim vóór de Golden Week en de moesson",
+  amelie:"Alleen treinen, baby reist gratis. Zes bases in 16 nachten: stevig tempo met een 1-jarige — hoger dan de 21-daagse, en de lange treindag (7 u) valt laat in de reis. Overweeg die dag te splitsen via Changsha.",
+  plus:["kortste versie met toch de Muur, panda's, Zhangjiajie en Yangshuo","16 nachten: past als drie weken echt de grens is","trein-ritme blijft heel: één lijn, geen enkele binnenlandse vlucht","€ 4.018–4.841 voor het hele gezin — laagste totaalbedrag van alle zeventien"],
+  min:["stevig tempo: om de dag tot elke dag verplaatsen","géén Shanghai en Hangzhou","geen mist-buffer in Zhangjiajie","zelfde vlucht over minder dagen: € 112 p.p./dag, boven de € 100"],
+  quote:"Alle hoogtepunten, drie weken — maar je voelt dat de reis op dieet is.",
+  letop:["treintickets 15 dagen vooruit (Trip.com/12306)","overweeg Zhangjiajie → Guilin te splitsen via Changsha (1 u 45 + 2 u 50, +€ 50) — het tempo is al hoog","HSR-stations: 45 minuten marge","visumvrije regeling najaar 2026 herchecken; dochter eigen paspoort","Verboden Stad vooruit reserveren","vluchtalert AMS→Beijing en CAN→AMS","Golden Week 1–5 mei vermijden"],
+  stops:[
+    {naam:"Beijing", n:4, lat:39.90, lng:116.41, vervoer:"Vlucht Amsterdam → Beijing (open jaw: terug vanaf Guangzhou)", note:"Verboden Stad, Mutianyu, Tempel van de Hemel, Zomerpaleis", wiki:"Beijing", klimaat:{d:22,n:7}},
+    {naam:"Xi'an", n:2, lat:34.34, lng:108.94, vervoer:"HSR 4 u 12 · € 61–76 p.p.", note:"Terracottaleger, stadsmuur, Moslimwijk", wiki:"Xi'an", klimaat:{d:22,n:10}},
+    {naam:"Chengdu", n:3, lat:30.57, lng:104.07, vervoer:"HSR 3 u 00 · € 34 p.p.", note:"Panda Base, theehuizen, Leshan of rustdag", wiki:"Chengdu", klimaat:{d:24,n:14}},
+    {naam:"Chongqing", n:1, lat:29.56, lng:106.55, vervoer:"HSR 1 u 04 · € 11–30 p.p.", note:"Hongya Dong bij zonsondergang", wiki:"Chongqing", klimaat:{d:23,n:15}},
+    {naam:"Zhangjiajie (Wulingyuan)", n:3, lat:29.13, lng:110.48, vervoer:"HSR 2 u 02 · € 25–34 → Zhangjiajie West + shuttle", note:"Yuanjiajie + Bailong-lift, Tianzi of Tianmen — kiezen, niet beide", wiki:"Zhangjiajie", klimaat:{d:20,n:12}},
+    {naam:"Yangshuo", n:3, lat:24.78, lng:110.49, vervoer:"D-trein 7 u 01 · € 44 p.p. (of opsplitsen via Changsha)", note:"Bamboevlot op de Yulong, Li-cruise of Longji-dagtrip", wiki:"Yangshuo County", klimaat:{d:24,n:17}},
+    {naam:"Guangzhou (doorreis)", n:0, lat:23.13, lng:113.26, vervoer:"HSR Yangshuo → Guangzhou 1 u 54 · € 15–22", note:"Uitvalspoort: avondvlucht v.a. € 320 p.p.", wiki:"Guangzhou", klimaat:{d:26,n:19}}
+  ],
+  dagen:[
+    {d:1,t:"Amsterdam → Beijing",x:"Directe vlucht ± 10 u; bassinet aanvragen"},
+    {d:2,t:"Beijing — landen en bijkomen",x:"Hutongs, vroeg eten"},
+    {d:3,t:"Beijing — Verboden Stad",x:"Jingshan voor het overzicht"},
+    {d:4,t:"Beijing — Grote Muur Mutianyu",x:"Gesloten kabelbaan, draagzak"},
+    {d:5,t:"Beijing — Tempel + Zomerpaleis",x:"Tai-chi, bootje op het meer"},
+    {d:6,t:"Trein → Xi'an · 4 u 12",x:"Stadsmuur, Moslimwijk"},
+    {d:7,t:"Xi'an — Terracottaleger",x:"Vroeg vertrekken"},
+    {d:8,t:"Trein → Chengdu · 3 u 00",x:"Theehuis in People's Park"},
+    {d:9,t:"Chengdu — Panda Base",x:"07.30 open"},
+    {d:10,t:"Chengdu — Leshan of rustdag",x:"Grote Boeddha of niks"},
+    {d:11,t:"Trein → Chongqing · 1 u 04",x:"Hongya Dong bij zonsondergang"},
+    {d:12,t:"Trein → Zhangjiajie (Wulingyuan) · 2 u 02",x:"Aan de parkingang slapen"},
+    {d:13,t:"Zhangjiajie — Yuanjiajie en Bailong-lift",x:"Avatar-berg; draagzak"},
+    {d:14,t:"Zhangjiajie — Tianzi of Tianmen",x:"Kiezen op weer en energie"},
+    {d:15,t:"Trein → Guilin → Yangshuo · 7 u 01",x:"De lange dag — of opsplitsen via Changsha"},
+    {d:16,t:"Yangshuo — bamboevlot op de Yulong",x:"Middag fietsen"},
+    {d:17,t:"Yangshuo — Li-cruise of Longji-dagtrip",x:"€ 27,40 p.p. of rijstterrassen op 2 uur"},
+    {d:18,t:"Yangshuo → Guangzhou → Amsterdam",x:"HSR 1 u 54, avondvlucht naar huis"}
+  ]
+},
+
 // ═══════════════════════════════ AZIË 1 ═══════════════════════════════════
 {
   id:"azi1", soort:"Azie", naam:"Maleisië & Borneo — jungle, thee en bounty-eilanden", lijst:"B",
@@ -624,8 +862,8 @@ const ROUTES = [
   parks:["Petronas Towers","Batu Caves","George Town (UNESCO)","Perhentian-eilanden","Semenggoh Orangutan Centre","Kinabatangan-wildlife","Sepilok Orangutan Centre"],
   fotos:["Petronas Towers","George Town, Penang","Cameron Highlands","Kinabatangan River"],
   video:{id:"TjAi6tQjQgI", titel:"Kinabatangan River Cruise — orang-oetans & wildlife op Borneo"},
-  score:{wow:8.8,amelie:8.2,tempo:8,weer:8,prijs:8.5,totaal:8.4},
-  kosten:{excl:"€5.900–€7.300",incl:"€6.800–€8.400",bron:"planningsbandbreedte (7 bases, 3 binnenlandse vluchten, safari-lodges)"},
+  score:{wow:8.8,amelie:8.2,tempo:8,weer:8,prijs:6.1,totaal:7.8},
+  kosten:{excl:"€5.900–€7.300",incl:"€6.800–€8.400",ppd:{laag:142,hoog:175},bron:"planningsbandbreedte (7 bases, 3 binnenlandse vluchten, safari-lodges)"},
   weer:"West-Maleisië warm (32°) met kans op een middagbuitje · Cameron Highlands aangenaam 23° · oostkust en Borneo in de droge tijd: zon, kalme zee; korte buien horen bij de jungle",
   amelie:"Sterk qua zorg en comfort: beste ziekenhuizen en wegen van Zuidoost-Azië, Engelstalig, overal airco. Aandacht: zeven bases = zes keer verhuizen, twee lange transferdagen (naar Perhentian en naar Sukau), en muggen op Borneo — DEET en klamboe standaard.",
   plus:["wilde orang-oetans, neusapen en dwergolifanten vanaf de rivierboot (Kinabatangan)","hoogste medische en infrastructurele standaard van de drie Azië-bestemmingen","mei/juni = droge tijd voor Borneo én de oostkust: Perhentians open en de zee kalm","Cameron Highlands als koele tussenstop (23°)"],
@@ -677,8 +915,8 @@ const ROUTES = [
   parks:["Borobudur (UNESCO)","Prambanan (UNESCO)","Mount Bromo","Tegalalang-rijstterrassen","Tirta Empul","Sanur-lagune"],
   fotos:["Borobudur","Mount Bromo","Ubud","Sanur, Bali"],
   video:{id:"we_73MPegI0", titel:"The Most Breathtaking Places of Java, Indonesia — 4K"},
-  score:{wow:9.2,amelie:9,tempo:8.8,weer:9,prijs:8.8,totaal:9},
-  kosten:{excl:"€5.400–€6.900",incl:"€6.200–€7.800",bron:"planningsbandbreedte (villa's met zwembad zijn er verrassend betaalbaar)"},
+  score:{wow:9.2,amelie:9,tempo:8.8,weer:9,prijs:7,totaal:8.5},
+  kosten:{excl:"€5.400–€6.900",incl:"€6.200–€7.800",ppd:{laag:129,hoog:162},bron:"planningsbandbreedte (villa's met zwembad zijn er verrassend betaalbaar)"},
   weer:"Start van de droge tijd: zonnige dagen, hooguit een korte bui aan het eind van de middag · Java binnenland 28–31° · Bali 29–30° met verkoelende zeewind — geen tyfoongordel, geen moesson",
   amelie:"De makkelijkste tropische reis van de lijst: privéchauffeur met airco en autostoel, overal villa's met zwembad, en een cultuur die baby's letterlijk op handen draagt. Aandacht: één lange transferdag (Kalibaru → Ubud met veerboot) en vroege starts voor Borobudur en Bromo — de middagen zijn daarom bewust vrij.",
   plus:["wereldwonderen zonder massatoerisme: Borobudur bij zonsopgang, de Bromo-krater, rijstterrassen van Tegalalang","meest Amelie-vriendelijke cultuur van alle dertien routes: overal hulp, geduld en kinderplezier","villa met privézwembad voor de prijs van een Europese hotelkamer","meest voorspelbare weer van alle dertien routes","tempo 4-3-2-5-3-4: precies het om-de-drie-dagen-ritme, met twee echte rustblokken"],
@@ -732,8 +970,8 @@ const ROUTES = [
   parks:["Chocolate Hills","Tarsier sanctuary","Big Lagoon & Secret Lagoon","Nacpan Beach","White Beach"],
   fotos:["Boracay","El Nido, Palawan","Chocolate Hills","Siquijor"],
   video:{id:"hIrPZL2N8lA", titel:"El Nido, Palawan — 20 top things to do (4K)"},
-  score:{wow:9.5,amelie:6.8,tempo:7,weer:8,prijs:8.2,totaal:8.2},
-  kosten:{excl:"€5.700–€7.200",incl:"€6.500–€8.000",bron:"planningsbandbreedte (eilandvluchten en privé-boottochten zijn de grootste posten)"},
+  score:{wow:9.5,amelie:6.8,tempo:7,weer:8,prijs:6.6,totaal:7.7},
+  kosten:{excl:"€5.700–€7.200",incl:"€6.500–€8.000",ppd:{laag:135,hoog:167},bron:"planningsbandbreedte (eilandvluchten en privé-boottochten zijn de grootste posten)"},
   weer:"Voor maart uitgewerkt: droge tijd, 30–33°, zon. Mei/juni is hier het begin van regen- en tyfoontijd en daarom afgeraden. De weerscore telt het maartseizoen — niet het mei/juni-venster van de andere routes",
   amelie:"Prachtig, maar het bewerkelijkst met een baby: op elke verhuisdag een boot of meerdere overstappen, en op El Nido en Siquijor is medische zorg basisniveau (beste klinieken: Manila/Cebu). Werkt wél als Amelie tegen die tijd goed tegen transfers kan — overal ondiep, kalm water om te pootjebaden.",
   plus:["de mooiste lagunes en poederstranden ter wereld (El Nido, Boracay)","Chocolate Hills en tarsiers: unieke natuur dicht bij elkaar","Engelstalig en gastvrij; overal rustig, ondiep zwemwater","privé-bangka-boottochten: eigen tempo, eigen schaduwplek"],
@@ -788,8 +1026,8 @@ const VISITED = [
 
 if (typeof window !== "undefined") {
   window.ROUTES = ROUTES; window.VISITED = VISITED;
-  window.SCORE_GEWICHTEN = SCORE_GEWICHTEN; window.scoreTotaal = scoreTotaal;
+  window.SCORE_GEWICHTEN = SCORE_GEWICHTEN; window.scoreTotaal = scoreTotaal; window.prijsScore = prijsScore;
 }
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { ROUTES, VISITED, SCORE_GEWICHTEN, scoreTotaal };
+  module.exports = { ROUTES, VISITED, SCORE_GEWICHTEN, scoreTotaal, prijsScore };
 }
