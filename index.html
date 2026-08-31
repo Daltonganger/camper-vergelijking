@@ -307,7 +307,7 @@
     <p class="sub">Zeventien routes, volledig en gelijkwaardig uitgewerkt. Alles om samen één keuze te maken.</p>
     <div>
       <a class="cta solid" href="#intro">Bekijk de shortlist</a>
-      <a class="cta link" href="#vergelijk">Alle 17 routes vergelijken</a>
+      <a class="cta link" href="#vergelijk">Top 5 vergelijken</a>
     </div>
     <div class="heroStats">
       <span class="hstat"><b>17</b> routes</span>
@@ -329,12 +329,13 @@
 
 <section id="vergelijk" class="tint"><div class="wrap wide">
   <div class="secthead reveal"><span class="eyebrow">Op één meetlat</span>
-    <h2>Alle zeventien vergeleken.</h2>
-    <p>Vijf deelscores, één formule: 30% wow + 15% tempo + 20% Amelie + 10% weer + <b>25% prijs</b> — de prijsscore volgt uit de werkelijke kosten per persoon per dag. Rang 1–4 volgt uit dat cijfer.</p>
+    <h2>De top 5 per vertrekdatum.</h2>
+    <p>Vijf deelscores, één formule: 30% wow + 15% tempo + 20% Amelie + 10% weer + <b>25% prijs</b> — de prijsscore volgt uit de werkelijke kosten per persoon per dag. De tabel toont de top 5; vul je bij "Hoe we aan de cijfers komen" een eigen vertrekdatum (of vluchtprijs) in, dan herschikt de top 5 zich naar jouw invoer. De andere routes: tik onder de tabel op "alle tonen".</p>
     <p style="margin-top:4px;font-size:15px"><a href="#score">Zo komen we aan deze cijfers ↓</a></p>
   </div>
   <div class="tablewrap reveal"><table id="cmpTable"></table></div>
   <p class="thint reveal">⟷ Schuif de tabel opzij voor alle kolommen</p>
+  <p class="thint reveal topn-toggle" style="cursor:pointer;text-decoration:underline"></p>
 </div></section>
 
 <section id="kaart"><div class="wrap wide">
@@ -364,7 +365,7 @@
       <li><b>De deelscores (1–10)</b> beoordelen elk één ding: Wow (natuur &amp; verbazing), Comfort Amelie, Tempo, Weer in het vertrekvenster en Prijs.</li>
       <li><b>Tempo</b> meet of het ritme past bij de gewenste rondreis — om de 3–4 dagen iets nieuws. Hoog ≠ langzaam. Het Klassieke China is comfortabel, maar 5 bases in 3 weken is te statisch (tempo 6). China Compleet is actief op het gewenste ritme (tempo 9).</li>
       <li><b>Prijs is geen inschatting meer maar een formule</b>: de kostenrange (incl. eten) gedeeld door 2 volwassenen en het aantal dagen geeft € per persoon per dag. Daaruit volgt de score lineair: <b>€ 100 p.p./dag = 10 punten, € 190 = 4</b>. Bovenaan de tabel betaal je dus per dag mee, niet alleen bij het boeken.</li>
-      <li><b>Het totaalcijfer is de formule</b> 30% wow + 15% tempo + 20% Amelie + 10% weer + 25% prijs, afgerond op één decimaal. Rang 1–4 is die som: China per Spoor 27 dagen (9,2) en 24 dagen (9,0), dan Java &amp; Bali (8,5), Het Klassieke China en China Compleet (beide 8,0).</li>
+      <li><b>Het totaalcijfer is de formule</b> 30% wow + 15% tempo + 20% Amelie + 10% weer + 25% prijs, afgerond op één decimaal. De tabellen tonen de top 5 op die som: China per Spoor 27 dagen (9,2) en 24 dagen (9,0), dan Java &amp; Bali (8,5), Het Klassieke China en China Compleet (beide 8,0).</li>
       <li><b>Kanttekening bij de prijskolom</b>: de dertien mei/juni-ranges zijn bandbreedtes uit de eigen projectramingen; de vier ★-spoorroutes zijn bottom-up opgebouwd met geverifieerde vluchttarieven (Google Flights, 31-8-2026), 2e-klas treintickets en hotels van € 44–60. De onderkant van de eigen China-ranges ligt dicht bij de ★-cijfers — het verschil zit vooral in de bovenkant.</li>
       <li><b>Twee correcties op het venster 14–29 mei</b> (nog niet verwerkt in de scores): Dunraven Pass, Beartooth Highway en Trail Ridge Road openen doorgaans pas eind mei/begin juni — de weerscore 7 van Rockies &amp; Yellowstone is voor half mei optimistisch. En Zuid-China wordt in mei flink natter (Guilin 296→356 mm, Zhangjiajie 223→258 mm): hetzelfde China in april scoort weer 8,5 i.p.v. 6,5. Vandaar dat de spoorroutes op april zijn uitgewerkt — of het venster verschuift, is nog open.</li>
     </ul>
@@ -388,6 +389,7 @@
   </div>
   <div class="tablewrap reveal"><table id="scoreTable"></table></div>
   <p class="thint reveal">⟷ Schuif de tabel opzij voor alle kolommen</p>
+  <p class="thint reveal topn-toggle" style="cursor:pointer;text-decoration:underline"></p>
   <p class="fnoot reveal">* Totaal = 0,30×wow + 0,15×tempo + 0,20×Amelie + 0,10×weer + 0,25×prijs. Prijs = 10 bij € 100 p.p./dag, 4 bij € 190, lineair. † = herberekend met jouw eigen vertrekdatum (auto-weerscore) en/of geziene vluchtprijs.</p>
   <div class="panel reveal" style="max-width:880px;margin:22px auto 0;border:1px solid #ecd9b5;background:#fffdf5">
     <h3>Wat de prijsherweging doet — en waarom China per Spoor nu bovenaan staat</h3>
@@ -468,6 +470,7 @@ let currentRoute = null;
 // Google Flights heeft géén open API: vluchtprijs vul je zelf in via de
 // directe links op elke routepagina; de site rekent budget/score direct om.
 const DYN_KEY = "reis27-dyn-v1", KLIM_KEY = "reis27-klim-v1";
+let toonAlles = localStorage.getItem("reis27-topall") === "1"; // default: alleen de top 5 tonen
 const VLUCHT = window.VLUCHT || {};
 const laadJSON = (k) => { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch { return null; } };
 const DYN = laadJSON(DYN_KEY) || {};
@@ -621,7 +624,7 @@ renderFinalists();
   };
   const dynAan = dynActief();
 
-  const rows = [...ROUTES].sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).map((r) => `
+  const rows = [...ROUTES].sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).slice(0, toonAlles ? ROUTES.length : 5).map((r) => `
     <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
       <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
         <div style="margin-top:5px">${lijstBadge(r)}${r.soort === "China" ? ' <span class="badge b-china">trein &amp; hotel</span>' : ""}${r.soort === "Azie" ? ' <span class="badge b-azie">hotel &amp; vlieg/boot</span>' : ""}</div></td>
@@ -655,7 +658,7 @@ renderFinalists();
 
   function renderScoreTable() {
     const f = factoren(), aan = wegingAan(), dAan = dynActief();
-    const srows = [...ROUTES].sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).map((r) => `
+    const srows = [...ROUTES].sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).slice(0, toonAlles ? ROUTES.length : 5).map((r) => `
       <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
         <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
           <div style="margin-top:5px">${lijstBadge(r)}</div></td>
@@ -703,6 +706,18 @@ renderFinalists();
       toonPct(); renderScoreTable();
     };
   }
+
+  // top-5-toggle onder beide tabellen
+  const topnZet = (el) => { el.textContent = toonAlles ? "∨ Toon alleen de top 5" : "∧ Alle " + ROUTES.length + " routes tonen"; };
+  document.querySelectorAll(".topn-toggle").forEach((el) => {
+    topnZet(el);
+    el.onclick = () => {
+      toonAlles = !toonAlles;
+      localStorage.setItem("reis27-topall", toonAlles ? "1" : "0");
+      renderCmp(); renderScoreTable();
+      document.querySelectorAll(".topn-toggle").forEach(topnZet);
+    };
+  });
 }
 $("#visitedList").innerHTML = VISITED.map((v) => `<span>${esc(v)}</span>`).join("");
 
