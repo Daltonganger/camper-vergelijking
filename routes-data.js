@@ -1013,6 +1013,30 @@ const ROUTES = [
 }
 ];
 
+// ─────────────────────────── vluchtcomponent ───────────────────────────
+// Wat de kostenrange per route aanneemt voor de vluchten per persoon (heen+terug
+// of open jaw). ★-spoorroutes: exact uit "China per Spoor 2027" (€ 759 open jaw).
+// De overige refs zijn aannames — corrigeer hier gerust; de site rekent mee.
+const VLUCHT = {
+  usa1:{heen:"AMS→DEN", terug:"DEN→AMS", ref:900},
+  usa2:{heen:"AMS→ATL", terug:"ATL→AMS", ref:650},
+  usa3:{heen:"AMS→ATL", terug:"ATL→AMS", ref:650},
+  usa4:{heen:"AMS→YVR", terug:"YVR→AMS", ref:800},
+  usa5:{heen:"AMS→YYZ", terug:"YYZ→AMS", ref:700},
+  usa6:{heen:"AMS→DFW", terug:"DFW→AMS", ref:800},
+  china1:{heen:"AMS→PEK", terug:"SHA→AMS", ref:800},
+  china2:{heen:"AMS→PEK", terug:"SHA→AMS", ref:800},
+  china3:{heen:"AMS→PEK", terug:"SHA→AMS", ref:800},
+  china4:{heen:"AMS→PEK", terug:"SHA→AMS", ref:850},
+  spoor27:{heen:"AMS→PVG", terug:"CAN→AMS", ref:759},
+  spoor24:{heen:"AMS→PVG", terug:"CAN→AMS", ref:759},
+  spoor21:{heen:"AMS→PVG", terug:"CAN→AMS", ref:759},
+  spoor18:{heen:"AMS→PEK", terug:"CAN→AMS", ref:759},
+  azi1:{heen:"AMS→KUL", terug:"SDK→AMS", ref:750},
+  azi2:{heen:"AMS→JOG", terug:"DPS→AMS", ref:700},
+  azi3:{heen:"AMS→MNL", terug:"MNL→AMS", ref:800},
+};
+
 // ─────────────────────────── AL GEWEEST (filter) ───────────────────────────
 // Deze plekken hebben jullie al bezien (Zuidwesten VS / Californië, eerdere reis).
 // check-routes.js waarschuwt als een actieve route een van deze namen bevat.
@@ -1025,9 +1049,9 @@ const VISITED = [
 ];
 
 if (typeof window !== "undefined") {
-  window.ROUTES = ROUTES; window.VISITED = VISITED;
+  window.ROUTES = ROUTES; window.VISITED = VISITED; window.VLUCHT = VLUCHT;
   window.SCORE_GEWICHTEN = SCORE_GEWICHTEN; window.scoreTotaal = scoreTotaal; window.prijsScore = prijsScore;
 }
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { ROUTES, VISITED, SCORE_GEWICHTEN, scoreTotaal, prijsScore };
+  module.exports = { ROUTES, VISITED, VLUCHT, SCORE_GEWICHTEN, scoreTotaal, prijsScore };
 }

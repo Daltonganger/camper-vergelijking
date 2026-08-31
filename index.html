@@ -369,6 +369,17 @@
       <li><b>Twee correcties op het venster 14–29 mei</b> (nog niet verwerkt in de scores): Dunraven Pass, Beartooth Highway en Trail Ridge Road openen doorgaans pas eind mei/begin juni — de weerscore 7 van Rockies &amp; Yellowstone is voor half mei optimistisch. En Zuid-China wordt in mei flink natter (Guilin 296→356 mm, Zhangjiajie 223→258 mm): hetzelfde China in april scoort weer 8,5 i.p.v. 6,5. Vandaar dat de spoorroutes op april zijn uitgewerkt — of het venster verschuift, is nog open.</li>
     </ul>
   </div>
+  <div class="panel reveal" style="max-width:880px;margin:0 auto 22px;border:1px solid #cfe3d4;background:#f3faf5">
+    <h3>Probeer een eigen vertrekdatum — en check de vlucht zelf</h3>
+    <p style="font-size:14.5px;margin:.4em 0 .8em">Klimaat en weerscore herberekenen we per stop voor jouw venster (3-jarig gemiddelde via Open-Meteo — gratis, geen API-key). De auto-weerscore is een vaste formule: 55% dagtemperatuur-comfort (ideaal 26 °C), 35% regendagen, 10% nachttemperatuur. Voor de <b>vluchtprijs</b> geldt: Google Flights heeft geen open API — op elke routepagina staat een directe link met jouw datum vooringevuld; wat je daar ziet, vul je daar in, en prijs en totaal herberekenen direct.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <label style="font-size:14px;color:var(--soft)">Vertrekdatum <input type="date" id="dynDatum" style="font:inherit;border:1px solid var(--line);border-radius:10px;padding:8px 12px"></label>
+      <button class="btn prim" id="dynBereken" style="padding:10px 20px;font-size:14px">Weer &amp; cijfers herberekenen</button>
+      <span id="dynProg" style="font-size:13.5px;color:var(--soft)"></span>
+    </div>
+    <p id="dynStatus" style="font-size:13px;color:var(--soft);margin:.7em 0 0"></p>
+    <button class="btn sec" id="dynReset" style="display:none;margin-top:12px;padding:9px 16px;font-size:13.5px">↺ Terug naar de officiële cijfers</button>
+  </div>
   <div class="panel reveal" style="max-width:880px;margin:0 auto 22px">
     <h3>Schuif met de weging — wat telt het zwaarst voor jullie?</h3>
     <div class="sliders" id="wegingSliders"></div>
@@ -377,7 +388,7 @@
   </div>
   <div class="tablewrap reveal"><table id="scoreTable"></table></div>
   <p class="thint reveal">⟷ Schuif de tabel opzij voor alle kolommen</p>
-  <p class="fnoot reveal">* Totaal = 0,30×wow + 0,15×tempo + 0,20×Amelie + 0,10×weer + 0,25×prijs. Prijs = 10 bij € 100 p.p./dag, 4 bij € 190, lineair.</p>
+  <p class="fnoot reveal">* Totaal = 0,30×wow + 0,15×tempo + 0,20×Amelie + 0,10×weer + 0,25×prijs. Prijs = 10 bij € 100 p.p./dag, 4 bij € 190, lineair. † = herberekend met jouw eigen vertrekdatum (auto-weerscore) en/of geziene vluchtprijs.</p>
   <div class="panel reveal" style="max-width:880px;margin:22px auto 0;border:1px solid #ecd9b5;background:#fffdf5">
     <h3>Wat de prijsherweging doet — en waarom China per Spoor nu bovenaan staat</h3>
     <ul>
@@ -450,6 +461,117 @@ let ROUTES = workingRoutes();
 const byId = (id) => ROUTES.find((r) => r.id === id);
 let currentRoute = null;
 
+/* ═══════════════ dynamisch: eigen vertrekdatum + geziene vluchtprijs ═══════ */
+// Weer per stop voor een eigen venster = 3-jarig klimatologisch gemiddelde via
+// Open-Meteo Archive (keyless, gratis). Weerscore-formule (transparant):
+// 55% dagtemp-comfort (ideaal 26 °C) + 35% regendagen + 10% nachttemp.
+// Google Flights heeft géén open API: vluchtprijs vul je zelf in via de
+// directe links op elke routepagina; de site rekent budget/score direct om.
+const DYN_KEY = "reis27-dyn-v1", KLIM_KEY = "reis27-klim-v1";
+const VLUCHT = window.VLUCHT || {};
+const laadJSON = (k) => { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch { return null; } };
+const DYN = laadJSON(DYN_KEY) || {};
+const KLIM = laadJSON(KLIM_KEY) || {};
+const r1 = (x) => Math.round(x * 10) / 10;
+const dynActief = () => (!!DYN.datum && !!DYN.berekend) || Object.keys(DYN.gezien || {}).length > 0;
+const routeDagen = (r) => r.dagen.length;
+const iso = (d) => d.toISOString().slice(0, 10);
+
+function dynVenster(r) {
+  const s = DYN.datum ? new Date(DYN.datum + "T12:00:00") : new Date("2027-05-14T12:00:00");
+  return { start: s, len: routeDagen(r) };
+}
+function klimKey(s, v) {
+  const mmdd = (d) => String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0");
+  return s.lat.toFixed(2) + "_" + s.lng.toFixed(2) + "_" + mmdd(v.start) + "_" + v.len;
+}
+async function haalKlimaat(s, v) {
+  let somD = 0, somN = 0, regen = 0, n = 0;
+  for (const jaar of [2022, 2023, 2024]) {
+    const a = new Date(jaar, v.start.getMonth(), v.start.getDate());
+    const b = new Date(a.getTime() + (v.len - 1) * 864e5);
+    const u = `https://archive-api.open-meteo.com/v1/archive?latitude=${s.lat}&longitude=${s.lng}&start_date=${iso(a)}&end_date=${iso(b)}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=auto`;
+    try {
+      const dx = (await (await fetch(u)).json()).daily;
+      if (!dx || !dx.temperature_2m_max) continue;
+      dx.temperature_2m_max.forEach((x, i) => {
+        if (x == null) return;
+        n++; somD += x; somN += dx.temperature_2m_min[i] ?? x;
+        if ((dx.precipitation_sum?.[i] ?? 0) > 1) regen++;
+      });
+    } catch {}
+  }
+  return n ? { d: Math.round(somD / n), n: Math.round(somN / n), rain: regen / n } : null;
+}
+function dynKlimaat(r, s) {
+  if (dynActief() && s.lat != null && DYN.berekend) return KLIM[klimKey(s, dynVenster(r))] || s.klimaat;
+  return s.klimaat;
+}
+function autoWeer(r) {
+  if (!DYN.berekend) return null;
+  const v = dynVenster(r);
+  const stops = r.stops.filter((s) => s.lat != null && KLIM[klimKey(s, v)]);
+  const nachten = stops.reduce((t, s) => t + (s.n || 0), 0);
+  if (!nachten) return null;
+  let som = 0;
+  for (const s of stops) {
+    const k = KLIM[klimKey(s, v)];
+    const dag = Math.max(0, Math.min(10, 10 - Math.abs(k.d - 26) * 0.45));
+    const regen = Math.max(0, Math.min(10, 10 - k.rain * 12));
+    const nacht = Math.max(0, Math.min(10, 10 - Math.max(0, 10 - k.n) * 0.35));
+    som += (s.n || 0) * (0.55 * dag + 0.35 * regen + 0.10 * nacht);
+  }
+  return r1(som / nachten);
+}
+function dynPpd(r) {
+  const b = r.kosten.ppd; if (!b) return null;
+  const g = (DYN.gezien || {})[r.id], vl = VLUCHT[r.id];
+  if (!g || !vl || Math.round(g) === vl.ref) return { laag: b.laag, hoog: b.hoog, anders: false };
+  const d = (g - vl.ref) / routeDagen(r); // p.p./dag verschuift met vluchtdelta / dagen
+  return { laag: b.laag + d, hoog: b.hoog + d, anders: true };
+}
+function dynTotaal(r) {
+  const ppd = dynPpd(r), weer = autoWeer(r);
+  if ((ppd && !ppd.anders) && weer == null) return null;
+  const s = Object.assign({}, r.score);
+  if (ppd && ppd.anders) s.prijs = r1(prijsScore((ppd.laag + ppd.hoog) / 2));
+  if (weer != null) s.weer = weer;
+  return scoreTotaal(s);
+}
+function gfLink(traject, r, heen) {
+  const [van, naar] = traject.split("→");
+  const basis = DYN.datum ? new Date(DYN.datum + "T12:00:00")
+    : new Date((r.klimaatLabel === "april" ? "2027-04-" : "2027-05-") + (r.klimaatLabel === "april" ? "01" : "14") + "T12:00:00");
+  const d = heen ? basis : new Date(basis.getTime() + (routeDagen(r) - 1) * 864e5);
+  return "https://www.google.com/travel/flights?q=" + encodeURIComponent(`flights from ${van} to ${naar} on ${iso(d)}`);
+}
+async function berekenDynamisch() {
+  const datum = $("#dynDatum").value;
+  if (!datum) { $("#dynProg").textContent = "Vul eerst een vertrekdatum in."; return; }
+  DYN.datum = datum;
+  const vóór = Object.keys(KLIM).length;
+  const nodig = [];
+  for (const r of ROUTES) {
+    const v = dynVenster(r);
+    for (const s of r.stops) if (s.lat != null && !KLIM[klimKey(s, v)]) nodig.push([s, v]);
+  }
+  const prog = $("#dynProg");
+  if (!nodig.length) { DYN.berekend = true; }
+  else {
+    $("#dynBereken").disabled = true;
+    let klaar = 0, mislukt = 0, i = 0;
+    const loper = async () => { while (i < nodig.length) { const [s, v] = nodig[i++]; const k = await haalKlimaat(s, v); if (k) KLIM[klimKey(s, v)] = k; else mislukt++; klaar++; prog.textContent = `Klimaat ophalen: ${klaar}/${nodig.length} vensters…`; } };
+    await Promise.all(Array.from({ length: 6 }, loper));
+    localStorage.setItem(KLIM_KEY, JSON.stringify(KLIM));
+    DYN.berekend = !mislukt || Object.keys(KLIM).length > vóór;
+    $("#dynBereken").disabled = false;
+    if (mislukt) prog.textContent = `Klaar — ${mislukt} vensters mislukt (geen internet?).`;
+  }
+  localStorage.setItem(DYN_KEY, JSON.stringify(DYN));
+  prog.textContent += " Pagina verversen…";
+  setTimeout(() => location.reload(), 500);
+}
+
 /* ═══════════════ mediaknoppen per stop ═══════════════ */
 function mediaHTML(naam, wiki) {
   const q = encodeURIComponent(naam);
@@ -471,15 +593,18 @@ $("#navRoutes").innerHTML = ROUTES.map((r) =>
   `<a class="chip" style="--c:${r.kleur}" href="#route-${r.id}" data-nav="${r.id}"><span class="dot"></span>${navKort[r.id] || esc(r.naam.split("—")[0].trim())}</a>`).join("");
 
 /* ═══════════════ home-inhoud ═══════════════ */
-$("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => b.score.totaal - a.score.totaal).map((r) => `
+function renderFinalists() {
+$("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).map((r) => `
   <a class="card reveal" style="--c:${r.kleur}" href="#route-${r.id}">
     <span class="tag">${r.soort === "China" ? "China · hotel & trein" : r.soort === "Azie" ? "Azië · hotel & vlieg/boot" : "Camper · USA"}</span>
-    <div class="sc">${r.score.totaal.toLocaleString("nl")}<small>/10</small></div>
+    <div class="sc">${r.score.totaal.toLocaleString("nl")}<small>/10</small>${dynActief() && dynTotaal(r) != null && dynTotaal(r) !== r.score.totaal ? `<small style="color:var(--link)"> ·†${dynTotaal(r).toLocaleString("nl")}</small>` : ""}</div>
     <h3>${esc(r.naam.split("—")[0].trim())}</h3>
     <p>${esc(r.alias)}</p>
     <p>${r.soort === "USA" ? r.km.toLocaleString("nl") + " km camper" : r.treinkm.toLocaleString("nl") + " km per " + (r.soort === "China" ? "trein/vliegtuig" : "vlucht/trein/boot")} · ${bases(r)} bases · ${r.parks.length} parken &amp; iconen</p>
     <span class="go">Bekijk de routepagina ›</span>
   </a>`).join("");
+}
+renderFinalists();
 
 {
   const lijstBadge = (r) =>
@@ -489,9 +614,14 @@ $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => b.sc
     : r.lijst === "D" ? `<span class="badge b-d">${r.dLabel || "scenario · 26 nachten"}</span>`
     : '<span class="badge b-park">geparkeerd — ander seizoen</span>';
 
-  const ppd = (r) => r.kosten.ppd ? `<b>€ ${Math.round((r.kosten.ppd.laag + r.kosten.ppd.hoog) / 2).toLocaleString("nl")}</b><span style="color:var(--faint);font-size:12px"> (${r.kosten.ppd.laag}–${r.kosten.ppd.hoog})</span>` : "—";
+  function renderCmp() {
+  const ppd = (r) => {
+    const p = dynPpd(r) || r.kosten.ppd;
+    return p ? `<b>€ ${Math.round((p.laag + p.hoog) / 2).toLocaleString("nl")}</b><span style="color:var(--faint);font-size:12px"> (${Math.round(p.laag)}–${Math.round(p.hoog)})</span>` : "—";
+  };
+  const dynAan = dynActief();
 
-  const rows = [...ROUTES].sort((a, b) => b.score.totaal - a.score.totaal).map((r) => `
+  const rows = [...ROUTES].sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).map((r) => `
     <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
       <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
         <div style="margin-top:5px">${lijstBadge(r)}${r.soort === "China" ? ' <span class="badge b-china">trein &amp; hotel</span>' : ""}${r.soort === "Azie" ? ' <span class="badge b-azie">hotel &amp; vlieg/boot</span>' : ""}</div></td>
@@ -501,9 +631,13 @@ $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => b.sc
       <td>${esc(r.tempo)}</td>
       <td>${ppd(r)}</td>
       <td><b>${r.score.totaal.toLocaleString("nl")}</b><span style="color:var(--faint);font-size:12px"> /10</span></td>
+      ${dynAan ? `<td>${dynTotaal(r) != null ? "<b>" + dynTotaal(r).toLocaleString("nl") + "</b><span style='color:var(--faint);font-size:12px'> †</span>" : "—"}</td>` : ""}
       <td style="font-size:13.5px;color:var(--soft)">${esc(r.plus[0])}</td>
     </tr>`).join("");
-  $("#cmpTable").innerHTML = `<thead><tr><th>Route</th><th>Afstand</th><th>Nachten / bases</th><th>Parken</th><th>Ritme</th><th>Prijs p.p./dag</th><th>Score</th><th>Grootste kracht</th></tr></thead><tbody>${rows}</tbody>`;
+  $("#cmpTable").innerHTML = `<thead><tr><th>Route</th><th>Afstand</th><th>Nachten / bases</th><th>Parken</th><th>Ritme</th><th>Prijs p.p./dag</th><th>Score</th>${dynAan ? "<th>Score†</th>" : ""}<th>Grootste kracht</th></tr></thead><tbody>${rows}</tbody>`;
+  }
+  renderCmp();
+  window.__renderCmp = renderCmp; // voor verversen na dynamische invoer (vluchtprijs)
 
   const nl = (x) => x.toLocaleString("nl");
 
@@ -520,20 +654,21 @@ $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => b.sc
   const userTotaal = (r, f) => Math.round((r.score.wow * f.wow + r.score.tempo * f.tempo + r.score.amelie * f.amelie + r.score.weer * f.weer + r.score.prijs * f.prijs) * 10) / 10;
 
   function renderScoreTable() {
-    const f = factoren(), aan = wegingAan();
-    const srows = [...ROUTES].sort((a, b) => b.score.totaal - a.score.totaal).map((r) => `
+    const f = factoren(), aan = wegingAan(), dAan = dynActief();
+    const srows = [...ROUTES].sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).map((r) => `
       <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
         <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
           <div style="margin-top:5px">${lijstBadge(r)}</div></td>
         <td>${nl(r.score.wow)}</td>
         <td>${nl(r.score.amelie)}</td>
         <td>${nl(r.score.tempo)}</td>
-        <td>${nl(r.score.weer)}</td>
-        <td>${nl(r.score.prijs)} <span style="color:var(--faint);font-size:12px">· €${r.kosten.ppd ? Math.round((r.kosten.ppd.laag + r.kosten.ppd.hoog) / 2) : "?"}</span></td>
+        <td>${nl(r.score.weer)}${dAan && autoWeer(r) != null ? ` <span style="color:var(--faint);font-size:12px">· auto ${nl(autoWeer(r))}</span>` : ""}</td>
+        <td>${nl(r.score.prijs)} <span style="color:var(--faint);font-size:12px">· €${r.kosten.ppd ? Math.round((dynPpd(r).laag + dynPpd(r).hoog) / 2) : "?"}</span></td>
         <td><b>${nl(r.score.totaal)}</b><span style="color:var(--faint);font-size:12px"> *</span></td>
+        ${dAan ? `<td>${dynTotaal(r) != null ? "<b>" + nl(dynTotaal(r)) + "</b>" : "—"}</td>` : ""}
         ${aan ? `<td><b style="color:${r.kleur}">${nl(userTotaal(r, f))}</b></td>` : ""}
       </tr>`).join("");
-    $("#scoreTable").innerHTML = `<thead><tr><th>Route</th><th>Wow</th><th>Comfort Amelie</th><th>Tempo</th><th>Weer</th><th>Prijs (€ p.p./dag)</th><th>Totaal*</th>${aan ? "<th>Jouw weging</th>" : ""}</tr></thead><tbody>${srows}</tbody>`;
+    $("#scoreTable").innerHTML = `<thead><tr><th>Route</th><th>Wow</th><th>Comfort Amelie</th><th>Tempo</th><th>Weer</th><th>Prijs (€ p.p./dag)</th><th>Totaal*</th>${dAan ? "<th>Met jouw datum†</th>" : ""}${aan ? "<th>Jouw weging</th>" : ""}</tr></thead><tbody>${srows}</tbody>`;
     const uit = $("#wegingResultaat");
     if (!uit) return;
     if (aan) {
@@ -544,6 +679,7 @@ $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => b.sc
     }
   }
   renderScoreTable();
+  window.__renderScoreTable = renderScoreTable;
 
   const sliderBox = $("#wegingSliders");
   if (sliderBox) {
@@ -569,6 +705,26 @@ $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => b.sc
   }
 }
 $("#visitedList").innerHTML = VISITED.map((v) => `<span>${esc(v)}</span>`).join("");
+
+/* ═══════════════ dynamisch-paneel (vertrekdatum + vlucht) ═══════════════ */
+{
+  const d = $("#dynDatum"), b = $("#dynBereken"), rs = $("#dynReset");
+  if (d) {
+    d.value = DYN.datum || "2027-04-01";
+    d.min = new Date().toISOString().slice(0, 10);
+    if (dynActief()) {
+      const nvl = Object.keys(DYN.gezien || {}).length;
+      $("#dynStatus").textContent = `Actief${DYN.datum && DYN.berekend ? `: vertrek ${new Date(DYN.datum + "T12:00:00").toLocaleDateString("nl-NL", { day: "numeric", month: "long" })} — klimaat per stop en weerscore automatisch herberekend` : ""}${nvl ? `${DYN.datum && DYN.berekend ? " · " : ": "}${nvl} route(s) met eigen vluchtprijs` : ""}. Alles met † gebruikt jouw invoer; de officiële cijfers blijven ernaast staan.`;
+      rs.style.display = "";
+    }
+    b.onclick = berekenDynamisch;
+    rs.onclick = () => {
+      if (confirm("Eigen vertrekdatum en geziene vluchtprijzen wissen? De klimaatcache blijft bewaard.")) {
+        localStorage.removeItem(DYN_KEY); location.reload();
+      }
+    };
+  }
+}
 
 /* ═══════════════ boekingschecklist ═══════════════ */
 const CHECKLIST = [
@@ -621,7 +777,19 @@ const CHECKLIST = [
 }
 
 /* ═══════════════ kaarten (lichte tegels) ═══════════════ */
-const tile = () => L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { maxZoom: 18, attribution: "© OpenStreetMap · © CARTO" });
+// Esri Light Gray Canvas: keyless, geen user-agent-filtering (CARTO-toegang wees
+// in sommige browsers onbetrouwbaar). Bij tegelfouten valt de groep terug op OSM.
+const tile = () => {
+  const basis = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+    { maxZoom: 16, attribution: "Kaarttegels © Esri · kaartdata © OpenStreetMap-bijdragers" });
+  const labels = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}", { maxZoom: 16 });
+  const osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap-bijdragers" });
+  const grp = L.layerGroup([basis, labels]);
+  const noodval = () => { if (!grp._alt) { grp._alt = 1; grp.removeLayer(basis); grp.removeLayer(labels); grp.addLayer(osm); } };
+  basis.on("tileerror", noodval);
+  labels.on("tileerror", noodval);
+  return grp;
+};
 const lineOpts = (r) => r.soort === "USA"
   ? { color: r.kleur, weight: 4, opacity: .9 }
   : { color: r.kleur, weight: 3, dashArray: "9 8", opacity: .95 };
@@ -712,7 +880,7 @@ function routePageHTML(r) {
   const stops = st.map((s, i) => `
     <li><span class="no">${i + 1}</span>
       <div class="body"><span class="nm">${esc(s.naam)}</span> <span class="n">· ${s.n === 0 ? "dagstop" : s.n + (s.n === 1 ? " nacht" : " nachten")}</span>
-        ${s.klimaat ? `<span class="k" title="Gemiddelde dag- en nachttemperatuur, ${r.klimaatLabel || "eind mei–juni"}">☀️ ${s.klimaat.d}° · 🌙 ${s.klimaat.n}°</span>` : ""}
+        ${dynKlimaat(r, s) ? `<span class="k" title="Gemiddelde dag- en nachttemperatuur, ${dynActief() && DYN.berekend ? "jouw vertrekvenster (3-jarig gemiddelde)" : r.klimaatLabel || "eind mei–juni"}">☀️ ${dynKlimaat(r, s).d}° · 🌙 ${dynKlimaat(r, s).n}°</span>` : ""}
         ${s.note ? `<span class="nt">${esc(s.note)}</span>` : ""}
         ${s.vervoer ? `<span class="vt">🚄 ${esc(s.vervoer)}</span>` : ""}
       </div>${mediaHTML(s.naam, s.wiki)}</li>`).join("");
@@ -745,8 +913,8 @@ function routePageHTML(r) {
         <div class="stat"><b>${r.soort === "USA" ? r.km.toLocaleString("nl") + " km" : r.treinkm.toLocaleString("nl") + " km"}</b><span>${r.soort === "USA" ? "camperritten incl. dagtochten" : r.soort === "China" ? "trein + binnenlandse vlucht" : "vluchten, treinen & boten"}</span></div>
         <div class="stat"><b>${n}</b><span>nachten · ${nb} bases</span></div>
         <div class="stat"><b>${r.parks.length}</b><span>parken &amp; iconen</span></div>
-        <div class="stat"><b>€ ${r.kosten.ppd ? Math.round((r.kosten.ppd.laag + r.kosten.ppd.hoog) / 2).toLocaleString("nl") : "?"}</b><span>p.p./dag · range ${r.kosten.ppd ? r.kosten.ppd.laag + "–" + r.kosten.ppd.hoog : "?"}</span></div>
-        <div class="stat"><b>${r.score.totaal.toLocaleString("nl")}</b><span>totaalscore / 10</span></div>
+        <div class="stat"><b>€ ${r.kosten.ppd ? Math.round((dynPpd(r).laag + dynPpd(r).hoog) / 2).toLocaleString("nl") : "?"}</b><span>p.p./dag · range ${r.kosten.ppd ? Math.round(dynPpd(r).laag) + "–" + Math.round(dynPpd(r).hoog) : "?"}</span></div>
+        <div class="stat"><b>${r.score.totaal.toLocaleString("nl")}</b><span>totaalscore / 10</span>${dynActief() && dynTotaal(r) != null ? `<div style="font-size:12px;color:var(--link);margin-top:3px">met jouw invoer: ${dynTotaal(r).toLocaleString("nl")}†</div>` : ""}</div>
       </div>
       <div class="quote" style="text-align:center">„${esc(r.quote)}"</div>
       ${r.fotos ? `<div class="fotostrip" id="fotos-${r.id}"></div>` : ""}
@@ -757,7 +925,7 @@ function routePageHTML(r) {
         <div style="font-size:13px;color:var(--faint)">Som: ${n} nachten (vergelijkingsmodel: 21).</div></div>
       <div class="cols">
         <div class="panel"><h3>Stops ${r.soort === "USA" ? "& campings" : "& vervoer"}</h3>
-          <div class="klegend">☀️ dag · 🌙 nacht — gemiddelde temperaturen voor ${r.klimaatLabel || "eind mei–juni"} (klimatologisch gemiddelde, geen garantie)</div>
+          <div class="klegend">☀️ dag · 🌙 nacht — gemiddelde temperaturen voor ${dynActief() && DYN.berekend ? "jouw vertrekvenster (" + new Date(DYN.datum + "T12:00:00").toLocaleDateString("nl-NL", { day: "numeric", month: "short" }) + ", 3-jarig gemiddelde)" : r.klimaatLabel || "eind mei–juni"} (klimatologisch gemiddelde, geen garantie)</div>
           <ul class="stops" style="margin-top:8px">${stops}</ul></div>
         <div class="panel"><h3>Dag voor dag</h3><div class="timeline">${dagen}</div></div>
       </div>
@@ -768,7 +936,8 @@ function routePageHTML(r) {
       <div class="cols">
         <div class="panel"><h3>Weer ${r.klimaatLabel || "mei/juni"}</h3><p style="font-size:15px;margin:.5em 0 0">${esc(r.weer)}</p></div>
         <div class="panel"><h3>Met Amelie</h3><p style="font-size:15px;margin:.5em 0 0">${esc(r.amelie)}</p></div>
-        <div class="panel"><h3>Kosten</h3><p style="font-size:15px;margin:.5em 0 0"><b>${esc(r.kosten.excl)}</b> excl. eten<br>${esc(r.kosten.incl)} incl. eetmarge${r.kosten.ppd ? ` ≈ <b>€ ${r.kosten.ppd.laag}–${r.kosten.ppd.hoog} p.p./dag</b> → prijsscore <b>${r.score.prijs.toLocaleString("nl")}</b>` : ""}<br><span style="color:var(--faint);font-size:13px">Prijsscore: € 100 p.p./dag = 10 punten, € 190 = 4. ${esc(r.kosten.bron)}</span></p></div>
+        <div class="panel"><h3>Kosten</h3><p style="font-size:15px;margin:.5em 0 0"><b>${esc(r.kosten.excl)}</b> excl. eten<br>${esc(r.kosten.incl)} incl. eetmarge${r.kosten.ppd ? ` ≈ <b>€ ${Math.round(dynPpd(r).laag)}–${Math.round(dynPpd(r).hoog)} p.p./dag</b> → prijsscore <b>${(dynPpd(r).anders ? r1(prijsScore((dynPpd(r).laag + dynPpd(r).hoog) / 2)) : r.score.prijs).toLocaleString("nl")}</b>` : ""}<br><span style="color:var(--faint);font-size:13px">Prijsscore: € 100 p.p./dag = 10 punten, € 190 = 4. ${esc(r.kosten.bron)}</span></p>
+          ${VLUCHT[r.id] ? `<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--hair);font-size:13.5px;color:var(--soft)">✈️ Aangenomen vlucht: <b>${esc(VLUCHT[r.id].heen)} + ${esc(VLUCHT[r.id].terug)}</b> · € ${VLUCHT[r.id].ref} p.p. — <a href="${gfLink(VLUCHT[r.id].heen, r, true)}" target="_blank" rel="noopener">Google Flights heen ↗</a> · <a href="${gfLink(VLUCHT[r.id].terug, r, false)}" target="_blank" rel="noopener">terug ↗</a>${DYN.datum ? " (datum vooringevuld)" : ""}<br>Geziene prijs p.p.: <input type="number" min="0" step="10" id="vluchtZien" value="${(DYN.gezien || {})[r.id] ?? VLUCHT[r.id].ref}" style="width:92px;font:inherit;border:1px solid var(--line);border-radius:8px;padding:5px 8px"> <button type="button" class="btn sec" id="vluchtOk" style="padding:6px 14px;font-size:13px">toepassen</button></div>` : ""}</div>
       </div>
       <div class="btnrow">
         ${r.gmaps ? `<a class="btn prim" target="_blank" rel="noopener" href="${r.gmaps}">🗺 Hele route in Google Maps</a>` : ""}
@@ -806,9 +975,9 @@ function routePageHTML(r) {
 const GW = window.SCORE_GEWICHTEN || { wow: .30, tempo: .15, amelie: .20, weer: .10, prijs: .25 };
 function kortNaam(r) { return r.naam.split("—")[0].trim(); }
 function klimaatSamen(r) {
-  const ks = r.stops.filter((s) => s.klimaat);
+  const ks = r.stops.map((s) => dynKlimaat(r, s)).filter(Boolean);
   if (!ks.length) return "—";
-  return `koudste nacht ${Math.min(...ks.map((s) => s.klimaat.n))}° · warmste dag ${Math.max(...ks.map((s) => s.klimaat.d))}°`;
+  return `koudste nacht ${Math.min(...ks.map((k) => k.n))}° · warmste dag ${Math.max(...ks.map((k) => k.d))}°`;
 }
 function duocard(r) {
   return `
@@ -820,9 +989,10 @@ function duocard(r) {
     <div class="duostat"><span>Nachten</span><b>${sumNachten(r)} · ${bases(r)} bases</b></div>
     <div class="duostat"><span>Parken &amp; iconen</span><b>${r.parks.length}</b></div>
     <div class="duostat"><span>Ritme</span><b>${esc(r.tempo)}</b></div>
-    <div class="duostat"><span>Klimaat ${r.klimaatLabel || "eind mei–juni"}</span><b>${klimaatSamen(r)}</b></div>
+    <div class="duostat"><span>Klimaat ${dynActief() && DYN.berekend ? "jouw venster" : r.klimaatLabel || "eind mei–juni"}</span><b>${klimaatSamen(r)}</b></div>
     <div class="duostat"><span>Kosten excl. eten</span><b>${esc(r.kosten.excl)}</b></div>
-    <div class="duostat"><span>Prijs p.p./dag</span><b>${r.kosten.ppd ? "€ " + r.kosten.ppd.laag + "–" + r.kosten.ppd.hoog + " · score " + r.score.prijs.toLocaleString("nl") : "—"}</b></div>
+    <div class="duostat"><span>Prijs p.p./dag</span><b>${r.kosten.ppd ? "€ " + Math.round(dynPpd(r).laag) + "–" + Math.round(dynPpd(r).hoog) + " · score " + (dynPpd(r).anders ? r1(prijsScore((dynPpd(r).laag + dynPpd(r).hoog) / 2)) : r.score.prijs).toLocaleString("nl") : "—"}</b></div>
+    ${dynActief() && dynTotaal(r) != null ? `<div class="duostat"><span>Score met jouw invoer</span><b>${dynTotaal(r).toLocaleString("nl")} †</b></div>` : ""}
     <div class="duostat" style="border-bottom:0"><span>Quote</span></div>
     <p style="font-style:italic;color:var(--soft);font-size:15px;margin:0 0 10px">„${esc(r.quote)}"</p>
     <div class="duostat" style="border-bottom:0"><span>Plus</span></div>
@@ -899,6 +1069,15 @@ function showRoute(id, viaHash) {
     else localStorage.removeItem("reis27-hkmodus");
     showRoute(r.id, true);
   });
+  const vo = $("#vluchtOk");
+  if (vo) vo.onclick = () => {
+    const val = Math.round(+$("[name=vluchtZien], #vluchtZien").value || 0);
+    DYN.gezien = DYN.gezien || {};
+    if (val && val !== VLUCHT[r.id].ref) DYN.gezien[r.id] = val; else delete DYN.gezien[r.id];
+    localStorage.setItem(DYN_KEY, JSON.stringify(DYN));
+    sessionStorage.setItem("reis27-dyn-dirty", "1");
+    showRoute(r.id, true);
+  };
   document.querySelectorAll("[data-nav]").forEach((a) => a.classList.toggle("active", a.dataset.nav === id));
   scrollTo({ top: 0 });
   if (!viaHash) location.hash = "route-" + id;
@@ -907,6 +1086,12 @@ function showHome(viaHash) {
   currentRoute = null;
   pageEl.hidden = true; pageEl.innerHTML = ""; homeEl.hidden = false;
   document.querySelectorAll("[data-nav]").forEach((a) => a.classList.remove("active"));
+  if (sessionStorage.getItem("reis27-dyn-dirty")) {
+    sessionStorage.removeItem("reis27-dyn-dirty");
+    renderFinalists();
+    if (window.__renderCmp) window.__renderCmp();
+    if (window.__renderScoreTable) window.__renderScoreTable();
+  }
   ensureOverview();
   requestAnimationFrame(() => {
     const h = location.hash;
