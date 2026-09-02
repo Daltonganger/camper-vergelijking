@@ -11,6 +11,7 @@
 <meta property="og:image" content="https://daltonganger.github.io/camper-vergelijking/archief/og-card.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚐</text></svg>">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
   :root{
@@ -264,6 +265,60 @@
   label.chk input:checked + span{color:var(--faint);text-decoration:line-through}
   .ckprog{font-size:15px;color:var(--soft);text-align:center;margin-top:14px}
 
+  /* ── filters & zoeken ──────────────────────────────── */
+  .filter-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:0 0 16px}
+  .filter-tabs{display:flex;flex-wrap:wrap;gap:6px}
+  .ftab{border:1px solid var(--hair);background:#fff;color:var(--soft);border-radius:99px;padding:7px 14px;font-size:13px;cursor:pointer;transition:.15s;font-family:inherit;font-weight:500}
+  .ftab:hover{color:var(--ink);border-color:var(--line)}
+  .ftab.active{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
+  .search-wrap{position:relative;flex:1;max-width:300px;min-width:200px}
+  .search-wrap input{width:100%;border:1px solid var(--hair);background:#fff;border-radius:99px;padding:7px 14px 7px 32px;font-size:13px;color:var(--ink);outline:none;font-family:inherit;transition:.15s}
+  .search-wrap input:focus{border-color:var(--ink)}
+  .search-wrap::before{content:"🔍";position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.55;pointer-events:none}
+  
+  /* sorteerbare kolommen */
+  th.sortable{cursor:pointer;user-select:none}
+  th.sortable:hover{color:var(--ink)}
+  th.sortable::after{content:" ↕";opacity:.3;font-size:10px;font-weight:normal}
+  th.sortable.sort-asc::after{content:" ▲";opacity:1;color:var(--ink)}
+  th.sortable.sort-desc::after{content:" ▼";opacity:1;color:var(--ink)}
+
+  /* favorieten & notities */
+  .fav-btn-icon{background:none;border:none;cursor:pointer;padding:2px 5px;font-size:15px;line-height:1;vertical-align:middle;border-radius:6px;transition:transform .15s}
+  .fav-btn-icon:hover{transform:scale(1.2)}
+  .fav-note-icon{display:inline-block;margin-left:4px;font-size:13px;cursor:help;opacity:.75}
+  
+  /* route topbar */
+  .route-topbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--hair)}
+  .route-topbar .left, .route-topbar .right{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1d1d1f;color:#fff;padding:10px 20px;border-radius:99px;font-size:14px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:999;opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
+
+  /* regio knoppen overzichtskaart */
+  .map-regions{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:14px}
+  .map-regions .chip{cursor:pointer;border:1px solid var(--hair);background:#fff}
+  .map-regions .chip:hover{border-color:var(--line);color:var(--ink)}
+
+  /* ── print stijlen ─────────────────────────────────── */
+  @media print {
+    nav, #editToggle, #dynDatum, #dynBereken, #dynReset, #hkSeg, .eadd, .ereset, .editbox,
+    .ytwrap, .btnrow, .pager, .route-topbar, .cta, .filter-bar, .topn-toggle, .maplegend,
+    .map-regions, #wegingSliders, #wegingReset, .toast {
+      display: none !important;
+    }
+    body{background:#fff !important;color:#000 !important;font-size:11pt;line-height:1.4}
+    .wrap, .wrap.wide{max-width:100% !important;padding:0 !important;margin:0 !important}
+    .route{padding:0 !important;min-height:auto !important}
+    .statgrid{grid-template-columns:repeat(5,1fr) !important;gap:6px !important;margin:12px 0 !important}
+    .stat{border:1px solid #ccc !important;padding:8px 4px !important;background:none !important}
+    .stat b{font-size:18pt !important}
+    .panel{border:1px solid #ddd !important;background:#fafafa !important;page-break-inside:avoid;padding:14px 16px !important}
+    .stops li{page-break-inside:avoid}
+    .tl{page-break-inside:avoid}
+    .map{height:250px !important;page-break-inside:avoid}
+    a{text-decoration:none !important;color:#000 !important}
+  }
+
   @media (max-width:640px){
     .map{height:330px}.map.big{height:400px}
     section{padding:60px 0}
@@ -333,6 +388,19 @@
     <p>Vijf deelscores, één formule: 30% wow + 15% tempo + 20% Amelie + 10% weer + <b>25% prijs</b> — de prijsscore volgt uit de werkelijke kosten per persoon per dag. De tabel toont de top 5; vul je bij "Hoe we aan de cijfers komen" een eigen vertrekdatum (of vluchtprijs) in, dan herschikt de top 5 zich naar jouw invoer. De andere routes: tik onder de tabel op "alle tonen".</p>
     <p style="margin-top:4px;font-size:15px"><a href="#score">Zo komen we aan deze cijfers ↓</a></p>
   </div>
+  <div class="filter-bar reveal" id="cmpFilterBar">
+    <div class="filter-tabs" id="cmpFilterTabs">
+      <button type="button" class="ftab active" data-filter="all">Alle (17)</button>
+      <button type="button" class="ftab" data-filter="finalist">★ Finalisten (6)</button>
+      <button type="button" class="ftab" data-filter="USA">🇺🇸 Noord-Amerika (6)</button>
+      <button type="button" class="ftab" data-filter="China">🇨🇳 China (8)</button>
+      <button type="button" class="ftab" data-filter="Azie">🌏 Azië (3)</button>
+      <button type="button" class="ftab" data-filter="favs">❤️ Favorieten (<span class="fav-count">0</span>)</button>
+    </div>
+    <div class="search-wrap">
+      <input type="search" id="cmpSearch" placeholder="Zoek plek, park, trefwoord..." aria-label="Zoek in routes">
+    </div>
+  </div>
   <div class="tablewrap reveal"><table id="cmpTable"></table></div>
   <p class="thint reveal">⟷ Schuif de tabel opzij voor alle kolommen</p>
   <p class="thint reveal topn-toggle" style="cursor:pointer;text-decoration:underline"></p>
@@ -342,6 +410,14 @@
   <div class="secthead reveal"><span class="eyebrow">Het grote plaatje</span>
     <h2>Eén kaart, zeventien routes.</h2>
     <p>Amerikaanse camperroutes als doorgetrokken lijn, China- en Azië-routes als gestippelde trein/vlieg/boot-verbinding. Tik een chip aan om routes aan of uit te zetten.</p>
+  </div>
+  <div class="map-regions reveal" id="mapRegions">
+    <button type="button" class="chip" data-reg="world">🌍 Wereldoverzicht</button>
+    <button type="button" class="chip" data-reg="usa">🇺🇸 Noord-Amerika</button>
+    <button type="button" class="chip" data-reg="china">🇨🇳 China</button>
+    <button type="button" class="chip" data-reg="azie">🌏 Zuidoost-Azië</button>
+    <button type="button" class="chip" data-reg="all" style="margin-left:8px">✓ Alles aan</button>
+    <button type="button" class="chip" data-reg="finalists">★ Alleen finalisten</button>
   </div>
   <div class="map big reveal" id="overviewMap"></div>
   <div class="maplegend" id="mapLegend"></div>
@@ -595,19 +671,130 @@ const navKort = { "usa1":"Rockies", "usa2":"Appalachen", "usa3":"Golf", "usa4":"
 $("#navRoutes").innerHTML = ROUTES.map((r) =>
   `<a class="chip" style="--c:${r.kleur}" href="#route-${r.id}" data-nav="${r.id}"><span class="dot"></span>${navKort[r.id] || esc(r.naam.split("—")[0].trim())}</a>`).join("");
 
+/* ═══════════════ toast & favorieten / notities ═══════════════ */
+function showToast(msg) {
+  let t = $("#toast");
+  if (!t) {
+    t = document.createElement("div");
+    t.id = "toast";
+    t.className = "toast";
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._tm);
+  t._tm = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+const FAV_KEY = "reis27-favs";
+const NOTE_KEY = "reis27-notes";
+let FAVS = new Set();
+try {
+  const rawFavs = JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
+  if (Array.isArray(rawFavs)) FAVS = new Set(rawFavs);
+} catch {}
+let NOTES = {};
+try {
+  const rawNotes = JSON.parse(localStorage.getItem(NOTE_KEY) || "{}");
+  if (rawNotes && typeof rawNotes === "object") NOTES = rawNotes;
+} catch {}
+
+function isFav(id) { return FAVS.has(id); }
+function toggleFav(id) {
+  if (FAVS.has(id)) FAVS.delete(id);
+  else FAVS.add(id);
+  localStorage.setItem(FAV_KEY, JSON.stringify([...FAVS]));
+  updateFavBadge();
+  if (window.__renderCmp) window.__renderCmp();
+  if (window.__renderScoreTable) window.__renderScoreTable();
+  const r = byId(id);
+  const knaam = r ? kortNaam(r) : id;
+  showToast(isFav(id) ? `❤️ ${knaam} bewaard in favorieten` : `🤍 ${knaam} verwijderd uit favorieten`);
+}
+function updateFavBadge() {
+  document.querySelectorAll(".fav-count").forEach(el => el.textContent = FAVS.size);
+}
+function setNote(id, txt) {
+  if (!txt || !txt.trim()) delete NOTES[id];
+  else NOTES[id] = txt.trim();
+  localStorage.setItem(NOTE_KEY, JSON.stringify(NOTES));
+  if (window.__renderCmp) window.__renderCmp();
+  if (window.__renderScoreTable) window.__renderScoreTable();
+}
+function getNote(id) { return NOTES[id] || ""; }
+
 /* ═══════════════ home-inhoud ═══════════════ */
 function renderFinalists() {
-$("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).map((r) => `
-  <a class="card reveal" style="--c:${r.kleur}" href="#route-${r.id}">
-    <span class="tag">${r.soort === "China" ? "China · hotel & trein" : r.soort === "Azie" ? "Azië · hotel & vlieg/boot" : "Camper · USA"}</span>
-    <div class="sc">${r.score.totaal.toLocaleString("nl")}<small>/10</small>${dynActief() && dynTotaal(r) != null && dynTotaal(r) !== r.score.totaal ? `<small style="color:var(--link)"> ·†${dynTotaal(r).toLocaleString("nl")}</small>` : ""}</div>
-    <h3>${esc(r.naam.split("—")[0].trim())}</h3>
-    <p>${esc(r.alias)}</p>
-    <p>${r.soort === "USA" ? r.km.toLocaleString("nl") + " km camper" : r.treinkm.toLocaleString("nl") + " km per " + (r.soort === "China" ? "trein/vliegtuig" : "vlucht/trein/boot")} · ${bases(r)} bases · ${r.parks.length} parken &amp; iconen</p>
-    <span class="go">Bekijk de routepagina ›</span>
-  </a>`).join("");
+  $("#finalists").innerHTML = ROUTES.filter((r) => r.finalist).sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).map((r) => {
+    const p = dynPpd(r) || r.kosten.ppd;
+    const pStr = p ? `€ ${Math.round((p.laag + p.hoog) / 2).toLocaleString("nl")} p.p./dag` : "";
+    return `
+    <a class="card reveal" style="--c:${r.kleur}" href="#route-${r.id}">
+      <span class="tag">${r.soort === "China" ? "China · hotel & trein" : r.soort === "Azie" ? "Azië · hotel & vlieg/boot" : "Camper · USA"}</span>
+      <div class="sc">${r.score.totaal.toLocaleString("nl")}<small>/10</small>${dynActief() && dynTotaal(r) != null && dynTotaal(r) !== r.score.totaal ? `<small style="color:var(--link)"> ·†${dynTotaal(r).toLocaleString("nl")}</small>` : ""}</div>
+      <h3>${esc(r.naam.split("—")[0].trim())}</h3>
+      <p>${esc(r.alias)}</p>
+      ${pStr ? `<div style="font-size:13.5px;font-weight:600;color:var(--ink);margin:4px 0 6px">🏷️ ${pStr}</div>` : ""}
+      <p>${r.soort === "USA" ? r.km.toLocaleString("nl") + " km camper" : r.treinkm.toLocaleString("nl") + " km per " + (r.soort === "China" ? "trein/vliegtuig" : "vlucht/trein/boot")} · ${bases(r)} bases · ${r.parks.length} parken &amp; iconen</p>
+      <span class="go">Bekijk de routepagina ›</span>
+    </a>`;
+  }).join("");
 }
 renderFinalists();
+updateFavBadge();
+
+let cmpFilter = "all";
+let cmpSearchQuery = "";
+let cmpSortKey = "score";
+let cmpSortAsc = false;
+
+function getFilteredSortedRoutes() {
+  let list = [...ROUTES];
+  if (cmpFilter === "finalist") list = list.filter(r => r.finalist);
+  else if (cmpFilter === "USA" || cmpFilter === "China" || cmpFilter === "Azie") list = list.filter(r => r.soort === cmpFilter);
+  else if (cmpFilter === "favs") list = list.filter(r => FAVS.has(r.id));
+
+  if (cmpSearchQuery) {
+    const q = cmpSearchQuery;
+    list = list.filter(r => {
+      const stopNames = r.stops.map(s => s.naam).join(" ").toLowerCase();
+      const parkNames = (r.parks || []).join(" ").toLowerCase();
+      const plusTxt = (r.plus || []).join(" ").toLowerCase();
+      const naamTxt = r.naam.toLowerCase();
+      const aliasTxt = (r.alias || "").toLowerCase();
+      const quoteTxt = (r.quote || "").toLowerCase();
+      return naamTxt.includes(q) || aliasTxt.includes(q) || stopNames.includes(q) || parkNames.includes(q) || plusTxt.includes(q) || quoteTxt.includes(q);
+    });
+  }
+
+  const dynAan = dynActief();
+  list.sort((a, b) => {
+    let va, vb;
+    if (cmpSortKey === "naam") {
+      va = a.naam.toLowerCase(); vb = b.naam.toLowerCase();
+      return cmpSortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    } else if (cmpSortKey === "km") {
+      va = a.soort === "USA" ? a.km : a.treinkm;
+      vb = b.soort === "USA" ? b.km : b.treinkm;
+    } else if (cmpSortKey === "nachten") {
+      va = sumNachten(a); vb = sumNachten(b);
+    } else if (cmpSortKey === "parken") {
+      va = a.parks.length; vb = b.parks.length;
+    } else if (cmpSortKey === "prijs") {
+      const pa = dynPpd(a) || a.kosten.ppd;
+      const pb = dynPpd(b) || b.kosten.ppd;
+      va = pa ? (pa.laag + pa.hoog) / 2 : 9999;
+      vb = pb ? (pb.laag + pb.hoog) / 2 : 9999;
+    } else {
+      va = (dynAan && dynTotaal(a) != null) ? dynTotaal(a) : a.score.totaal;
+      vb = (dynAan && dynTotaal(b) != null) ? dynTotaal(b) : b.score.totaal;
+    }
+    return cmpSortAsc ? (va - vb) : (vb - va);
+  });
+
+  const heeftFilter = cmpFilter !== "all" || !!cmpSearchQuery;
+  return heeftFilter ? list : list.slice(0, toonAlles ? list.length : 5);
+}
 
 {
   const lijstBadge = (r) =>
@@ -618,29 +805,55 @@ renderFinalists();
     : '<span class="badge b-park">geparkeerd — ander seizoen</span>';
 
   function renderCmp() {
-  const ppd = (r) => {
-    const p = dynPpd(r) || r.kosten.ppd;
-    return p ? `<b>€ ${Math.round((p.laag + p.hoog) / 2).toLocaleString("nl")}</b><span style="color:var(--faint);font-size:12px"> (${Math.round(p.laag)}–${Math.round(p.hoog)})</span>` : "—";
-  };
-  const dynAan = dynActief();
+    const ppd = (r) => {
+      const p = dynPpd(r) || r.kosten.ppd;
+      return p ? `<b>€ ${Math.round((p.laag + p.hoog) / 2).toLocaleString("nl")}</b><span style="color:var(--faint);font-size:12px"> (${Math.round(p.laag)}–${Math.round(p.hoog)})</span>` : "—";
+    };
+    const dynAan = dynActief();
+    const routes = getFilteredSortedRoutes();
 
-  const rows = [...ROUTES].sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).slice(0, toonAlles ? ROUTES.length : 5).map((r) => `
-    <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
-      <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
-        <div style="margin-top:5px">${lijstBadge(r)}${r.soort === "China" ? ' <span class="badge b-china">trein &amp; hotel</span>' : ""}${r.soort === "Azie" ? ' <span class="badge b-azie">hotel &amp; vlieg/boot</span>' : ""}</div></td>
-      <td>${r.soort === "USA" ? r.km.toLocaleString("nl") + " km" : r.treinkm.toLocaleString("nl") + " km trein/vlucht" + (r.soort === "Azie" ? "/boot" : "")}</td>
-      <td>${sumNachten(r)} nachten · ${bases(r)} bases</td>
-      <td>${r.parks.length}</td>
-      <td>${esc(r.tempo)}</td>
-      <td>${ppd(r)}</td>
-      <td><b>${r.score.totaal.toLocaleString("nl")}</b><span style="color:var(--faint);font-size:12px"> /10</span></td>
-      ${dynAan ? `<td>${dynTotaal(r) != null ? "<b>" + dynTotaal(r).toLocaleString("nl") + "</b><span style='color:var(--faint);font-size:12px'> †</span>" : "—"}</td>` : ""}
-      <td style="font-size:13.5px;color:var(--soft)">${esc(r.plus[0])}</td>
-    </tr>`).join("");
-  $("#cmpTable").innerHTML = `<thead><tr><th>Route</th><th>Afstand</th><th>Nachten / bases</th><th>Parken</th><th>Ritme</th><th>Prijs p.p./dag</th><th>Score</th>${dynAan ? "<th>Score†</th>" : ""}<th>Grootste kracht</th></tr></thead><tbody>${rows}</tbody>`;
+    const thSort = (key, label) => {
+      const isCur = cmpSortKey === key;
+      const cls = "sortable" + (isCur ? (cmpSortAsc ? " sort-asc" : " sort-desc") : "");
+      return `<th class="${cls}" data-sort="${key}">${label}</th>`;
+    };
+
+    const rows = routes.map((r) => `
+      <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
+        <td>
+          <button type="button" class="fav-btn-icon" data-fav="${r.id}" title="${isFav(r.id) ? 'Verwijder uit favorieten' : 'Voeg toe aan favorieten'}">${isFav(r.id) ? '❤️' : '🤍'}</button>
+          <a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
+          ${getNote(r.id) ? `<span class="fav-note-icon" title="Notitie: ${esc(getNote(r.id))}">📝</span>` : ""}
+          <div style="margin-top:5px">${lijstBadge(r)}${r.soort === "China" ? ' <span class="badge b-china">trein &amp; hotel</span>' : ""}${r.soort === "Azie" ? ' <span class="badge b-azie">hotel &amp; vlieg/boot</span>' : ""}</div>
+        </td>
+        <td>${r.soort === "USA" ? r.km.toLocaleString("nl") + " km" : r.treinkm.toLocaleString("nl") + " km trein/vlucht" + (r.soort === "Azie" ? "/boot" : "")}</td>
+        <td>${sumNachten(r)} nachten · ${bases(r)} bases</td>
+        <td>${r.parks.length}</td>
+        <td>${esc(r.tempo)}</td>
+        <td>${ppd(r)}</td>
+        <td><b>${r.score.totaal.toLocaleString("nl")}</b><span style="color:var(--faint);font-size:12px"> /10</span></td>
+        ${dynAan ? `<td>${dynTotaal(r) != null ? "<b>" + dynTotaal(r).toLocaleString("nl") + "</b><span style='color:var(--faint);font-size:12px'> †</span>" : "—"}</td>` : ""}
+        <td style="font-size:13.5px;color:var(--soft)">${esc(r.plus[0])}</td>
+      </tr>`).join("");
+
+    $("#cmpTable").innerHTML = `
+      <thead>
+        <tr>
+          ${thSort("naam", "Route")}
+          ${thSort("km", "Afstand")}
+          ${thSort("nachten", "Nachten / bases")}
+          ${thSort("parken", "Parken")}
+          <th>Ritme</th>
+          ${thSort("prijs", "Prijs p.p./dag")}
+          ${thSort("score", "Score")}
+          ${dynAan ? "<th>Score†</th>" : ""}
+          <th>Grootste kracht</th>
+        </tr>
+      </thead>
+      <tbody>${rows.length ? rows : '<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--soft)">Geen routes gevonden voor deze filters.</td></tr>'}</tbody>`;
   }
   renderCmp();
-  window.__renderCmp = renderCmp; // voor verversen na dynamische invoer (vluchtprijs)
+  window.__renderCmp = renderCmp;
 
   const nl = (x) => x.toLocaleString("nl");
 
@@ -658,10 +871,15 @@ renderFinalists();
 
   function renderScoreTable() {
     const f = factoren(), aan = wegingAan(), dAan = dynActief();
-    const srows = [...ROUTES].sort((a, b) => (dynTotaal(b) ?? b.score.totaal) - (dynTotaal(a) ?? a.score.totaal)).slice(0, toonAlles ? ROUTES.length : 5).map((r) => `
+    const routes = getFilteredSortedRoutes();
+    const srows = routes.map((r) => `
       <tr class="${r.finalist ? "finalist" : ""}" style="--c:${r.kleur}">
-        <td><a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
-          <div style="margin-top:5px">${lijstBadge(r)}</div></td>
+        <td>
+          <button type="button" class="fav-btn-icon" data-fav="${r.id}" title="${isFav(r.id) ? 'Verwijder uit favorieten' : 'Voeg toe aan favorieten'}">${isFav(r.id) ? '❤️' : '🤍'}</button>
+          <a class="lbl" style="--c:${r.kleur}" href="#route-${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</a>
+          ${getNote(r.id) ? `<span class="fav-note-icon" title="Notitie: ${esc(getNote(r.id))}">📝</span>` : ""}
+          <div style="margin-top:5px">${lijstBadge(r)}</div>
+        </td>
         <td>${nl(r.score.wow)}</td>
         <td>${nl(r.score.amelie)}</td>
         <td>${nl(r.score.tempo)}</td>
@@ -671,7 +889,7 @@ renderFinalists();
         ${dAan ? `<td>${dynTotaal(r) != null ? "<b>" + nl(dynTotaal(r)) + "</b>" : "—"}</td>` : ""}
         ${aan ? `<td><b style="color:${r.kleur}">${nl(userTotaal(r, f))}</b></td>` : ""}
       </tr>`).join("");
-    $("#scoreTable").innerHTML = `<thead><tr><th>Route</th><th>Wow</th><th>Comfort Amelie</th><th>Tempo</th><th>Weer</th><th>Prijs (€ p.p./dag)</th><th>Totaal*</th>${dAan ? "<th>Met jouw datum†</th>" : ""}${aan ? "<th>Jouw weging</th>" : ""}</tr></thead><tbody>${srows}</tbody>`;
+    $("#scoreTable").innerHTML = `<thead><tr><th>Route</th><th>Wow</th><th>Comfort Amelie</th><th>Tempo</th><th>Weer</th><th>Prijs (€ p.p./dag)</th><th>Totaal*</th>${dAan ? "<th>Met jouw datum†</th>" : ""}${aan ? "<th>Jouw weging</th>" : ""}</tr></thead><tbody>${srows.length ? srows : '<tr><td colspan="9" style="text-align:center;padding:24px;color:var(--soft)">Geen routes gevonden voor deze filters.</td></tr>'}</tbody>`;
     const uit = $("#wegingResultaat");
     if (!uit) return;
     if (aan) {
@@ -683,6 +901,49 @@ renderFinalists();
   }
   renderScoreTable();
   window.__renderScoreTable = renderScoreTable;
+
+  const filterTabs = $("#cmpFilterTabs");
+  if (filterTabs && !filterTabs._wired) {
+    filterTabs._wired = true;
+    filterTabs.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-filter]");
+      if (!btn) return;
+      cmpFilter = btn.dataset.filter;
+      filterTabs.querySelectorAll(".ftab").forEach(b => b.classList.toggle("active", b === btn));
+      renderCmp(); renderScoreTable();
+    });
+  }
+  const searchInput = $("#cmpSearch");
+  if (searchInput && !searchInput._wired) {
+    searchInput._wired = true;
+    searchInput.addEventListener("input", (e) => {
+      cmpSearchQuery = e.target.value.trim().toLowerCase();
+      renderCmp(); renderScoreTable();
+    });
+  }
+  const cmpTableEl = $("#cmpTable");
+  if (cmpTableEl && !cmpTableEl._wired) {
+    cmpTableEl._wired = true;
+    cmpTableEl.addEventListener("click", (e) => {
+      const th = e.target.closest("th.sortable");
+      if (!th) return;
+      const key = th.dataset.sort;
+      if (cmpSortKey === key) {
+        cmpSortAsc = !cmpSortAsc;
+      } else {
+        cmpSortKey = key;
+        cmpSortAsc = (key === "naam" || key === "prijs");
+      }
+      renderCmp(); renderScoreTable();
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".fav-btn-icon");
+    if (!btn) return;
+    e.preventDefault(); e.stopPropagation();
+    toggleFav(btn.dataset.fav);
+  });
 
   const sliderBox = $("#wegingSliders");
   if (sliderBox) {
@@ -859,11 +1120,51 @@ function drawOverview() {
 function ensureOverview() {
   if (oMap) { oMap.invalidateSize(); return; }
   oMap = L.map("overviewMap", { scrollWheelZoom: false }); tile().addTo(oMap);
+  const updateLegendChips = () => {
+    $("#mapLegend").querySelectorAll("[data-toggle]").forEach((el) => {
+      el.classList.toggle("off", !enabled[el.dataset.toggle]);
+    });
+  };
   $("#mapLegend").innerHTML = ROUTES.map((r) => `<span class="chip ${enabled[r.id] ? "" : "off"}" style="--c:${r.kleur}" data-toggle="${r.id}"><span class="dot"></span>${esc(r.naam.split("—")[0].trim())}</span>`).join("");
   $("#mapLegend").addEventListener("click", (e) => {
     const t = e.target.closest("[data-toggle]"); if (!t) return;
     const id = t.dataset.toggle; enabled[id] = !enabled[id]; t.classList.toggle("off", !enabled[id]); drawOverview();
   });
+  const regBox = $("#mapRegions");
+  if (regBox && !regBox._wired) {
+    regBox._wired = true;
+    regBox.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-reg]");
+      if (!btn) return;
+      const reg = btn.dataset.reg;
+      if (reg === "all") {
+        ROUTES.forEach((r) => enabled[r.id] = true);
+        updateLegendChips();
+        drawOverview();
+      } else if (reg === "finalists") {
+        ROUTES.forEach((r) => enabled[r.id] = !!r.finalist);
+        updateLegendChips();
+        drawOverview();
+      } else if (reg === "world") {
+        drawOverview();
+      } else if (reg === "usa") {
+        ROUTES.forEach((r) => enabled[r.id] = (r.soort === "USA"));
+        updateLegendChips();
+        drawOverview();
+        if (oMap) oMap.flyToBounds([[24, -126], [53, -65]], { duration: 0.8 });
+      } else if (reg === "china") {
+        ROUTES.forEach((r) => enabled[r.id] = (r.soort === "China"));
+        updateLegendChips();
+        drawOverview();
+        if (oMap) oMap.flyToBounds([[18, 98], [44, 125]], { duration: 0.8 });
+      } else if (reg === "azie") {
+        ROUTES.forEach((r) => enabled[r.id] = (r.soort === "Azie"));
+        updateLegendChips();
+        drawOverview();
+        if (oMap) oMap.flyToBounds([[-10, 95], [20, 128]], { duration: 0.8 });
+      }
+    });
+  }
   drawOverview();
 }
 
@@ -891,6 +1192,9 @@ function routePageHTML(r) {
   const n = st.reduce((t, s) => t + (s.n || 0), 0);
   const nb = st.filter((s) => (s.n || 0) > 0).length;
   const maxN = Math.max(...st.map((s) => s.n || 0));
+  const ks = st.map((s) => dynKlimaat(r, s)).filter(Boolean);
+  const kMin = ks.length ? Math.min(...ks.map((k) => k.n)) : null;
+  const kMax = ks.length ? Math.max(...ks.map((k) => k.d)) : null;
   const bar = st.map((s) => s.n > 0 ? `<div class="${s.n === maxN ? "" : "dim"}" style="flex:${s.n}" title="${esc(s.naam)}: ${s.n}n">${s.n >= 2 ? esc(s.naam.split(",")[0].split("—")[0].trim()) + " · " + s.n : s.n}</div>` : "").join("");
   const stops = st.map((s, i) => `
     <li><span class="no">${i + 1}</span>
@@ -906,6 +1210,18 @@ function routePageHTML(r) {
   return `
   <article class="route pageIn" id="route-${r.id}" style="--c:${r.kleur}">
     <div class="wrap">
+      <div class="route-topbar">
+        <div class="left">
+          <a class="btn sec" href="#top" style="padding:7px 14px;font-size:13.5px">← Terug naar overzicht</a>
+          <button type="button" class="btn sec ${isFav(r.id) ? "is-fav" : ""}" id="routeFavBtn" data-fav="${r.id}" style="padding:7px 14px;font-size:13.5px">
+            ${isFav(r.id) ? "❤️ In favorieten" : "🤍 Bewaar als favoriet"}
+          </button>
+        </div>
+        <div class="right">
+          <button type="button" class="btn sec" id="btnShareRoute" style="padding:7px 14px;font-size:13.5px">🔗 Deel route</button>
+          <button type="button" class="btn sec" onclick="window.print()" style="padding:7px 14px;font-size:13.5px">🖨 Print / PDF</button>
+        </div>
+      </div>
       <div class="route-head">
         <span class="eyebrow">${eyebrow}</span>
         <h1>${esc(r.naam.split("—")[0].trim())}</h1>
@@ -929,7 +1245,14 @@ function routePageHTML(r) {
         <div class="stat"><b>${n}</b><span>nachten · ${nb} bases</span></div>
         <div class="stat"><b>${r.parks.length}</b><span>parken &amp; iconen</span></div>
         <div class="stat"><b>€ ${r.kosten.ppd ? Math.round((dynPpd(r).laag + dynPpd(r).hoog) / 2).toLocaleString("nl") : "?"}</b><span>p.p./dag · range ${r.kosten.ppd ? Math.round(dynPpd(r).laag) + "–" + Math.round(dynPpd(r).hoog) : "?"}</span></div>
+        ${kMin != null && kMax != null ? `<div class="stat"><b>${kMin}° / ${kMax}°</b><span>klimaatspanne · 🌙 min / ☀️ max</span></div>` : ""}
         <div class="stat"><b>${r.score.totaal.toLocaleString("nl")}</b><span>totaalscore / 10</span>${dynActief() && dynTotaal(r) != null ? `<div style="font-size:12px;color:var(--link);margin-top:3px">met jouw invoer: ${dynTotaal(r).toLocaleString("nl")}†</div>` : ""}</div>
+      </div>
+      <div class="panel reveal" style="margin:20px 0;border:1px solid #dcdce2;background:#fdfdfe">
+        <h3 style="margin-bottom:6px">📝 Persoonlijke notities voor deze route</h3>
+        <p style="font-size:14px;color:var(--soft);margin-bottom:10px">Typ hier jullie eigen afwegingen, ideeën of twijfels over ${esc(kortNaam(r))}. Wordt automatisch in deze browser bewaard.</p>
+        <textarea id="routeNotesArea" rows="3" placeholder="Bijv. Amelie kan hier goed tot rust komen; vraag stellen over de camping bij..." style="width:100%;border:1px solid var(--hair);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:14.5px;outline:none;resize:vertical;line-height:1.5;box-sizing:border-box">${esc(getNote(r.id))}</textarea>
+        <div id="routeNotesSaved" style="font-size:12px;color:var(--faint);margin-top:4px;text-align:right">✓ Opgeslagen in browser</div>
       </div>
       <div class="quote" style="text-align:center">„${esc(r.quote)}"</div>
       ${r.fotos ? `<div class="fotostrip" id="fotos-${r.id}"></div>` : ""}
@@ -1033,7 +1356,7 @@ function compareHTML(a, b) {
       </div>
       <div class="selrow">
         <select id="selA" aria-label="Route A">${opts(a.id)}</select>
-        <span class="vs">VERSUS</span>
+        <button type="button" class="btn sec" id="btnSwapCmp" style="padding:6px 12px;font-size:14px;align-self:center" title="Wissel links en rechts om">⇄ Wissel</button>
         <select id="selB" aria-label="Route B">${opts(b.id)}</select>
       </div>
       <div class="duogrid">${duocard(a)}${duocard(b)}</div>
@@ -1063,6 +1386,8 @@ function showCompare(aId, bId, viaHash) {
   pageEl.innerHTML = compareHTML(byId(aId), byId(bId));
   const go = () => { location.hash = `vergelijk2/${$("#selA").value}/${$("#selB").value}`; };
   $("#selA").onchange = go; $("#selB").onchange = go;
+  const swapBtn = $("#btnSwapCmp");
+  if (swapBtn) swapBtn.onclick = () => { location.hash = `vergelijk2/${bId}/${aId}`; };
   scrollTo({ top: 0 });
   if (!viaHash) location.hash = `vergelijk2/${aId}/${bId}`;
 }
@@ -1092,6 +1417,33 @@ function showRoute(id, viaHash) {
     localStorage.setItem(DYN_KEY, JSON.stringify(DYN));
     sessionStorage.setItem("reis27-dyn-dirty", "1");
     showRoute(r.id, true);
+  };
+  const rfBtn = $("#routeFavBtn");
+  if (rfBtn) rfBtn.onclick = () => {
+    toggleFav(r.id);
+    rfBtn.classList.toggle("is-fav", isFav(r.id));
+    rfBtn.textContent = isFav(r.id) ? "❤️ In favorieten" : "🤍 Bewaar als favoriet";
+  };
+  const shrBtn = $("#btnShareRoute");
+  if (shrBtn) shrBtn.onclick = () => {
+    const url = location.origin + location.pathname + "#route-" + r.id;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(() => showToast("🔗 Link gekopieerd naar klembord!"));
+    } else {
+      prompt("Kopieer de link naar deze route:", url);
+    }
+  };
+  const nArea = $("#routeNotesArea");
+  if (nArea) {
+    let saveTm;
+    nArea.addEventListener("input", () => {
+      clearTimeout(saveTm);
+      saveTm = setTimeout(() => {
+        setNote(r.id, nArea.value);
+        const sv = $("#routeNotesSaved");
+        if (sv) { sv.textContent = "✓ Opgeslagen in browser"; sv.style.color = "var(--faint)"; }
+      }, 400);
+    });
   };
   document.querySelectorAll("[data-nav]").forEach((a) => a.classList.toggle("active", a.dataset.nav === id));
   scrollTo({ top: 0 });
@@ -1203,15 +1555,17 @@ $("#editToggle").onclick = () => {
 $("#btnClear").onclick = () => { if (confirm("Alle aanpassingen in deze browser wissen?")) { EDITS = {}; persist(); location.reload(); } };
 $("#btnExport").onclick = () => {
   const txt = `// routes-data.js — geëxporteerd vanuit de website, ${new Date().toLocaleDateString("nl-NL")}\n` +
-    `const SCORE_GEWICHTEN = ${JSON.stringify(SCORE_GEWICHTEN)};\n` +
-    `function prijsScore(ppd) { return Math.max(0, Math.min(10, 10 - 6 * (ppd - 100) / 90)); }\n` +
+    `const SCORE_GEWICHTEN = ${JSON.stringify(SCORE_GEWICHTEN, null, 2)};\n\n` +
+    `function prijsScore(ppd) { return Math.max(0, Math.min(10, 10 - 6 * (ppd - 100) / 90)); }\n\n` +
     `function scoreTotaal(s) {\n  const t = Object.keys(SCORE_GEWICHTEN).reduce((a, k) => a + s[k] * SCORE_GEWICHTEN[k], 0);\n  return Math.round(t * 10) / 10;\n}\n\n` +
+    `const VLUCHT = ${JSON.stringify(typeof VLUCHT !== "undefined" ? VLUCHT : {}, null, 2)};\n\n` +
     `const ROUTES = ${JSON.stringify(ROUTES, null, 2)};\n\nconst VISITED = ${JSON.stringify(VISITED, null, 2)};\n\n` +
-    `if (typeof window !== "undefined") { window.ROUTES = ROUTES; window.VISITED = VISITED; window.SCORE_GEWICHTEN = SCORE_GEWICHTEN; window.scoreTotaal = scoreTotaal; window.prijsScore = prijsScore; }\n` +
-    `if (typeof module !== "undefined" && module.exports) { module.exports = { ROUTES, VISITED, SCORE_GEWICHTEN, scoreTotaal, prijsScore }; }`;
+    `if (typeof window !== "undefined") { window.ROUTES = ROUTES; window.VISITED = VISITED; window.VLUCHT = VLUCHT; window.SCORE_GEWICHTEN = SCORE_GEWICHTEN; window.scoreTotaal = scoreTotaal; window.prijsScore = prijsScore; }\n` +
+    `if (typeof module !== "undefined" && module.exports) { module.exports = { ROUTES, VISITED, VLUCHT, SCORE_GEWICHTEN, scoreTotaal, prijsScore }; }`;
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([txt], { type: "text/javascript" }));
   a.download = "routes-data.js"; a.click();
+  showToast("⬇ routes-data.js gedownload");
 };
 updateSummary();
 

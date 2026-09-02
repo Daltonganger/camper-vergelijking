@@ -2,19 +2,19 @@
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#0f3d36"/>
-      <stop offset=".38" stop-color="#1f6f63"/>
-      <stop offset=".55" stop-color="#3d5a52"/>
-      <stop offset=".78" stop-color="#6e2430"/>
+      <stop offset=".34" stop-color="#1f6f63"/>
+      <stop offset=".52" stop-color="#3d5a52"/>
+      <stop offset=".76" stop-color="#6e2430"/>
       <stop offset="1" stop-color="#5c1119"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#g)"/>
-  <circle cx="1060" cy="90" r="260" fill="#c9a227" opacity=".14"/>
-  <circle cx="160" cy="570" r="210" fill="#e08a2e" opacity=".12"/>
-  <text x="80" y="150" font-family="system-ui,sans-serif" font-size="64" font-weight="800" fill="#faf6ef">Reis 2027</text>
-  <text x="80" y="235" font-family="system-ui,sans-serif" font-size="46" font-weight="600" fill="#f3efe6">China vs. Amerika · 9 routes, één keuze</text>
-  <text x="80" y="330" font-family="system-ui,sans-serif" font-size="30" fill="#c9d8d2">3 China-rondreizen · 6 camperroutes · mei/juni</text>
-  <rect x="80" y="420" width="360" height="62" rx="31" fill="#e08a2e"/>
-  <text x="112" y="461" font-family="system-ui,sans-serif" font-size="27" font-weight="700" fill="#3a2608">Vergelijk alles in één pagina</text>
-  <text x="80" y="560" font-family="system-ui,sans-serif" font-size="24" fill="#d9b8a8">Kaarten · dagprogramma's · kosten · scores</text>
+  <circle cx="1060" cy="90" r="260" fill="#c9a227" opacity=".16"/>
+  <circle cx="160" cy="570" r="210" fill="#e08a2e" opacity=".14"/>
+  <text x="80" y="145" font-family="-apple-system,BlinkMacSystemFont,system-ui,sans-serif" font-size="62" font-weight="800" fill="#faf6ef">Reis 2027</text>
+  <text x="80" y="230" font-family="-apple-system,BlinkMacSystemFont,system-ui,sans-serif" font-size="44" font-weight="700" fill="#f3efe6">China, Amerika of Azië · 17 routes</text>
+  <text x="80" y="325" font-family="-apple-system,BlinkMacSystemFont,system-ui,sans-serif" font-size="30" font-weight="500" fill="#c9d8d2">6 camperroutes · 8 China-reizen · 3 Zuidoost-Azië</text>
+  <rect x="80" y="415" width="410" height="64" rx="32" fill="#e08a2e"/>
+  <text x="115" y="457" font-family="-apple-system,BlinkMacSystemFont,system-ui,sans-serif" font-size="26" font-weight="700" fill="#241503">Vergelijk alles op één pagina</text>
+  <text x="80" y="555" font-family="-apple-system,BlinkMacSystemFont,system-ui,sans-serif" font-size="24" fill="#d9b8a8">Kaarten · dagprogramma's · kosten · weerscores · shortlist</text>
 </svg>
