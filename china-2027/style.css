@@ -2543,3 +2543,219 @@ body.inner-view .hero {
 .custom-hotel p {
   overflow-wrap: anywhere;
 }
+
+/* Shared planning and the reservation ledger. */
+.sharing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 24px 0;
+}
+.sharing-actions [hidden],
+.sharing-panel [hidden] {
+  display: none !important;
+}
+#sync-link-box {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+}
+#sync-invite {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: 13px var(--body);
+  margin: 8px 0 18px;
+}
+.sharing-panel > .tag {
+  margin-bottom: 20px;
+}
+.booking-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+}
+.booking-summary > div {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px;
+}
+.booking-summary span {
+  display: block;
+  font-size: 13px;
+}
+.booking-summary strong {
+  display: block;
+  font: 34px var(--heading);
+  color: var(--forest);
+  margin-top: 8px;
+}
+.booking-summary small {
+  font: 14px var(--body);
+}
+.booking-summary > p {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+.booking-next {
+  margin-bottom: 24px;
+}
+#booking-deadlines > div {
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+#booking-deadlines strong,
+#booking-deadlines span {
+  display: block;
+  font-size: 13px;
+}
+.booking-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+.booking-filter select {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 9px;
+  background: white;
+  font: 14px var(--body);
+}
+.booking-ledger {
+  display: grid;
+  gap: 14px;
+}
+.booking-entry {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.booking-entry > summary {
+  padding: 22px 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  cursor: pointer;
+  list-style: none;
+}
+.booking-entry > summary::after {
+  content: "+";
+  color: var(--forest);
+  font-size: 24px;
+  flex: 0 0 auto;
+}
+.booking-entry[open] > summary::after {
+  content: "−";
+}
+.booking-entry > summary > div:first-child {
+  min-width: 0;
+  flex: 1;
+}
+.booking-entry .eyebrow {
+  font-size: 10px;
+  color: var(--forest);
+  margin-bottom: 8px;
+}
+.booking-entry h3 {
+  font-size: 20px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.booking-entry-summary {
+  text-align: right;
+  max-width: 280px;
+}
+.booking-entry-summary strong,
+.booking-entry-summary small {
+  display: block;
+}
+.booking-entry-summary strong {
+  margin-top: 10px;
+  color: var(--forest);
+}
+.booking-entry-summary small {
+  font-size: 11px;
+  margin-top: 6px;
+  color: var(--muted);
+}
+.booking-form {
+  border-top: 1px solid var(--line);
+  padding: 26px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.booking-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 0;
+}
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: 16px var(--body);
+  color: var(--ink);
+}
+.booking-form .full {
+  grid-column: 1 / -1;
+}
+.booking-form .button {
+  justify-self: start;
+}
+.booking-form textarea {
+  resize: vertical;
+}
+@media (max-width: 700px) {
+  .booking-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .booking-summary > div {
+    padding: 18px;
+  }
+  .booking-summary strong {
+    font-size: 28px;
+  }
+  .booking-entry > summary {
+    padding: 20px 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .booking-entry > summary > div:first-child {
+    flex: 1 1 75%;
+  }
+  .booking-entry-summary {
+    text-align: left;
+    max-width: none;
+    width: 100%;
+    order: 2;
+  }
+  .booking-entry h3 {
+    font-size: 21px;
+  }
+  .booking-form {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 20px 18px;
+  }
+  .sharing-actions .button {
+    width: 100%;
+  }
+}

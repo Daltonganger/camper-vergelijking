@@ -41,9 +41,12 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="style.css?v=eigenhotel-20260930" />
-    <script src="data.js?v=eigenhotel-20260930" defer></script>
-    <script src="app.js?v=eigenhotel-20260930" defer></script>
+    <link rel="stylesheet" href="style.css?v=samen-20260930" />
+    <script src="data.js?v=samen-20260930" defer></script>
+    <script src="bookings.js?v=samen-20260930" defer></script>
+    <script src="sync.js?v=samen-20260930" defer></script>
+    <script src="sync-config.js?v=samen-20260930" defer></script>
+    <script src="app.js?v=samen-20260930" defer></script>
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
       defer
@@ -65,7 +68,9 @@
           ><a href="#hotels" data-view="hotels">Hotels</a
           ><a href="#boeken" data-view="boeken">Tickets & boeken</a
           ><a href="#praktisch" data-view="praktisch">Met Amélie</a
-          ><a href="#budget" data-view="budget">Budget</a>
+          ><a href="#budget" data-view="budget">Budget</a
+          ><a href="#boekingen" data-view="boekingen">Boekingen</a
+          ><a href="#samen" data-view="samen">Samen plannen</a>
         </nav>
         <button
           class="icon-button print"
@@ -388,9 +393,10 @@
           >
         </div>
         <p class="caption">
-          Eigen hotels voeg je hieronder per locatie toe. Ze worden op dit
-          apparaat bewaard en gaan mee met ‘Back-up downloaden’. Met ‘Back-up
-          openen’ neem je ze mee naar een ander apparaat.
+          Eigen hotels voeg je hieronder per locatie toe. Ze worden hier bewaard
+          en gaan mee in je back-up. Via
+          <a href="#samen" data-view="samen">Samen plannen</a> delen jullie
+          hotelkeuzes en boekingen automatisch.
         </p>
         <div id="hotel-grid" class="hotel-grid"></div>
         <div class="paper hotel-check">
@@ -807,13 +813,97 @@
               <h3>Je eigen kamerbudget per plek.</h3>
               <p class="muted">
                 De standaard is de middenprijs van het gekozen hotel. Eigen
-                prijzen worden apart per budget- of comfortoptie bewaard.
+                prijzen worden apart per budget-, comfort- of eigen hoteloptie
+                bewaard.
                 <a href="#hotels" data-view="hotels">Hotelkeuzes aanpassen →</a>
               </p>
             </div>
           </div>
           <div id="hotel-budget-fields"></div>
         </div>
+      </section>
+      <section
+        id="boekingen"
+        class="view"
+        aria-labelledby="boekingen-title"
+        hidden
+      >
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">Van voorpret naar vastgelegd</p>
+            <h2 id="boekingen-title">Onze boekingen.</h2>
+            <p class="section-intro">
+              Alle hotels, treinen, vluchten en attracties bij elkaar. Vul je
+              bevestigingen, betalingen en deadlines in.
+            </p>
+          </div>
+          <a class="button secondary" href="#samen" data-view="samen"
+            >Samen bijwerken →</a
+          >
+        </div>
+        <div id="booking-summary" class="booking-summary"></div>
+        <div class="paper booking-next">
+          <p class="eyebrow">Volgende deadlines</p>
+          <div id="booking-deadlines"></div>
+        </div>
+        <label class="booking-filter"
+          >Toon<select id="booking-filter">
+            <option value="all">Alle boekingen</option>
+            <option value="hotel">Hotels</option>
+            <option value="train">Treinen</option>
+            <option value="attraction">Attracties</option>
+            <option value="flight">Vluchten</option>
+          </select></label
+        >
+        <div id="booking-ledger" class="booking-ledger"></div>
+      </section>
+      <section id="samen" class="view" aria-labelledby="samen-title" hidden>
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">Eén reis. Ons gezamenlijke plan.</p>
+            <h2 id="samen-title">Samen plannen.</h2>
+            <p class="section-intro">
+              Dezelfde hotelkeuzes, notities, bedragen en boekingen op jullie
+              apparaten.
+            </p>
+          </div>
+        </div>
+        <article class="paper sharing-panel">
+          <span class="tag green" id="sync-status">Alleen op dit apparaat</span>
+          <h3 id="sync-title">Maak er jullie gezamenlijke reisboek van.</h3>
+          <p id="sync-description">
+            Een persoonlijke uitnodigingslink verbindt jullie apparaten.
+            Wijzigingen worden daarna automatisch uitgewisseld.
+          </p>
+          <div class="sharing-actions">
+            <button id="sync-create" class="button primary">
+              Gedeelde reis starten</button
+            ><button id="sync-join" class="button primary" hidden>
+              Gedeelde reis openen</button
+            ><button id="sync-copy" class="button secondary" hidden>
+              Uitnodigingslink kopiëren</button
+            ><button id="sync-retry" class="button secondary" hidden>
+              Nu synchroniseren</button
+            ><button id="sync-local-backup" class="button secondary" hidden>
+              Vorige lokale versie downloaden</button
+            ><button id="sync-leave" class="button secondary" hidden>
+              Op dit apparaat stoppen
+            </button>
+          </div>
+          <p class="caption" id="sync-last-update"></p>
+          <label id="sync-link-box" hidden
+            >Persoonlijke uitnodigingslink<input
+              id="sync-invite"
+              type="text"
+              readonly
+          /></label>
+          <p class="caption">
+            Samen plannen gebruikt het gratis Cloudflare-plan.
+            Met de persoonlijke link kunnen jullie beiden bewerken. Een back-up
+            bevat jullie reisgegevens en boekingen; de uitnodigingslink wordt
+            apart bewaard.
+          </p>
+        </article>
       </section>
       <div id="print-plan" class="print-only"></div>
     </main>
@@ -828,8 +918,9 @@
         <div>
           <strong>Ons plan blijft bij de hand.</strong>
           <p>
-            Notities, vinkjes en budgetaanpassingen blijven op dit apparaat.<br />Exporteer
-            een back-up om ze naar een ander apparaat te verplaatsen.
+            Je gegevens blijven ook op dit apparaat bewaard. Met
+            <a href="#samen" data-view="samen">Samen plannen</a> werken jullie
+            aan hetzelfde reisboek. Download een back-up als eigen herstelkopie.
           </p>
           <div class="footer-actions">
             <button id="export" class="button secondary">

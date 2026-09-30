@@ -1,0 +1,9 @@
+name = "china-2027-sync"
+main = "worker.mjs"
+compatibility_date = "2026-09-30"
+[vars]
+ALLOWED_ORIGINS = "https://daltonganger.github.io,http://127.0.0.1:8277,http://localhost:8277"
+[[d1_databases]]
+binding = "DB"
+database_name = "china-2027"
+database_id = "REPLACE_WITH_DATABASE_ID"
