@@ -1217,6 +1217,10 @@
     const el = event.target;
     if (el.dataset.check) {
       state.checks[el.dataset.check] = el.checked;
+      if (el.dataset.check.startsWith("attraction-")) {
+        const booking = state.bookings[el.dataset.check];
+        if (booking) booking.status = el.checked ? "Geboekt" : "Nog boeken";
+      }
       el.closest("label").classList.toggle("checked", el.checked);
       save();
     }
