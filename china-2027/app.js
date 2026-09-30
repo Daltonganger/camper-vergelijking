@@ -211,6 +211,11 @@
         "28 maart 20:00 Beijing / 14:00 Nederland: huidige opening. Ook Amélie registreren; hulp vooraf regelen.",
       ],
       [
+        "tiananmen",
+        "Tiananmen Square · alleen als extra stop gewenst",
+        "Eigen reservering en toegangsroute controleren; niet automatisch gedekt door het paleisticket.",
+      ],
+      [
         "mutianyu",
         "Mutianyu · bezoek 5 april",
         "Chauffeur, gesloten kabelbaan en entree vooraf; extra drukte rond Qingming.",
@@ -232,8 +237,8 @@
       ],
       [
         "tianmen",
-        "Tianmen / Grand Canyon · 16 april",
-        "Apart tijdslot/route; na weercheck boeken waar annuleerbaar. Babytoegang laten bevestigen.",
+        "Tianmen / weerbuffer · 16 april",
+        "Apart tijdslot en actuele kabelbaan-/roltraproute. Vroege trein D21? Dan rust voorrang. Grand Canyon blijft tweede keuze.",
       ],
     ],
     pack: [

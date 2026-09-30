@@ -2451,3 +2451,13 @@ body.inner-view .hero {
     flex: 1 1 100%;
   }
 }
+
+.route-priorities {
+  margin: 26px 0;
+}
+.route-priorities li {
+  margin: 12px 0;
+}
+.route-priorities ul {
+  padding-left: 22px;
+}
