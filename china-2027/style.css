@@ -1329,6 +1329,7 @@ nav a:hover {
   padding: 16px 18px;
 }
 .train-table td {
+  position: relative;
   padding: 20px 18px;
   border-top: 1px solid var(--line);
   vertical-align: top;

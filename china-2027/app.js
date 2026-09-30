@@ -45,6 +45,8 @@
     natuur: "Natuur",
     transfer: "Transfer",
   };
+  const trainKey = (t) => t.id || String(t.day);
+  const nightsText = (n) => `${n} ${n === 1 ? "nacht" : "nachten"}`;
   const key = "china2027-planner-v1";
   let state = {
     checks: {},
@@ -75,11 +77,11 @@
     for (const [k, v] of Object.entries(input.notes || {}))
       if (/^(?:[1-9]|[12][0-9]|3[01])$/.test(k) && typeof v === "string")
         out.notes[k] = v.slice(0, 10000);
-    for (const t of data.trains)
-      if (
-        ["Nog boeken", "Aangevraagd", "Geboekt"].includes(input.trains?.[t.day])
-      )
-        out.trains[t.day] = input.trains[t.day];
+    // Keep the former D27 status in backups, but never apply it to either new leg.
+    const trainKeys = [...data.trains.map(trainKey), "27"];
+    for (const id of trainKeys)
+      if (["Nog boeken", "Aangevraagd", "Geboekt"].includes(input.trains?.[id]))
+        out.trains[id] = input.trains[id];
     for (const s of data.stays) {
       if (["budget", "comfort"].includes(input.choices?.[s.id]))
         out.choices[s.id] = input.choices[s.id];
@@ -196,7 +198,7 @@
       [
         "transfers",
         "Grote transfers met kinderzitje regelen",
-        "PVG, stations, Wulingyuan, Yangshuo, Longji en HKG; exacte stationnamen delen.",
+        "PVG, stations, Wulingyuan, Yangshuo, Longji, Kanton en HKG; exacte stationnamen delen.",
       ],
       [
         "insurance",
@@ -451,10 +453,10 @@
           .map((choice) => {
             const h = hotelOption(s, choice);
             const active = hotelChoice(s) === choice;
-            return `<div class="hotel-option ${active ? "selected" : ""}"><div class="hotel-option-top"><span class="tag ${choice === "budget" ? "green" : ""}">${choice === "budget" ? "Budget" : "Comfort"}</span><strong>${euro(h.low)}–${euro(h.high)}<small>kamer / nacht · raming</small></strong></div><h4>${esc(h.hotel)}</h4><p class="hotel-area">${esc(h.area)}<br>${esc(h.room)}</p><p>${esc(h.why)}</p><details class="hotel-questions"><summary>Voor Amélie & vóór boeken</summary><p>${esc(h.check)}</p></details><div class="hotel-total"><span>${s.nights} nachten · 1 kamer</span><strong>${euro(h.low * s.nights)}–${euro(h.high * s.nights)}</strong></div><div class="hotel-links"><a href="${esc(bookingURL(h))}" target="_blank" rel="noopener">Check onze data & prijs ↗</a><a href="${esc(h.url)}" target="_blank" rel="noopener">Hotelinformatie ↗</a></div><button class="button ${active ? "primary" : "secondary"} hotel-choice" data-choice="${s.id}" data-option="${choice}" aria-pressed="${active}">${active ? "✓ In ons plan" : "Kies " + (choice === "budget" ? "budget" : "comfort")}</button>${checkHTML("hotel", [s.id + "-" + choice, "Dit hotel geboekt & babybed bevestigd", "Zelf afvinken na bevestiging van dit hotel."])}</div>`;
+            return `<div class="hotel-option ${active ? "selected" : ""}"><div class="hotel-option-top"><span class="tag ${choice === "budget" ? "green" : ""}">${choice === "budget" ? "Budget" : "Comfort"}</span><strong>${euro(h.low)}–${euro(h.high)}<small>kamer / nacht · raming</small></strong></div><h4>${esc(h.hotel)}</h4><p class="hotel-area">${esc(h.area)}<br>${esc(h.room)}</p><p>${esc(h.why)}</p><details class="hotel-questions"><summary>Voor Amélie & vóór boeken</summary><p>${esc(h.check)}</p></details><div class="hotel-total"><span>${nightsText(s.nights)} · 1 kamer</span><strong>${euro(h.low * s.nights)}–${euro(h.high * s.nights)}</strong></div><div class="hotel-links"><a href="${esc(bookingURL(h))}" target="_blank" rel="noopener">Check onze data & prijs ↗</a><a href="${esc(h.url)}" target="_blank" rel="noopener">Hotelinformatie ↗</a></div><button class="button ${active ? "primary" : "secondary"} hotel-choice" data-choice="${s.id}" data-option="${choice}" aria-pressed="${active}">${active ? "✓ In ons plan" : "Kies " + (choice === "budget" ? "budget" : "comfort")}</button>${checkHTML("hotel", [s.id + "-" + choice, "Dit hotel geboekt & babybed bevestigd", "Zelf afvinken na bevestiging van dit hotel."])}</div>`;
           })
           .join("");
-        return `<article class="hotel-card" id="hotel-${s.id}"><header class="hotel-card-top"><div><p class="eyebrow">${String(i + 1).padStart(2, "0")} · ${esc(s.cn)} · ${s.nights} nachten</p><h3>${esc(s.name)}</h3><p class="caption">${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))} 2027</p></div></header><div class="hotel-options">${options}</div></article>`;
+        return `<article class="hotel-card" id="hotel-${s.id}"><header class="hotel-card-top"><div><p class="eyebrow">${String(i + 1).padStart(2, "0")} · ${esc(s.cn)} · ${nightsText(s.nights)}</p><h3>${esc(s.name)}</h3><p class="caption">${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))} 2027</p></div></header><div class="hotel-options">${options}</div></article>`;
       })
       .join("");
   }
@@ -462,7 +464,7 @@
     $("#train-rows").innerHTML = data.trains
       .map(
         (t) =>
-          `<tr><td>D${t.day}<small>${fmt(iso(t.day), { weekday: "short", day: "numeric", month: "short" })}</small></td><td><strong>${esc(t.from)}<br>${esc(t.to)}</strong><small>${esc(t.note)}</small></td><td>${esc(t.time)}<br>${euro(t.low)}–${euro(t.high)}<small>2e klas · raming per volwassene</small></td><td><span class="book-date">${fmt(shift(iso(t.day), -14))}</span><small>2027 · lokale vrijgavetijd nog checken</small></td><td><label class="sr-only" for="train-${t.day}">Status trein dag ${t.day}</label><select id="train-${t.day}" data-train="${t.day}">${["Nog boeken", "Aangevraagd", "Geboekt"].map((v) => `<option ${state.trains[t.day] === v ? "selected" : ""}>${v}</option>`).join("")}</select></td></tr>`,
+          `<tr><td>D${t.day}<small>${fmt(iso(t.day), { weekday: "short", day: "numeric", month: "short" })}</small></td><td><strong>${esc(t.from)}<br>${esc(t.to)}</strong><small>${esc(t.note)}</small></td><td>${esc(t.time)}<br>${euro(t.low)}–${euro(t.high)}<small>2e klas · raming per volwassene</small></td><td><span class="book-date">${fmt(shift(iso(t.day), -14))}</span><small>2027 · lokale vrijgavetijd nog checken</small></td><td><label class="sr-only" for="train-${t.day}">Status trein dag ${t.day}</label><select id="train-${t.day}" data-train="${trainKey(t)}">${["Nog boeken", "Aangevraagd", "Geboekt"].map((v) => `<option ${state.trains[trainKey(t)] === v ? "selected" : ""}>${v}</option>`).join("")}</select></td></tr>`,
       )
       .join("");
   }
@@ -470,7 +472,7 @@
     $("#route-stops").innerHTML = data.stays
       .map(
         (s, i) =>
-          `<button class="route-stop" data-route-day="${s.start}"><span class="stop-number">${String(i + 1).padStart(2, "0")}</span><h3>${esc(s.name)}</h3><p>${esc(s.highlight)}</p><span class="tag green">${s.nights} nachten · ${fmt(iso(s.start))}</span></button>`,
+          `<button class="route-stop" data-route-day="${s.start}"><span class="stop-number">${String(i + 1).padStart(2, "0")}</span><h3>${esc(s.name)}</h3><p>${esc(s.highlight)}</p><span class="tag green">${nightsText(s.nights)} · ${fmt(iso(s.start))}</span></button>`,
       )
       .join("");
   }
@@ -503,7 +505,7 @@
           }),
         }).addTo(map);
         const popup = document.createElement("div");
-        popup.innerHTML = `<strong>${esc(s.name)}</strong><br>${s.nights} nachten · ${fmt(iso(s.start))}<br><button>Open de dagplanning</button>`;
+        popup.innerHTML = `<strong>${esc(s.name)}</strong><br>${nightsText(s.nights)} · ${fmt(iso(s.start))}<br><button>Open de dagplanning</button>`;
         popup
           .querySelector("button")
           .addEventListener("click", () => showDay(s.start));
@@ -526,8 +528,8 @@
   const budgetDefaults = {
     flights: data.flightTotal,
     trains: Math.round(data.trains.reduce((n, t) => n + t.low + t.high, 0)),
-    food: 25 * 30 + 4 * 55,
-    transfers: 750,
+    food: 26 * 30 + 3 * 55,
+    transfers: 850,
     activities: 650,
     extras: 150,
   };
@@ -537,12 +539,12 @@
       "Door jullie opgegeven: €1.671,68 · eigen stoel Amélie nog bevestigen",
     ],
     trains: [
-      "Acht grote treinritten",
+      `${data.trains.length} grote treinritten`,
       "Twee volwassenen · 2e klas · geen babytreinstoel",
     ],
     food: [
       "Eten & drinken",
-      "Gezin: 25 dagen mainland × €30 + 4 dagen Hongkong × €55 · raming",
+      "Gezin: 26 dagen mainland × €30 + 3 dagen Hongkong × €55 · raming",
     ],
     transfers: [
       "Transfers & lokaal vervoer",
@@ -579,7 +581,7 @@
     $("#hotel-budget-fields").innerHTML = data.stays
       .map(
         (s) =>
-          `<div class="budget-field"><label for="price-${s.id}">${esc(s.name)}<small>${s.nights} ${s.nights === 1 ? "nacht" : "nachten"} · ${esc(hotelOption(s).hotel)} · ${hotelChoice(s) === "budget" ? "budget" : "comfort"}</small></label><span class="money-input">€ <input id="price-${s.id}" data-price="${s.id}-${hotelChoice(s)}" type="number" min="0" max="100000" step="0.01" value="${hotelPrice(s)}"></span></div>`,
+          `<div class="budget-field"><label for="price-${s.id}">${esc(s.name)}<small>${nightsText(s.nights)} · ${esc(hotelOption(s).hotel)} · ${hotelChoice(s) === "budget" ? "budget" : "comfort"}</small></label><span class="money-input">€ <input id="price-${s.id}" data-price="${s.id}-${hotelChoice(s)}" type="number" min="0" max="100000" step="0.01" value="${hotelPrice(s)}"></span></div>`,
       )
       .join("");
     updateBudget();
@@ -774,7 +776,9 @@
       "china-2027-boekingsmomenten.ics",
       "text/calendar;charset=utf-8",
     );
-    toast("Acht treinvensters, Forbidden City en visumcheck gedownload.");
+    toast(
+      `${data.trains.length} treinvensters, Forbidden City en visumcheck gedownload.`,
+    );
   }
   function renderPrint() {
     const b = budgetTotals();
@@ -786,7 +790,7 @@
         })
         .join(
           "",
-        )}<div class="print-booking"><h2>Boekingskalender</h2><table><thead><tr><th>Treinreis</th><th>Reisdatum</th><th>Boeken vanaf</th><th>Status</th></tr></thead><tbody>${data.trains.map((t) => `<tr><td>${esc(t.from)} → ${esc(t.to)}</td><td>${fmt(iso(t.day))}</td><td>${fmt(shift(iso(t.day), -14))}</td><td>${esc(state.trains[t.day] || "Nog boeken")}</td></tr>`).join("")}</tbody></table><p>Treinvenster: 15 dagen inclusief de reisdag; stationgebonden vrijgavetijd nog controleren. Forbidden City voor 4 april: 28 maart 20:00 Beijing / 14:00 Nederland. Visumvrij China voor 2027 nog niet bevestigd.</p><h2>Budget</h2><p>${euro(b.total)} inclusief ingevulde vluchten · 10% reserve over landkosten inbegrepen. Hotel-, trein-, transfer- en activiteitenbedragen zijn ramingen of eigen invoer.</p><h2>Voor vertrek</h2>${checks.pre.map(([id, label]) => `<p>${state.checks["pre-" + id] ? "☑" : "☐"} ${esc(label)}</p>`).join("")}<h2>Inpakken</h2>${checks.pack.map(([id, label]) => `<p>${state.checks["pack-" + id] ? "☑" : "☐"} ${esc(label)}</p>`).join("")}</div>`;
+        )}<div class="print-booking"><h2>Boekingskalender</h2><table><thead><tr><th>Treinreis</th><th>Reisdatum</th><th>Boeken vanaf</th><th>Status</th></tr></thead><tbody>${data.trains.map((t) => `<tr><td>${esc(t.from)} → ${esc(t.to)}</td><td>${fmt(iso(t.day))}</td><td>${fmt(shift(iso(t.day), -14))}</td><td>${esc(state.trains[trainKey(t)] || "Nog boeken")}</td></tr>`).join("")}</tbody></table><p>Treinvenster: 15 dagen inclusief de reisdag; stationgebonden vrijgavetijd nog controleren. Forbidden City voor 4 april: 28 maart 20:00 Beijing / 14:00 Nederland. Visumvrij China voor 2027 nog niet bevestigd.</p><h2>Budget</h2><p>${euro(b.total)} inclusief ingevulde vluchten · 10% reserve over landkosten inbegrepen. Hotel-, trein-, transfer- en activiteitenbedragen zijn ramingen of eigen invoer.</p><h2>Voor vertrek</h2>${checks.pre.map(([id, label]) => `<p>${state.checks["pre-" + id] ? "☑" : "☐"} ${esc(label)}</p>`).join("")}<h2>Inpakken</h2>${checks.pack.map(([id, label]) => `<p>${state.checks["pack-" + id] ? "☑" : "☐"} ${esc(label)}</p>`).join("")}</div>`;
   }
   $("#city-filter").insertAdjacentHTML(
     "beforeend",
