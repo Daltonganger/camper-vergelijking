@@ -348,6 +348,7 @@
 <nav><div class="inner">
   <a class="brand" href="#top">REIS <span>'27</span></a>
   <a class="chip" href="#intro">Overzicht</a>
+  <a class="chip" href="china-2027/" style="color:var(--china);font-weight:700">China 2027 · definitief</a>
   <a class="chip" href="#vergelijk">Vergelijk</a>
   <a class="chip" href="#vergelijk2">⇄ Vergelijk 2</a>
   <a class="chip" href="#plannen">✓ Planner</a>
@@ -1242,6 +1243,7 @@ function routePageHTML(r) {
           ${r.melding ? `<span class="flag f-parked">${esc(r.meldingKort || "26 nachten — buiten het 21-nachten-model")}</span>` : ""}
         </div>
       </div>
+      ${r.id === "spoor27" ? `<div class="parked-banner" style="background:#edf3ee;border-color:#c7d9cc;color:#264f42"><strong>De definitieve China 2027-planning staat op een eigen pagina.</strong> 28 maart–27 april · 31 reisdagen · 28 hotelnachten · terug vanuit Hongkong. <a href="china-2027/" style="color:inherit;font-weight:700">Open onze dagplanning, hotels en boekingskalender</a>. Dit vergelijkingsscenario blijft de oorspronkelijke 27-daagse variant.</div>` : ""}
       ${r.geparkeerd ? `<div class="parked-banner">⚠️ ${esc(r.geparkeerd)}</div>` : ""}
       ${r.melding ? `<div class="parked-banner" style="background:#e4ecf7;border-color:#c1d4ea;color:#2c4d7a">ℹ️ ${esc(r.melding)}</div>` : ""}
       ${r.varianten ? `<div class="segrow" style="--c:${r.kleur}"><div class="vlbl">Hongkong-opties</div><div class="seg" id="hkSeg">

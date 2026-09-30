@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>China 2027 — samen, per spoor · Ruben, Martine & Amélie</title>
+    <meta
+      name="description"
+      content="Onze complete China-reis van 28 maart tot 27 april 2027: 31 dagprogramma’s, 28 hotelnachten, treinboekingen, gezinsbudget en een ontspannen Hongkong-finale."
+    />
+    <meta name="theme-color" content="#264f42" />
+    <meta property="og:title" content="China 2027 — samen, per spoor" />
+    <meta
+      property="og:description"
+      content="Van Shanghai tot Hongkong. 31 dagen China met Ruben, Martine en Amélie."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://daltonganger.github.io/camper-vergelijking/china-2027/assets/zhangjiajie.jpg"
+    />
+    <meta
+      property="og:url"
+      content="https://daltonganger.github.io/camper-vergelijking/china-2027/"
+    />
+    <link
+      rel="canonical"
+      href="https://daltonganger.github.io/camper-vergelijking/china-2027/"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23264f42'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='40' fill='%23fff'%3E中%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="data.js" defer></script>
+    <script src="app.js" defer></script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Naar de reisplanner</a>
+    <header class="topbar">
+      <div class="top-inner">
+        <a class="brand" href="../"
+          ><span class="brand-symbol" aria-hidden="true">中</span> REIS
+          <i>’27</i><span class="brand-divider"></span
+          ><span class="brand-destination">China</span></a
+        >
+        <nav aria-label="Reisonderdelen">
+          <a href="#planning" data-view="planning" aria-current="page"
+            >Dagplanning</a
+          ><a href="#route" data-view="route">De route</a
+          ><a href="#hotels" data-view="hotels">Hotels</a
+          ><a href="#boeken" data-view="boeken">Tickets & boeken</a
+          ><a href="#praktisch" data-view="praktisch">Met Amélie</a
+          ><a href="#budget" data-view="budget">Budget</a>
+        </nav>
+        <button
+          class="icon-button print"
+          id="print"
+          title="Print het complete reisplan"
+          aria-label="Print het complete reisplan"
+        >
+          ⎙
+        </button>
+      </div>
+    </header>
+    <div class="hero" id="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            28 maart — 27 april 2027 <span class="small-line"></span> ons
+            volgende hoofdstuk
+          </p>
+          <h1>
+            China.<br /><span class="italic">Samen,</span><br />per spoor.
+          </h1>
+          <p class="hero-description">
+            Van keizersteden naar bergen in de mist.<br />Van panda’s naar het
+            licht van Hongkong.<br />Een groot avontuur, op het tempo van ons
+            drieën.
+          </p>
+          <div class="travellers">
+            <span class="avatar">R</span><span class="avatar">M</span
+            ><span class="avatar small">A</span
+            ><span>Ruben, Martine & <strong>Amélie</strong></span>
+          </div>
+          <div class="hero-actions">
+            <a class="button primary" href="#dag-2" id="start-planning"
+              >Open onze dagplanning</a
+            ><a class="text-link" href="#route" data-view="route"
+              >Ontdek de route</a
+            >
+          </div>
+        </div>
+        <div class="hero-art">
+          <img
+            src="assets/zhangjiajie.jpg"
+            alt="Groene zandsteenpilaren en bergkammen in Zhangjiajie"
+            fetchpriority="high"
+          /><span class="image-tag">D17—D20 · Zhangjiajie</span>
+          <div class="travel-stamp" aria-hidden="true">
+            <span>中国</span><small>CHINA · 2027</small>
+          </div>
+          <div class="photo-caption">
+            <span class="eyebrow">Een maand om nooit te vergeten</span>
+            <p>Grote plannen.<br /><i>Kleine voetjes.</i></p>
+          </div>
+          <span class="photo-note">Tien plekken. Eén onvergetelijke reis.</span>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div><b>31</b><span>reisdagen</span></div>
+        <div><b>28</b><span>hotelnachten</span></div>
+        <div><b>10</b><span>vaste bases</span></div>
+        <div><b>8</b><span>grote treinritten</span></div>
+        <div><b>0</b><span>binnenlandse vluchten</span></div>
+        <div class="stats-date">
+          <span>Shanghai</span><b>29.03 <small>tot</small> 23.04</b
+          ><span>mainland China · daarna Hongkong</span>
+        </div>
+      </div>
+    </div>
+    <main id="main" class="wrap">
+      <div id="storage-warning" class="notice" hidden>
+        Bewaren op dit apparaat lukt niet. Je kunt de planning gebruiken, maar
+        wijzigingen blijven niet bewaard na het sluiten. Maak een back-up via de
+        knop onderaan.
+      </div>
+      <section
+        id="planning"
+        class="view active"
+        aria-labelledby="planning-title"
+      >
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">Ons reisboek · dag voor dag</p>
+            <h2 id="planning-title">Elke dag een nieuw verhaal.</h2>
+            <p class="section-intro">
+              Eén hoofdavontuur, tijd om te slapen en ruimte om van plan te
+              veranderen.
+            </p>
+          </div>
+          <button class="button secondary" id="calendar">
+            Zet de reis in je agenda
+          </button>
+        </div>
+        <div class="planning-toolbar">
+          <label class="search"
+            ><span aria-hidden="true">⌕</span
+            ><input
+              type="search"
+              id="search"
+              placeholder="Zoek een plek of activiteit…"
+              aria-label="Zoek in dagplanning" /></label
+          ><label class="select-wrap"
+            ><span class="sr-only">Filter bestemming</span
+            ><select id="city-filter">
+              <option value="all">Alle bestemmingen</option>
+            </select></label
+          ><label class="select-wrap"
+            ><span class="sr-only">Filter dagtype</span
+            ><select id="kind-filter">
+              <option value="all">Alle dagen</option>
+              <option value="reizen">Reisdagen</option>
+              <option value="rust">Rustdagen</option>
+              <option value="beleven">Beleefdagen</option>
+            </select></label
+          ><span id="result-count" class="muted"></span>
+        </div>
+        <div class="planner-layout">
+          <div
+            class="day-list"
+            id="day-list"
+            aria-label="Kies een reisdag"
+          ></div>
+          <article
+            class="day-detail"
+            id="day-detail"
+            aria-live="polite"
+          ></article>
+        </div>
+        <div class="soft-note">
+          <span class="note-icon">☀</span>
+          <p>
+            <strong
+              >Het plan is de basis. Jullie energie bepaalt het tempo.</strong
+            >
+            Tijden in de dagprogramma’s zijn suggesties in lokale tijd. Alleen
+            de opgegeven vluchttijden zijn vaste reisuitgangspunten; treinen,
+            hotels en attracties zijn nog te bevestigen.
+          </p>
+        </div>
+        <div class="section-top video-heading">
+          <div>
+            <p class="eyebrow">Even wegdromen</p>
+            <h2>Dit wacht op ons.</h2>
+          </div>
+          <p class="muted">Drie korte voorproefjes van onderweg.</p>
+        </div>
+        <div class="video-grid" id="videos"></div>
+      </section>
+      <section id="route" class="view" aria-labelledby="route-title" hidden>
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">Van oost naar noord, van bergen naar zee</p>
+            <h2 id="route-title">Eén lijn door een ander China.</h2>
+            <p class="section-intro">
+              Tien bases, acht grote treinritten en twee transfers door het
+              landschap.
+            </p>
+          </div>
+          <a class="button secondary" href="../#route-spoor27"
+            >Bekijk het oorspronkelijke scenario</a
+          >
+        </div>
+        <div class="route-map-layout">
+          <div
+            id="map"
+            aria-label="Kaart met de tien verblijfplaatsen in China en Hongkong"
+          ></div>
+          <div class="route-map-note">
+            <p class="eyebrow">Zo reizen we</p>
+            <h3>De trein brengt ons verder.</h3>
+            <p>
+              HSR is de ruggengraat. De lijn op de kaart verbindt onze bases;
+              hij toont geen exacte spoorligging.
+            </p>
+            <div class="mini-stat">
+              <b>26</b
+              ><span
+                >kalenderdagen op mainland China, inclusief aankomst en
+                vertrek</span
+              >
+            </div>
+            <p>
+              Vier nachten Wulingyuan. Vier nachten Yangshuo. Twee nachten
+              tussen de rijstterrassen. Zo heeft ook het weer een plek in het
+              plan.
+            </p>
+            <p class="caption">
+              Kaart geladen via OpenStreetMap. Elke stop opent de bijbehorende
+              dag.
+            </p>
+            <p id="map-fallback" hidden>
+              De kaart kon niet laden. De volledige route staat hieronder.
+            </p>
+          </div>
+        </div>
+        <div id="route-stops" class="route-stops"></div>
+        <div class="image-duo">
+          <figure>
+            <img
+              src="assets/shanghai.jpg"
+              alt="Wandelen op de Bund langs de historische gebouwen van Shanghai"
+              loading="lazy"
+            />
+            <figcaption>Het begint met de Bund.</figcaption>
+          </figure>
+          <figure>
+            <img
+              src="assets/yangshuo.jpg"
+              alt="De Li-rivier met groene karstbergen bij Guilin en Yangshuo"
+              loading="lazy"
+            />
+            <figcaption>En onderweg vinden we dit.</figcaption>
+          </figure>
+        </div>
+        <div class="flight-grid">
+          <article class="paper">
+            <p class="eyebrow">Heen · SWISS</p>
+            <h3>28 maart · 09:50 AMS</h3>
+            <p>Amsterdam → Zürich → Shanghai</p>
+            <p>
+              <strong>Aankomst 29 maart · 06:30 PVG</strong><br />Totale
+              reisduur circa 14u40 · één nacht in het vliegtuig
+            </p>
+          </article>
+          <article class="paper">
+            <p class="eyebrow">Terug · Cathay Pacific + Lufthansa</p>
+            <h3>26 april · 23:55 HKG</h3>
+            <p>Hongkong → Frankfurt → Amsterdam</p>
+            <p>
+              <strong>Aankomst 27 april · 10:35 AMS</strong><br />Totale
+              reisduur circa 16u40 · één nacht in het vliegtuig
+            </p>
+          </article>
+        </div>
+        <p class="caption">
+          Vluchttijden volgens jullie definitieve reisbasis. Vluchtnummers,
+          tussenliggende tijden, boekingsstatus en uitvoerende maatschappijen
+          per segment nog vastleggen.
+        </p>
+      </section>
+      <section id="hotels" class="view" aria-labelledby="hotels-title" hidden>
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">28 nachten · tien keer thuiskomen</p>
+            <h2 id="hotels-title">Fijne plekken om te landen.</h2>
+            <p class="section-intro">
+              Per stop een budgethotel én een comforthotel. Kies jullie mix;
+              planning en totaalbudget volgen automatisch.
+            </p>
+          </div>
+          <div class="summary-badge">
+            <span>Hotelbudget · 1 kamer / gezin</span><b id="hotel-range"></b
+            ><small>28 nachten, exclusief extra vroege/late kamer</small>
+          </div>
+        </div>
+        <div class="notice">
+          <strong>Budgetten, geen live hoteloffertes.</strong> De bedragen
+          hieronder zijn onze ramingen in euro per kamer per nacht voor twee
+          volwassenen + baby. Beschikbaarheid, babybed, ontbijt, toeslagen en
+          annuleerbaarheid voor maart/april 2027 moeten nog worden bevestigd.
+          Open de datumzoeklink voor jullie exacte verblijf.
+        </div>
+        <div class="hotel-presets">
+          <button class="button secondary" data-preset="budget">
+            Alle budgethotels kiezen</button
+          ><button class="button secondary" data-preset="comfort">
+            Alle comforthotels kiezen</button
+          ><a class="button secondary" href="#budget" data-view="budget"
+            >Bekijk ons totaalbudget →</a
+          >
+        </div>
+        <div id="hotel-grid" class="hotel-grid"></div>
+        <div class="paper hotel-check">
+          <p class="eyebrow">Stuur dit mee bij elke hotelboeking</p>
+          <h3>Een goede kamer begint met vier vragen.</h3>
+          <p>
+            “We reizen met twee volwassenen en een baby van circa 11 maanden.
+            Kunt u een babybed en een rustige rookvrije kamer bevestigen? Is het
+            totale bedrag inclusief belastingen, ontbijt en babytoeslagen? Welke
+            annuleringsvoorwaarden gelden? Kunt u onze transfer met een passend
+            kinderzitje regelen?”
+          </p>
+          <p class="caption">
+            Shanghai: vroege kamer. Ping’an: portier en trappen. Hongkong:
+            bagageopslag, late checkout of dagkamer op 26 april.
+          </p>
+        </div>
+      </section>
+      <section id="boeken" class="view" aria-labelledby="boeken-title" hidden>
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">Van voorpret naar geregeld</p>
+            <h2 id="boeken-title">De boekingskalender.</h2>
+            <p class="section-intro">
+              Dit zijn de momenten waarop het plan een ticket wordt.
+            </p>
+          </div>
+          <button class="button secondary" id="booking-calendar">
+            Boekingsmomenten in je agenda
+          </button>
+        </div>
+        <div class="booking-highlight">
+          <div>
+            <span class="eyebrow">Nu voorbereiden</span>
+            <h3>Eigen stoel voor Amélie.</h3>
+            <p>
+              Vraag SWISS, Cathay én Lufthansa vooraf akkoord voor hetzelfde
+              zitje op alle vier vluchtsegmenten. Een vliegtuigkeur alleen is
+              geen gezamenlijke acceptatie.
+            </p>
+            <a href="#praktisch" data-view="praktisch">Bekijk de zitje-check</a>
+          </div>
+          <div>
+            <span class="eyebrow">28 maart · 14:00 Nederland</span>
+            <h3>Forbidden City opent terwijl we vliegen.</h3>
+            <p>
+              Voor 4 april opent het huidige venster op 28 maart om 20:00
+              Beijing. Dat is na het vertrek uit Amsterdam: laat het boekproces
+              vóór vertrek klaarstaan.
+            </p>
+            <a
+              href="https://intl.dpm.org.cn/visit"
+              target="_blank"
+              rel="noopener"
+              >Officiële tickets & regels</a
+            >
+          </div>
+        </div>
+        <div class="section-top compact">
+          <div>
+            <h3>Acht ritten. Acht openingsdatums.</h3>
+            <p class="muted">
+              Huidig 12306-venster: 15 dagen inclusief de reisdag, dus reisdatum
+              minus 14 dagen. De vrijgavetijd verschilt per station.
+            </p>
+          </div>
+          <a
+            class="button secondary"
+            href="https://www.12306.cn/en/"
+            target="_blank"
+            rel="noopener"
+            >Naar 12306</a
+          >
+        </div>
+        <div class="table-scroll">
+          <table class="train-table">
+            <thead>
+              <tr>
+                <th>Reisdag</th>
+                <th>Traject</th>
+                <th>Indicatie rit / prijs p.p.</th>
+                <th>Boeken vanaf</th>
+                <th>Onze status</th>
+              </tr>
+            </thead>
+            <tbody id="train-rows"></tbody>
+          </table>
+        </div>
+        <div class="notice">
+          <strong>Een voorbestelling is nog geen ticket.</strong> Trip.com kan
+          eerder een aanvraag opnemen; de echte ticketuitgifte volgt het
+          12306-venster. Exacte 2027-diensten, stations, duur, prijzen en
+          stoelverdeling bevestigen zodra ze boekbaar zijn. Hier staan ramingen
+          voor 2e klas, zonder agentkosten of extra stoel voor Amélie.
+        </div>
+        <div class="checklist-layout">
+          <article class="paper">
+            <p class="eyebrow">De basis op orde</p>
+            <h3>Voor we vertrekken</h3>
+            <div id="pre-checks"></div>
+          </article>
+          <article class="paper">
+            <p class="eyebrow">Toegang & tijdsloten</p>
+            <h3>Wat vooraf vastleggen?</h3>
+            <div id="attraction-checks"></div>
+            <p class="caption">
+              Behalve Forbidden City zijn de exacte verkoopvensters voor 2027
+              hier nog niet geverifieerd. Controleer het officiële kanaal of
+              vraag hotelhulp; de termijnen hieronder zijn
+              voorbereidingsmomenten.
+            </p>
+          </article>
+        </div>
+        <p class="caption">
+          Vinkjes en statussen zijn jullie eigen administratie op dit apparaat.
+          De site koopt of reserveert geen tickets.
+        </p>
+      </section>
+      <section
+        id="praktisch"
+        class="view"
+        aria-labelledby="praktisch-title"
+        hidden
+      >
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">
+              Ons kleinste reisgenootje, onze grootste prioriteit
+            </p>
+            <h2 id="praktisch-title">Groot avontuur. Zacht ritme.</h2>
+            <p class="section-intro">
+              Rustige aankomsten, een lichte buggy in de stad en een draagzak in
+              de bergen.
+            </p>
+          </div>
+          <span class="tag green">Amélie · bijna 11 maanden</span>
+        </div>
+        <div class="practical-grid">
+          <article class="paper wide-card">
+            <p class="eyebrow">Vliegen · eerst regelen</p>
+            <h3>Een eigen stoel, een passend zitje.</h3>
+            <p>
+              Het SWISS-bassinet is volgens de huidige voorwaarden voor baby’s
+              tot 8 maanden, maximaal 11 kg en 67 cm. Jullie plannen daarom een
+              eigen stoel voor Amélie.
+            </p>
+            <ol>
+              <li>
+                Selecteer een babyschaal die past bij haar lengte en gewicht
+                tijdens de reis en een expliciete vliegtuiggoedkeuring heeft.
+              </li>
+              <li>
+                SWISS noemt een zitvlak van 43 × 43 cm. Lufthansa vereist
+                bevestiging met alleen de heupgordel: zonder ISOFIX-basis.
+              </li>
+              <li>
+                Cathay laat eigen kinderzitjes voor 6–36 maanden toe onder eigen
+                voorwaarden. Laat model, keuringslabel, afmetingen,
+                gordelbevestiging en vliegrichting controleren.
+              </li>
+              <li>
+                Vraag vóór aankoop schriftelijke acceptatie op AMS–ZRH, ZRH–PVG,
+                HKG–FRA én FRA–AMS, met vliegtuigtype, cabine en geschikte
+                stoelpositie.
+              </li>
+              <li>
+                Boek de extra stoel via de maatschappij of agent en neem de
+                installatiehandleiding mee.
+              </li>
+            </ol>
+            <p class="caption">
+              Er is nog geen specifiek model door alle drie maatschappijen voor
+              jullie vluchten bevestigd. Een lijst van één airline geldt niet
+              automatisch bij de andere.
+            </p>
+            <div class="source-links">
+              <a
+                href="https://www.swiss.com/in/en/prepare/special-care/children-travelling/with-children-on-board.html"
+                target="_blank"
+                rel="noopener"
+                >SWISS-regels</a
+              ><a
+                href="https://www.cathaypacific.com/cx/en_SG/prepare-trip/help-for-passengers/travelling-with-children/safety-seats-and-devices.html"
+                target="_blank"
+                rel="noopener"
+                >Cathay-regels</a
+              ><a
+                href="https://www.lufthansa.com/de/en/child-restraint-systems.html"
+                target="_blank"
+                rel="noopener"
+                >Lufthansa-regels</a
+              >
+            </div>
+          </article>
+          <article class="paper">
+            <p class="eyebrow">Met de trein</p>
+            <h3>Een tas binnen handbereik.</h3>
+            <p>
+              Een kind onder 6 kan met één gratis kindticket per betalende
+              volwassene zonder eigen stoel mee. Registreer Amélie bij de
+              boeking. Voor een eigen plek: een betaald kindticket en de actuele
+              voorwaarden laten bevestigen.
+            </p>
+            <p>
+              Reken met 60–90 minuten op het station, boek stoelen bij elkaar en
+              neem voldoende voeding en luiers mee. Verschoonfaciliteiten
+              verschillen per trein; reken niet op één vast rijtuignummer.
+            </p>
+            <a
+              href="https://www.12306.cn/en/faq.html"
+              target="_blank"
+              rel="noopener"
+              >12306 · kinderregels</a
+            >
+          </article>
+          <article class="paper">
+            <p class="eyebrow">Onderweg</p>
+            <h3>Buggy én draagzak.</h3>
+            <p>
+              Lichte buggy voor Shanghai, stadsparken en de haven van Hongkong.
+              Draagzak voor Mutianyu, Zhangjiajie en de trappen naar Ping’an.
+            </p>
+            <p>
+              Privétransfers vooraf boeken met een passend kinderzitje. Een
+              gewone taxi heeft dat niet vanzelf. Verstuur stationnamen in het
+              Chinees en een screenshot van het ticket.
+            </p>
+          </article>
+          <article class="paper">
+            <p class="eyebrow">Papieren & verbinding</p>
+            <h3>Drie paspoorten. Eén goed vertrek.</h3>
+            <p>
+              Ook Amélie heeft een eigen paspoort nodig. De huidige Chinese
+              visumvrijstelling voor Nederlandse gewone paspoorten is bevestigd
+              tot 31 december 2026. Voor deze reis in 2027 staat dat nog niet
+              vast.
+            </p>
+            <p>
+              Controleer in december en opnieuw 6–8 weken vóór vertrek de regels
+              voor mainland China én apart voor Hongkong. Regel een visum als
+              verlenging uitblijft.
+            </p>
+            <a
+              href="https://www.visaforchina.cn/HAG4_EN/tongzhigonggao/552367648080531503.html"
+              target="_blank"
+              rel="noopener"
+              >Huidige officiële visummededeling</a
+            >
+          </article>
+          <article class="paper">
+            <p class="eyebrow">Voorpret zonder verrassingen</p>
+            <h3>April is ook weer & feestdagen.</h3>
+            <p>
+              Beijing ligt rond Qingming op 5 april: officiële vrije dagen voor
+              2027 herchecken, treinen en Mutianyu extra vroeg vastleggen.
+              Mainland China verlaten we op 23 april, ruim vóór Labour Day.
+            </p>
+            <p>
+              Zhangjiajie kan mistig zijn en Yangshuo nat. De vier nachten per
+              plek vangen een mindere dag op. In Longji is het onderlopen van de
+              velden eind april geen garantie.
+            </p>
+          </article>
+        </div>
+        <div class="checklist-layout">
+          <article class="paper">
+            <p class="eyebrow">Inpakken voor drie</p>
+            <h3>Onze kleine grote lijst.</h3>
+            <div id="packing-checks"></div>
+          </article>
+          <article class="paper leave-card">
+            <p class="eyebrow">Verlof volgens jullie werkrooster</p>
+            <h3>Een maand weg.<br /><i>12 werkdagen per persoon.</i></h3>
+            <div class="leave-number">216 <span>vakantie-uren samen</span></div>
+            <p>
+              <b>Martine:</b> dinsdag, donderdag en vrijdag · 12 × 9 = 108 uur.
+              Maandag ouderschapsverlof; woensdag vrij.
+            </p>
+            <p>
+              <b>Ruben:</b> maandag, dinsdag en woensdag · 12 × 9 = 108 uur.
+              Donderdag ouderschapsverlof; vrijdag vrij.
+            </p>
+            <p class="caption">
+              Tweede Paasdag 29 maart valt voor Martine op ouderschapsverlof:
+              geen OV-uren afschrijven. Vertrek is zondag; aankomst 27 april is
+              Koningsdag. Deze berekening volgt jullie opgegeven
+              feestdag-/werkafspraken; laat HR de uren en
+              ouderschapsverlofverwerking bevestigen.
+            </p>
+          </article>
+        </div>
+        <div class="paper">
+          <h3>Handig op je telefoon</h3>
+          <p>
+            12306 of Trip.com voor treinen, Alipay/WeChat Pay vooraf activeren
+            en testen, offline adressen in het Chinees en een passende mobiele
+            databundel. Controleer de voorwaarden voor internationaal internet;
+            ga niet uit van toegang tot alle Nederlandse apps via lokale wifi.
+          </p>
+          <p>
+            Bespreek babyvoeding, reisvaccinaties en medicatie vooraf met het
+            consultatiebureau of een reisarts. De planning geeft geen medisch
+            advies; zorg voor een reisverzekering en bereikbaarheidsgegevens.
+          </p>
+          <a
+            href="https://www.nederlandwereldwijd.nl/reisadvies/china"
+            target="_blank"
+            rel="noopener"
+            >Actueel Nederlands reisadvies</a
+          >
+        </div>
+      </section>
+      <section id="budget" class="view" aria-labelledby="budget-title" hidden>
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">Alle bedragen voor ons gezin</p>
+            <h2 id="budget-title">Dromen met een realistisch budget.</h2>
+            <p class="section-intro">
+              Jullie vluchtprijs staat erin. Kies hotels en vervang ramingen
+              door echte offertes zodra die beschikbaar zijn.
+            </p>
+          </div>
+          <span class="tag">EUR · 2 volwassenen + baby</span>
+        </div>
+        <article class="paper budget-audit">
+          <p class="eyebrow">
+            Het oude en het nieuwe bedrag eerlijk vergelijken
+          </p>
+          <h3>€105 per dag: voor wie, en voor welke reis?</h3>
+          <p>
+            De oude spoor27-route vermeldt
+            <strong>€94–115 per persoon per dag</strong>, voor twee volwassenen
+            over 27 dagen. €105 × 27 × 2 =
+            <strong>€5.670 voor het gezin</strong>. De bronraming was
+            €5.087–6.189 inclusief vluchten en eten, met 25 hotelnachten à
+            €44–60 per kamer.
+          </p>
+          <p>
+            Deze reis telt 31 dagen, 28 hotelnachten en drie nachten Hongkong.
+            Mijn eerste shortlist bevatte veel duurdere comforthotels; daardoor
+            was hij niet rechtstreeks vergelijkbaar met het oude budget.
+            Hieronder staan beide hotelniveaus met dezelfde overige kosten en
+            jullie <strong>vluchten van €1.671,68</strong>.
+          </p>
+          <div class="budget-comparison">
+            <div>
+              <span>Alle budgethotels · 31 dagen</span
+              ><strong id="comparison-budget"></strong>
+            </div>
+            <div>
+              <span>Alle comforthotels · 31 dagen</span
+              ><strong id="comparison-comfort"></strong>
+            </div>
+          </div>
+          <p class="caption">
+            Vergelijking gebruikt de middenprijs van iedere hotelraming, jullie
+            actuele overige budgetvelden en 10% reserve over landkosten. Eigen
+            hoteloffertes worden alleen in jullie gekozen totaal gebruikt. De
+            oude raming bevatte een vluchtreferentie van €759 per volwassene; de
+            rest is in de bron niet per kostenpost uitgesplitst.
+            <a href="../#route-spoor27"
+              >Bekijk de oorspronkelijke bronroute ↗</a
+            >
+          </p>
+          <p class="caption">
+            Eigen stoel voor Amélie: nog niet bevestigd of die binnen €1.671,68
+            valt. Een eventuele meerprijs en het kinderzitje hebben nog geen
+            offerte en zijn niet als vaste extra kosten meegerekend.
+          </p>
+        </article>
+        <div class="budget-layout">
+          <div class="paper">
+            <h3>Dit nemen we mee.</h3>
+            <div id="budget-fields"></div>
+            <p class="caption">
+              Hotels: 28 × de gekozen kamerprijs. Treinen: de acht grote ritten,
+              voor twee volwassenen in 2e klas. Activiteiten en transfers zijn
+              gezinsramingen. Transfers (€750) dekken auto’s en lokaal vervoer;
+              activiteiten (€650) dekken entrees, zodat een combinatie-uitje
+              niet dubbel wordt geteld. Extra’s (€150) zijn een aanpasbare pot,
+              geen bevestigde prijs voor Leshan, een dagkamer of
+              babytreinstoelen. Vluchten: jullie opgegeven €1.671,68.
+            </p>
+          </div>
+          <aside class="budget-summary">
+            <p class="eyebrow">Ons voorlopige reisbudget</p>
+            <h3 id="budget-total"></h3>
+            <p id="budget-flight-note"></p>
+            <div id="budget-bars"></div>
+            <div class="budget-bottom">
+              <span>Gemiddeld per reisdag / gezin</span
+              ><strong id="per-day"></strong>
+            </div>
+            <div class="budget-bottom">
+              <span>Per volwassene / dag · gezin gedeeld door 2</span
+              ><strong id="per-adult-day"></strong>
+            </div>
+            <p class="caption">
+              Met 10% reserve over de landkosten. Ramingen zijn geen offertes of
+              actuele valutakoersen. Persoonlijke uitgaven en onbekende
+              toeslagen kunnen dit verhogen.
+            </p>
+          </aside>
+        </div>
+        <div class="paper budget-hotels">
+          <div class="section-top compact">
+            <div>
+              <h3>Je eigen kamerbudget per plek.</h3>
+              <p class="muted">
+                De standaard is de middenprijs van het gekozen hotel. Eigen
+                prijzen worden apart per budget- of comfortoptie bewaard.
+                <a href="#hotels" data-view="hotels">Hotelkeuzes aanpassen →</a>
+              </p>
+            </div>
+          </div>
+          <div id="hotel-budget-fields"></div>
+        </div>
+      </section>
+      <div id="print-plan" class="print-only"></div>
+    </main>
+    <footer>
+      <div class="wrap footer-top">
+        <div>
+          <a class="brand" href="#planning" data-view="planning"
+            >China <i>’27</i></a
+          >
+          <p>Ruben, Martine & Amélie.<br />Een groot avontuur, samen.</p>
+        </div>
+        <div>
+          <strong>Ons plan blijft bij de hand.</strong>
+          <p>
+            Notities, vinkjes en budgetaanpassingen blijven op dit apparaat.<br />Exporteer
+            een back-up om ze naar een ander apparaat te verplaatsen.
+          </p>
+          <div class="footer-actions">
+            <button id="export" class="button secondary">
+              Back-up downloaden</button
+            ><label class="button secondary import-label"
+              >Back-up openen<input
+                id="import"
+                type="file"
+                accept="application/json,.json"
+                class="sr-only"
+            /></label>
+          </div>
+          <p id="save-status" class="caption" role="status"></p>
+        </div>
+      </div>
+      <div class="wrap">
+        <details class="sources">
+          <summary>
+            Bronnen, prijsstatus & fotocredits · gecontroleerd 30 september 2026
+          </summary>
+          <p>
+            Route en internationale vluchten: jullie definitieve reisbasis,
+            gebaseerd op
+            <a href="../#route-spoor27">spoor27 in de vergelijking</a>. De
+            oorspronkelijke route blijft als scenario beschikbaar; deze pagina
+            is de nieuwe 31-daagse planning.
+          </p>
+          <p>
+            Prijscontrole: de vluchten (€1.671,68) zijn jullie eigen opgave.
+            Alle hotelbandbreedtes zijn kamerbudgetten, geen bevestigde tarieven
+            voor maart/april 2027. Budgethotels zijn toegevoegd naast alle
+            oorspronkelijke comforthotels. Bij een zoekpoging voor Campanile
+            Shanghai (29 maart–1 april 2027, twee volwassenen + baby) kwam geen
+            bruikbare prijs voor die combinatie beschikbaar; de raming is daarom
+            niet als offerte gemarkeerd. Belastingen, ontbijt, babybed en
+            annulering altijd in de definitieve totaalprijs controleren.
+          </p>
+          <p>
+            Actuele prijsreferenties ter oriëntatie (andere data, niet jullie
+            offerte):
+            <a
+              href="https://www.google.com/travel/hotels/entity/ChoIlreq14rjzsOjARoNL2cvMTFqMzM2ZjB2bRAB"
+              target="_blank"
+              rel="noopener"
+              >Hangzhou Westlake East</a
+            >
+            ·
+            <a
+              href="https://www.booking.com/hotel/cn/campanile-xian-bell-tower.html"
+              target="_blank"
+              rel="noopener"
+              >Campanile Xi’an</a
+            >
+            ·
+            <a
+              href="https://www.google.com/travel/hotels/entity/CgoIzLjDy5Cupr4WEAE"
+              target="_blank"
+              rel="noopener"
+              >Yangshuo River View</a
+            >. Hotelinformatie en zoeklinks met reisdata staan bij elk
+            alternatief.
+          </p>
+          <p>
+            Boekingsregels:
+            <a
+              href="https://www.12306.cn/en/faq.html"
+              target="_blank"
+              rel="noopener"
+              >China Railway 12306</a
+            >
+            ·
+            <a
+              href="https://kyfw.12306.cn/otn/gonggao/saleTicketMeans.html?linktypeid=means5"
+              target="_blank"
+              rel="noopener"
+              >15 dagen inclusief vandaag</a
+            >
+            ·
+            <a
+              href="https://www.highspeed.mtr.com.hk/en/main/buy-ticket.html"
+              target="_blank"
+              rel="noopener"
+              >MTR ticketverkoop</a
+            >
+            ·
+            <a
+              href="https://www.highspeed.mtr.com.hk/en/ticket/destination.html"
+              target="_blank"
+              rel="noopener"
+              >MTR bestemmingen, inclusief Guilinxi</a
+            >
+            ·
+            <a
+              href="https://young.dpm.org.cn/en/category/279"
+              target="_blank"
+              rel="noopener"
+              >Palace Museum: 7 dagen / 20:00</a
+            >.
+          </p>
+          <p>
+            Baby & toegang: airline-bronnen bij de zitje-check;
+            <a
+              href="https://www.visaforchina.cn/HAG4_EN/tongzhigonggao/552367648080531503.html"
+              target="_blank"
+              rel="noopener"
+              >officiële visumvrijstelling t/m 2026</a
+            >;
+            <a
+              href="https://assets.dream.clubmed/pm_7531_699_699613-tcj4kjme5x.pdf"
+              target="_blank"
+              rel="noopener"
+              >Yulong-aanbod Club Med: kinderen boven 1 meter</a
+            >. Dat aanbod bevestigt dat vlotten geen standaard babyactiviteit
+            zijn; voorwaarden kunnen per operator verschillen.
+          </p>
+          <p>
+            Hotels: informatie via de hotel-/boekingslinks op elke kaart. Alle
+            eurobandbreedtes voor 2027 zijn eigen planningsramingen, geen
+            geverifieerde datumoffertes. Ook trein- en activiteitenbedragen zijn
+            ramingen; hercheck vóór aankoop. De site reserveert niets.
+          </p>
+          <p>
+            Foto’s lokaal geoptimaliseerd en in de lay-out uitgesneden:
+            <a
+              href="https://commons.wikimedia.org/wiki/File:The_Bund_2.jpg"
+              target="_blank"
+              rel="noopener"
+              >Bund · 钉钉</a
+            >
+            en
+            <a
+              href="https://commons.wikimedia.org/wiki/File:1_tianzishan_wulingyuan_zhangjiajie_2012.jpg"
+              target="_blank"
+              rel="noopener"
+              >Zhangjiajie · chensiyuan</a
+            >,
+            <a
+              href="https://creativecommons.org/licenses/by-sa/4.0/"
+              target="_blank"
+              rel="noopener"
+              >CC BY-SA 4.0</a
+            >;
+            <a
+              href="https://commons.wikimedia.org/wiki/File:87318-Li-River.jpg"
+              target="_blank"
+              rel="noopener"
+              >Li River · xiquinhosilva</a
+            >,
+            <a
+              href="https://creativecommons.org/licenses/by/2.0/"
+              target="_blank"
+              rel="noopener"
+              >CC BY 2.0</a
+            >. Video’s via YouTube, makers op de videokaarten vermeld.
+          </p>
+        </details>
+        <div class="footer-bottom">
+          <span>28 maart — 27 april 2027 · onze definitieve reisbasis</span
+          ><a href="../">Terug naar de reisvergelijking</a>
+        </div>
+      </div>
+    </footer>
+    <div id="toast" role="status" class="toast"></div>
+    <noscript
+      ><p class="notice">
+        Zet JavaScript aan voor de interactieve planning. De praktische
+        informatie op deze pagina blijft leesbaar.
+      </p>
+      <style>
+        .view[hidden] {
+          display: block !important;
+        }
+        .hero {
+          display: none;
+        }
+      </style></noscript
+    >
+  </body>
+</html>
