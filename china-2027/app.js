@@ -21,6 +21,12 @@
       currency: "EUR",
       maximumFractionDigits: 0,
     }).format(n);
+  const preciseEuro = (n) =>
+    new Intl.NumberFormat("nl-NL", {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 2,
+    }).format(n);
   const base = Date.UTC(2027, 2, 28);
   const iso = (day) =>
     new Date(base + (day - 1) * 86400000).toISOString().slice(0, 10);
@@ -54,9 +60,39 @@
     trains: {},
     hotels: {},
     choices: {},
+    customHotels: {},
     budget: {},
   };
   let storageOK = true;
+  function hotelLink(value) {
+    if (typeof value !== "string" || !value.trim() || value.length > 4000)
+      return "";
+    try {
+      const url = new URL(value.trim());
+      return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+    } catch {
+      return "";
+    }
+  }
+  function cleanCustomHotel(input) {
+    if (!input || typeof input !== "object" || Array.isArray(input))
+      return null;
+    if (typeof input.name !== "string" || !input.name.trim()) return null;
+    if (
+      !Number.isFinite(input.price) ||
+      input.price < 0 ||
+      input.price > 100000
+    )
+      return null;
+    const hotel = { name: input.name.trim().slice(0, 200), price: input.price };
+    for (const field of ["area", "room", "notes"])
+      hotel[field] =
+        typeof input[field] === "string"
+          ? input[field].slice(0, field === "notes" ? 5000 : 500)
+          : "";
+    hotel.url = hotelLink(input.url);
+    return hotel;
+  }
   function cleanState(input) {
     const out = {
       checks: {},
@@ -64,6 +100,7 @@
       trains: {},
       hotels: {},
       choices: {},
+      customHotels: {},
       budget: {},
     };
     if (!input || typeof input !== "object" || Array.isArray(input))
@@ -83,9 +120,20 @@
       if (["Nog boeken", "Aangevraagd", "Geboekt"].includes(input.trains?.[id]))
         out.trains[id] = input.trains[id];
     for (const s of data.stays) {
-      if (["budget", "comfort"].includes(input.choices?.[s.id]))
-        out.choices[s.id] = input.choices[s.id];
-      for (const id of [s.id, s.id + "-budget", s.id + "-comfort"])
+      const custom = cleanCustomHotel(input.customHotels?.[s.id]);
+      if (custom) out.customHotels[s.id] = custom;
+      const choice = input.choices?.[s.id];
+      if (
+        ["budget", "comfort"].includes(choice) ||
+        (choice === "custom" && custom)
+      )
+        out.choices[s.id] = choice;
+      for (const id of [
+        s.id,
+        s.id + "-budget",
+        s.id + "-comfort",
+        s.id + "-custom",
+      ])
         if (
           typeof input.hotels?.[id] === "number" &&
           input.hotels[id] >= 0 &&
@@ -363,7 +411,7 @@
         )
         .join(
           "",
-        )}</div><div class="day-baby"><strong>Voor Amélie</strong>${esc(d.baby)}</div><div class="detail-info"><div><h4>Vooraf regelen</h4><p>${esc(d.reserve)}</p></div><div><h4>Als het anders loopt</h4><p>${esc(d.backup)}</p></div></div><div class="sleep-box"><div><p class="eyebrow">${s ? "Hier slapen we" : "Vannacht"}</p><strong>${esc(s ? hotelOption(s).hotel : d.sleep)}</strong>${s ? `<p class="caption">${esc(s.name)} · kamerbudget ${euro(hotelOption(s).low)}–${euro(hotelOption(s).high)} / nacht</p>` : ""}</div>${s ? `<button data-hotel="${s.id}">Bekijk het hotel</button>` : ""}</div><p class="caption"><strong>Uitgavenindicatie:</strong> ${esc(d.cost)}</p><details class="day-notes"><summary>Onze notities voor deze dag</summary><label class="sr-only" for="day-note">Notities voor dag ${d.d}</label><textarea id="day-note" data-note="${d.d}" placeholder="Bijvoorbeeld: boekingstijd, restaurant of een plan B…">${esc(state.notes[d.d] || "")}</textarea><p class="caption">Bewaard op dit apparaat. Geen paspoortnummers of andere gevoelige gegevens nodig.</p></details></div><div class="detail-nav"><button data-next="${d.d - 1}" ${d.d === 1 ? "disabled" : ""}>Vorige dag</button><span class="local-save">${d.d} / 31</span><button data-next="${d.d + 1}" ${d.d === 31 ? "disabled" : ""}>Volgende dag</button></div>`;
+        )}</div><div class="day-baby"><strong>Voor Amélie</strong>${esc(d.baby)}</div><div class="detail-info"><div><h4>Vooraf regelen</h4><p>${esc(d.reserve)}</p></div><div><h4>Als het anders loopt</h4><p>${esc(d.backup)}</p></div></div><div class="sleep-box"><div><p class="eyebrow">${s ? "Hier slapen we" : "Vannacht"}</p><strong>${esc(s ? hotelOption(s).hotel : d.sleep)}</strong>${s ? `<p class="caption">${esc(s.name)} · ${hotelCostLabel(s)}</p>` : ""}</div>${s ? `<button data-hotel="${s.id}">Bekijk het hotel</button>` : ""}</div><p class="caption"><strong>Uitgavenindicatie:</strong> ${esc(d.cost)}</p><details class="day-notes"><summary>Onze notities voor deze dag</summary><label class="sr-only" for="day-note">Notities voor dag ${d.d}</label><textarea id="day-note" data-note="${d.d}" placeholder="Bijvoorbeeld: boekingstijd, restaurant of een plan B…">${esc(state.notes[d.d] || "")}</textarea><p class="caption">Bewaard op dit apparaat. Geen paspoortnummers of andere gevoelige gegevens nodig.</p></details></div><div class="detail-nav"><button data-next="${d.d - 1}" ${d.d === 1 ? "disabled" : ""}>Vorige dag</button><span class="local-save">${d.d} / 31</span><button data-next="${d.d + 1}" ${d.d === 31 ? "disabled" : ""}>Volgende dag</button></div>`;
   }
   function showDay(day, { reset = true, scroll = true } = {}) {
     if (day < 1 || day > 31) return;
@@ -432,11 +480,101 @@
     }
     setView(hash || "planning", scroll);
   }
-  const hotelChoice = (s) =>
-    state.choices[s.id] ??
-    (state.hotels[s.id] !== undefined ? "comfort" : "budget");
-  const hotelOption = (s, choice = hotelChoice(s)) =>
-    choice === "budget" ? { ...s, ...s.budget } : s;
+  const hotelChoiceLabels = {
+    budget: "budget",
+    comfort: "comfort",
+    custom: "eigen hotel",
+  };
+  function hotelChoice(s) {
+    const choice = state.choices[s.id];
+    if (choice === "custom" && !state.customHotels[s.id]) return "budget";
+    return choice ?? (state.hotels[s.id] !== undefined ? "comfort" : "budget");
+  }
+  function hotelOption(s, choice = hotelChoice(s)) {
+    if (choice === "budget") return { ...s, ...s.budget };
+    if (choice !== "custom") return s;
+    const own = state.customHotels[s.id];
+    const price = state.hotels[s.id + "-custom"] ?? own.price;
+    return {
+      ...s,
+      hotel: own.name,
+      low: price,
+      high: price,
+      area: own.area || "Eigen accommodatie",
+      room: own.room || "Eigen kamertype",
+      why: own.notes || "Door ons gevonden.",
+      url: own.url,
+    };
+  }
+  function hotelCostLabel(s) {
+    const h = hotelOption(s);
+    if (hotelChoice(s) === "custom")
+      return `eigen prijs ${preciseEuro(h.low)} / nacht`;
+    return `kamerbudget ${euro(h.low)}–${euro(h.high)} / nacht`;
+  }
+  function customHotelForm(s) {
+    const own = state.customHotels[s.id];
+    const values = own ? { ...own, price: hotelOption(s, "custom").low } : {};
+    const fields = [
+      [
+        "name",
+        "Hotelnaam",
+        "text",
+        "Bijvoorbeeld: ons eigen hotel",
+        "required maxlength=200",
+      ],
+      [
+        "price",
+        "Prijs per kamer / nacht (€)",
+        "number",
+        "Inclusief toeslagen",
+        'required min="0" max="100000" step="0.01"',
+      ],
+      [
+        "url",
+        "Hotel- of boekingslink (optioneel)",
+        "url",
+        "https://…",
+        "maxlength=4000",
+      ],
+      [
+        "area",
+        "Adres / buurt (optioneel)",
+        "text",
+        "Handig voor de transfer",
+        "maxlength=500",
+      ],
+      [
+        "room",
+        "Kamer / babybed (optioneel)",
+        "text",
+        "Kamertype, babybed…",
+        "maxlength=500",
+      ],
+    ];
+    return `<details class="custom-editor"><summary>${own ? "Eigen hotel aanpassen" : "+ Eigen hotel toevoegen"}</summary>
+      <form data-custom-hotel="${s.id}" class="custom-hotel-form">
+      ${fields.map(([field, label, type, placeholder, attrs]) => `<label class="${field === "url" ? "full" : ""}" for="custom-${s.id}-${field}">${label}<input id="custom-${s.id}-${field}" name="${field}" type="${type}" placeholder="${placeholder}" value="${esc(values[field] ?? "")}" ${attrs}></label>`).join("")}
+      <label class="full" for="custom-${s.id}-notes">Notities (optioneel)<textarea id="custom-${s.id}-notes" name="notes" rows="3" maxlength="5000" placeholder="Bijvoorbeeld ontbijt, annulering of transferafspraken…">${esc(values.notes || "")}</textarea></label>
+      <p class="caption full">${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))} · ${nightsText(s.nights)} · één kamer voor twee volwassenen + Amélie. Vul de totale kamerprijs inclusief toeslagen in.</p>
+      <button type="submit" class="button primary full">Opslaan en gebruiken</button>
+      </form></details>`;
+  }
+  function renderCustomHotel(s) {
+    const own = state.customHotels[s.id];
+    const active = hotelChoice(s) === "custom";
+    let content = `<h4>Jullie eigen vondst.</h4><p>Voeg een derde hotel toe voor ${esc(s.name)}. De budget- en comfortopties blijven beschikbaar.</p>`;
+    if (own) {
+      const h = hotelOption(s, "custom");
+      content = `<div class="hotel-option-top"><h4>${esc(h.hotel)}</h4><strong>${preciseEuro(h.low)}<small>kamer / nacht · eigen prijs</small></strong></div>
+        <p class="hotel-area">${esc(h.area)}<br>${esc(h.room)}</p><p class="custom-hotel-notes">${esc(own.notes)}</p>
+        <div class="hotel-total"><span>${nightsText(s.nights)} · 1 kamer</span><strong>${preciseEuro(h.low * s.nights)}</strong></div>
+        <div class="hotel-links">${h.url ? `<a href="${esc(h.url)}" target="_blank" rel="noopener">Onze hotellink ↗</a>` : ""}<a href="${esc(bookingURL(h))}" target="_blank" rel="noopener">Zoek op onze data ↗</a></div>
+        <button class="button ${active ? "primary" : "secondary"} hotel-choice" data-choice="${s.id}" data-option="custom" aria-pressed="${active}">${active ? "✓ In ons plan" : "Kies eigen hotel"}</button>
+        ${checkHTML("hotel", [s.id + "-custom", "Dit hotel geboekt & babybed bevestigd", "Zelf afvinken na bevestiging van dit hotel."])}`;
+    }
+    return `<div class="hotel-option custom-hotel ${active ? "selected" : ""}"><p class="eyebrow">03 · Eigen hotel</p>${content}${customHotelForm(s)}</div>`;
+  }
   function renderHotels() {
     const lo = data.stays.reduce(
       (n, s) => n + s.nights * hotelOption(s).low,
@@ -456,7 +594,7 @@
             return `<div class="hotel-option ${active ? "selected" : ""}"><div class="hotel-option-top"><span class="tag ${choice === "budget" ? "green" : ""}">${choice === "budget" ? "Budget" : "Comfort"}</span><strong>${euro(h.low)}–${euro(h.high)}<small>kamer / nacht · raming</small></strong></div><h4>${esc(h.hotel)}</h4><p class="hotel-area">${esc(h.area)}<br>${esc(h.room)}</p><p>${esc(h.why)}</p><details class="hotel-questions"><summary>Voor Amélie & vóór boeken</summary><p>${esc(h.check)}</p></details><div class="hotel-total"><span>${nightsText(s.nights)} · 1 kamer</span><strong>${euro(h.low * s.nights)}–${euro(h.high * s.nights)}</strong></div><div class="hotel-links"><a href="${esc(bookingURL(h))}" target="_blank" rel="noopener">Check onze data & prijs ↗</a><a href="${esc(h.url)}" target="_blank" rel="noopener">Hotelinformatie ↗</a></div><button class="button ${active ? "primary" : "secondary"} hotel-choice" data-choice="${s.id}" data-option="${choice}" aria-pressed="${active}">${active ? "✓ In ons plan" : "Kies " + (choice === "budget" ? "budget" : "comfort")}</button>${checkHTML("hotel", [s.id + "-" + choice, "Dit hotel geboekt & babybed bevestigd", "Zelf afvinken na bevestiging van dit hotel."])}</div>`;
           })
           .join("");
-        return `<article class="hotel-card" id="hotel-${s.id}"><header class="hotel-card-top"><div><p class="eyebrow">${String(i + 1).padStart(2, "0")} · ${esc(s.cn)} · ${nightsText(s.nights)}</p><h3>${esc(s.name)}</h3><p class="caption">${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))} 2027</p></div></header><div class="hotel-options">${options}</div></article>`;
+        return `<article class="hotel-card" id="hotel-${s.id}"><header class="hotel-card-top"><div><p class="eyebrow">${String(i + 1).padStart(2, "0")} · ${esc(s.cn)} · ${nightsText(s.nights)}</p><h3>${esc(s.name)}</h3><p class="caption">${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))} 2027</p></div></header><div class="hotel-options">${options}${renderCustomHotel(s)}</div></article>`;
       })
       .join("");
   }
@@ -562,6 +700,7 @@
   const hotelPrice = (s) => {
     const choice = hotelChoice(s);
     const h = hotelOption(s, choice);
+    if (choice === "custom") return h.low;
     return (
       state.hotels[s.id + "-" + choice] ??
       (choice === "comfort" ? state.hotels[s.id] : undefined) ??
@@ -581,7 +720,7 @@
     $("#hotel-budget-fields").innerHTML = data.stays
       .map(
         (s) =>
-          `<div class="budget-field"><label for="price-${s.id}">${esc(s.name)}<small>${nightsText(s.nights)} · ${esc(hotelOption(s).hotel)} · ${hotelChoice(s) === "budget" ? "budget" : "comfort"}</small></label><span class="money-input">€ <input id="price-${s.id}" data-price="${s.id}-${hotelChoice(s)}" type="number" min="0" max="100000" step="0.01" value="${hotelPrice(s)}"></span></div>`,
+          `<div class="budget-field"><label for="price-${s.id}">${esc(s.name)}<small>${nightsText(s.nights)} · ${esc(hotelOption(s).hotel)} · ${hotelChoiceLabels[hotelChoice(s)]}</small></label><span class="money-input">€ <input id="price-${s.id}" data-price="${s.id}-${hotelChoice(s)}" type="number" min="0" max="100000" step="0.01" value="${hotelPrice(s)}"></span></div>`,
       )
       .join("");
     updateBudget();
@@ -728,6 +867,14 @@
           "Vooraf: " + d.reserve,
           "Plan B: " + d.backup,
           "Slapen: " + (s ? hotelOption(s).hotel : d.sleep),
+          ...(s && hotelChoice(s) === "custom"
+            ? [
+                "Hoteladres: " + hotelOption(s).area,
+                "Hotelprijs per nacht: " + preciseEuro(hotelPrice(s)),
+                "Hotelnotities: " + state.customHotels[s.id].notes,
+                "Hotellink: " + hotelOption(s).url,
+              ]
+            : []),
           "Tijden zijn lokale suggesties; treinen/hotels nog te bevestigen.",
         ].join("\n\n"),
         location: s ? s.name : d.sub,
@@ -780,10 +927,16 @@
       `${data.trains.length} treinvensters, Forbidden City en visumcheck gedownload.`,
     );
   }
+  function customHotelPrintInfo(s) {
+    if (hotelChoice(s) !== "custom") return "";
+    const h = hotelOption(s);
+    const link = h.url ? `<br><a href="${esc(h.url)}">Hotellink</a>` : "";
+    return `<br>${esc(h.area)}<br>${esc(state.customHotels[s.id].notes)}${link}`;
+  }
   function renderPrint() {
     const b = budgetTotals();
     $("#print-plan").innerHTML =
-      `<h1>China 2027 · samen, per spoor</h1><p>Ruben, Martine & Amélie · 28 maart – 27 april 2027 · 31 reisdagen · 28 hotelnachten</p><p>Heen: SWISS · AMS 28 maart 09:50 → ZRH → PVG 29 maart 06:30.<br>Terug: Cathay Pacific + Lufthansa · HKG 26 april 23:55 → FRA → AMS 27 april 10:35.</p><p>Dagindeling is flexibel; tijden zijn lokale suggesties. Exacte treinverbindingen, hotelprijzen en reserveringen nog bevestigen. Huidige boekingsregels gecontroleerd 30 september 2026.</p><h2>Hotels</h2><table><thead><tr><th>Plek / hotel</th><th>Verblijf</th><th>Nachten</th><th>Kamerbudget / nacht</th></tr></thead><tbody>${data.stays.map((s) => `<tr><td>${esc(s.name)} · ${esc(hotelOption(s).hotel)}</td><td>${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))}</td><td>${s.nights}</td><td>${euro(hotelPrice(s))} · raming / eigen invoer</td></tr>`).join("")}</tbody></table><h2>Dagprogramma</h2>${data.days
+      `<h1>China 2027 · samen, per spoor</h1><p>Ruben, Martine & Amélie · 28 maart – 27 april 2027 · 31 reisdagen · 28 hotelnachten</p><p>Heen: SWISS · AMS 28 maart 09:50 → ZRH → PVG 29 maart 06:30.<br>Terug: Cathay Pacific + Lufthansa · HKG 26 april 23:55 → FRA → AMS 27 april 10:35.</p><p>Dagindeling is flexibel; tijden zijn lokale suggesties. Exacte treinverbindingen, hotelprijzen en reserveringen nog bevestigen. Huidige boekingsregels gecontroleerd 30 september 2026.</p><h2>Hotels</h2><table><thead><tr><th>Plek / hotel</th><th>Verblijf</th><th>Nachten</th><th>Kamerbudget / nacht</th></tr></thead><tbody>${data.stays.map((s) => `<tr><td>${esc(s.name)} · ${esc(hotelOption(s).hotel)}${customHotelPrintInfo(s)}</td><td>${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))}</td><td>${s.nights}</td><td>${preciseEuro(hotelPrice(s))} · raming / eigen invoer</td></tr>`).join("")}</tbody></table><h2>Dagprogramma</h2>${data.days
         .map((d) => {
           const s = stayFor(d.d);
           return `<article class="print-day"><h3>D${d.d} · ${fmt(iso(d.d), { weekday: "long", day: "numeric", month: "long" })} · ${esc(d.title)}</h3><p><b>Ochtend:</b> ${esc(d.am)}</p><p><b>Middag:</b> ${esc(d.pm)}</p><p><b>Avond:</b> ${esc(d.eve)}</p><p><b>Amélie:</b> ${esc(d.baby)}</p><p><b>Vooraf:</b> ${esc(d.reserve)}</p><p><b>Plan B:</b> ${esc(d.backup)}</p><p><b>Slapen:</b> ${esc(s ? hotelOption(s).hotel : d.sleep)}</p><p><b>Uitgavenindicatie:</b> ${esc(d.cost)}</p>${state.notes[d.d] ? `<p class="print-note"><b>Eigen notitie:</b> ${esc(state.notes[d.d])}</p>` : ""}</article>`;
@@ -866,6 +1019,49 @@
     e.preventDefault();
     showDay(2);
   });
+  document.addEventListener("submit", (event) => {
+    const form = event.target;
+    const id = form.dataset.customHotel;
+    if (!id) return;
+    event.preventDefault();
+    const values = Object.fromEntries(new FormData(form));
+    const nameInput = form.elements.namedItem("name");
+    nameInput.setCustomValidity(
+      values.name.trim() ? "" : "Vul een hotelnaam in.",
+    );
+    const urlInput = form.elements.namedItem("url");
+    urlInput.setCustomValidity("");
+    if (values.url && !hotelLink(values.url)) {
+      urlInput.setCustomValidity(
+        "Gebruik een link die begint met https:// of http://.",
+      );
+      urlInput.reportValidity();
+      return;
+    }
+    if (!form.reportValidity()) return;
+    const hotel = cleanCustomHotel({ ...values, price: Number(values.price) });
+    if (!hotel) return;
+    const previous = state.customHotels[id];
+    if (
+      previous &&
+      (previous.name !== hotel.name || previous.url !== hotel.url)
+    )
+      delete state.checks["hotel-" + id + "-custom"];
+    state.customHotels[id] = hotel;
+    state.choices[id] = "custom";
+    delete state.hotels[id + "-custom"];
+    save();
+    renderHotels();
+    renderBudget();
+    renderDetail();
+    const editor = $("#hotel-" + id + " .custom-editor");
+    editor.querySelector("summary").focus({ preventScroll: true });
+    toast(
+      storageOK
+        ? "Eigen hotel opgeslagen en gekozen voor planning en budget."
+        : "Eigen hotel gekozen. Download een back-up om het te bewaren.",
+    );
+  });
   document.addEventListener("change", (event) => {
     const el = event.target;
     if (el.dataset.check) {
@@ -880,6 +1076,8 @@
   });
   document.addEventListener("input", (event) => {
     const el = event.target;
+    if (["name", "url"].includes(el.name) && el.closest("[data-custom-hotel]"))
+      el.setCustomValidity("");
     if (el.dataset.note) {
       state.notes[el.dataset.note] = el.value;
       save();
@@ -896,6 +1094,10 @@
       }
       save();
       updateBudget();
+      if (el.dataset.price?.endsWith("-custom")) {
+        renderHotels();
+        renderDetail();
+      }
     }
   });
   $("#calendar").addEventListener("click", journeyCalendar);
@@ -914,7 +1116,7 @@
       "china-2027-backup.json",
       "application/json",
     );
-    toast("Back-up gedownload: notities, statussen en budget.");
+    toast("Back-up gedownload: eigen hotels, notities, statussen en budget.");
   });
   $("#import").addEventListener("change", async (event) => {
     const file = event.target.files[0];
@@ -930,6 +1132,7 @@
         "trains",
         "hotels",
         "choices",
+        "customHotels",
         "budget",
       ])
         state[group] = { ...state[group], ...restored[group] };

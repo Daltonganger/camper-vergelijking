@@ -2462,3 +2462,84 @@ body.inner-view .hero {
 .route-priorities ul {
   padding-left: 22px;
 }
+
+/* The personal third option spans the two suggested hotels. */
+.hotel-option.custom-hotel {
+  grid-column: 1 / -1;
+  border-left: 0;
+  background: #faf8f3;
+}
+.hotel-option.custom-hotel.selected {
+  background: #f0f5ee;
+}
+.custom-hotel > .eyebrow {
+  color: var(--forest);
+  font-size: 11px;
+}
+.custom-hotel-notes {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.custom-editor {
+  margin-top: 12px;
+}
+.custom-editor summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--forest);
+}
+.custom-hotel-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+.custom-hotel-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.custom-hotel-form input,
+.custom-hotel-form textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: white;
+  padding: 11px 12px;
+  color: var(--ink);
+  font: 16px/1.5 var(--body);
+}
+.custom-hotel-form input:focus,
+.custom-hotel-form textarea:focus {
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
+}
+.custom-hotel-form .full {
+  grid-column: 1 / -1;
+}
+.custom-hotel-form textarea {
+  resize: vertical;
+}
+.custom-hotel-form .caption {
+  font-weight: 400;
+  margin: 0;
+}
+.custom-hotel-form .button {
+  justify-self: start;
+}
+@media (max-width: 600px) {
+  .custom-hotel-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.custom-hotel h4 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.custom-hotel p {
+  overflow-wrap: anywhere;
+}
