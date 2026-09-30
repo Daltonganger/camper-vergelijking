@@ -125,3 +125,39 @@ test("invalid payloads, prototype keys, unauthorized origins and guessing cannot
     400,
   );
 });
+
+test("existing shared trips accept concurrent hotel terms, day pace and reminder changes", async () => {
+  const env = setup();
+  await request(env, "POST", { state: { notes: { 3: "Bund na het dutje" } } });
+  const responses = await Promise.all([
+    request(env, "PATCH", {
+      ops: [
+        {
+          path: ["hotelDetails", "hotel-shanghai-budget", "breakfast"],
+          value: "Inclusief",
+        },
+        { path: ["dayModes", "8"], value: "calm" },
+      ],
+    }),
+    request(env, "PATCH", {
+      ops: [
+        {
+          path: ["hotelDetails", "hotel-shanghai-budget", "cot"],
+          value: "Bevestigd",
+        },
+        { path: ["reminders", "leadDays"], value: 3 },
+        { path: ["reminders", "done-visa-check-20261201"], value: true },
+      ],
+    }),
+  ]);
+  for (const response of responses) assert.equal(response.status, 200);
+  const { state } = await (await request(env, "GET")).json();
+  assert.deepEqual(state.hotelDetails["hotel-shanghai-budget"], {
+    breakfast: "Inclusief",
+    cot: "Bevestigd",
+  });
+  assert.equal(state.notes[3], "Bund na het dutje");
+  assert.equal(state.dayModes[8], "calm");
+  assert.equal(state.reminders.leadDays, 3);
+  assert.equal(state.reminders["done-visa-check-20261201"], true);
+});

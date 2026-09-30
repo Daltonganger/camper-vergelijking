@@ -7,8 +7,12 @@ const groups = new Set([
   "customHotels",
   "budget",
   "bookings",
+  "hotelDetails",
+  "dayModes",
+  "reminders",
 ]);
 const recordFields = {
+  hotelDetails: new Set(["breakfast", "cot", "location", "cancellation"]),
   customHotels: new Set(["name", "price", "url", "area", "room", "notes"]),
   bookings: new Set([
     "status",

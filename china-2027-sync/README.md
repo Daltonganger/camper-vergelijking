@@ -29,3 +29,5 @@ Gebruik Workers Free / D1 Free. Activeer geen betaald Workers-abonnement. Er zij
 - Stoppen op een apparaat verwijdert alleen de lokale verbinding, niet de gedeelde reis. Bewaar een privé-uitnodigingslink en JSON-back-up om opnieuw aan te sluiten.
 - Verwijderen/intrekken van een reis kan door de eigenaar in D1, met een `DELETE FROM rooms WHERE id = ...` voor alleen die reis-ID. De oude link werkt daarna niet meer.
 - Secrets, OAuth-configuratie, `wrangler.toml`, lokale database en `node_modules` horen niet in Git.
+
+Nieuwe gegevensgroepen: `hotelDetails` wordt per voorwaarde samengevoegd, `dayModes` per dag en `reminders` per actie/voorkeur. De bestaande rooms-tabel en toegangssleutels blijven werken; er is geen migratie nodig. De test met een oude reis controleert ook gelijktijdige hotelvoorwaarden en de nieuwe dag-/herinneringsvelden.

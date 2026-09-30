@@ -10,8 +10,11 @@
     "customHotels",
     "budget",
     "bookings",
+    "hotelDetails",
+    "dayModes",
+    "reminders",
   ];
-  const recordGroups = new Set(["customHotels", "bookings"]);
+  const recordGroups = new Set(["customHotels", "bookings", "hotelDetails"]);
   function leaves(state) {
     const out = new Map();
     for (const group of groups)

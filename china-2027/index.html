@@ -41,12 +41,13 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="style.css?v=samen-20260930b" />
-    <script src="data.js?v=samen-20260930b" defer></script>
-    <script src="bookings.js?v=samen-20260930b" defer></script>
-    <script src="sync.js?v=samen-20260930b" defer></script>
-    <script src="sync-config.js?v=samen-20260930b" defer></script>
-    <script src="app.js?v=samen-20260930b" defer></script>
+    <link rel="stylesheet" href="style.css?v=extra567-20260930" />
+    <script src="data.js?v=extra567-20260930" defer></script>
+    <script src="bookings.js?v=extra567-20260930" defer></script>
+    <script src="sync.js?v=extra567-20260930" defer></script>
+    <script src="sync-config.js?v=extra567-20260930" defer></script>
+    <script src="plan-extras.js?v=extra567-20260930" defer></script>
+    <script src="app.js?v=extra567-20260930" defer></script>
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
       defer
@@ -428,6 +429,47 @@
             Boekingsmomenten in je agenda
           </button>
         </div>
+        <article class="paper reminders-panel">
+          <div class="reminders-top">
+            <div>
+              <p class="eyebrow">Op tijd geregeld</p>
+              <h3>Onze herinneringen.</h3>
+              <span class="tag green" id="reminder-count"></span>
+            </div>
+            <label
+              >Agenda-melding vooraf<select id="reminder-lead">
+                <option value="1">1 dag</option>
+                <option value="3">3 dagen</option>
+                <option value="7">7 dagen</option>
+              </select></label
+            >
+          </div>
+          <p class="caption">
+            Treinverkoop, voorbereiding van attractietickets en ingevulde
+            annulerings- en betaaldeadlines. Geboekte treinritten en
+            afgehandelde acties verdwijnen uit de herinneringen.
+          </p>
+          <details class="reminder-explanation">
+            <summary>Zo krijg je meldingen op je telefoon</summary>
+            <p>
+              Klik op ‘Boekingsmomenten in je agenda’ en importeer het bestand
+              in je agenda. Tijdstippen krijgen ook een melding 1 uur vooraf.
+              Controleer na import of je agenda meldingen heeft overgenomen en
+              toegestaan. De pagina zelf stuurt geen pushmeldingen. Na
+              gewijzigde deadlines of afhandelen opnieuw exporteren en oude
+              agenda-items bijwerken/verwijderen.
+            </p>
+            <p class="caption">
+              Dagen zonder exact tijdstip worden als hele dag geëxporteerd; je
+              agenda bepaalt dan de meldingstijd. De vrijgavetijd van treinen
+              moet nog per station worden bevestigd. Annuleringsmomenten voer je
+              bij Boekingen in als Chinatijd (UTC+8); tijdstippen hieronder
+              staan in Nederlandse tijd.
+            </p>
+          </details>
+          <div id="reminder-list" class="reminder-list"></div>
+          <div id="reminder-completed"></div>
+        </article>
         <div class="booking-highlight">
           <div>
             <span class="eyebrow">Nu voorbereiden</span>
@@ -898,10 +940,10 @@
               readonly
           /></label>
           <p class="caption">
-            Samen plannen gebruikt het gratis Cloudflare-plan.
-            Met de persoonlijke link kunnen jullie beiden bewerken. Een back-up
-            bevat jullie reisgegevens en boekingen; de uitnodigingslink wordt
-            apart bewaard.
+            Samen plannen gebruikt het gratis Cloudflare-plan. Met de
+            persoonlijke link kunnen jullie beiden bewerken. Een back-up bevat
+            jullie reisgegevens en boekingen; de uitnodigingslink wordt apart
+            bewaard.
           </p>
         </article>
       </section>

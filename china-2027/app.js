@@ -62,8 +62,12 @@
     choices: {},
     customHotels: {},
     bookings: {},
+    hotelDetails: {},
+    dayModes: {},
+    reminders: {},
     budget: {},
   };
+  let extras;
   let sharedSync;
   let bookingLedger;
   let storageOK = true;
@@ -105,6 +109,9 @@
       choices: {},
       customHotels: {},
       bookings: {},
+      hotelDetails: {},
+      dayModes: {},
+      reminders: {},
       budget: {},
     };
     if (!input || typeof input !== "object" || Array.isArray(input))
@@ -159,6 +166,16 @@
         input.budget[k] <= 1000000
       )
         out.budget[k] = input.budget[k];
+    out.hotelDetails = window.ChinaExtras.cleanDetails(input.hotelDetails);
+    for (const [id, mode] of Object.entries(input.dayModes || {}))
+      if (/^(?:[1-9]|[12][0-9]|3[01])$/.test(id) && mode === "calm")
+        out.dayModes[id] = mode;
+    for (const [id, value] of Object.entries(input.reminders || {})) {
+      if (id === "leadDays" && [1, 3, 7].includes(value))
+        out.reminders[id] = value;
+      else if (/^done-[a-z0-9-]{1,115}$/.test(id) && typeof value === "boolean")
+        out.reminders[id] = value;
+    }
     out.bookings = window.ChinaBookings.clean(input.bookings);
     return out;
   }
@@ -385,7 +402,7 @@
             last = d.city;
             return (
               group +
-              `<button class="day-item ${d.d === selectedDay ? "selected" : ""}" data-day="${d.d}" aria-pressed="${d.d === selectedDay}"><span class="day-number">${String(d.d).padStart(2, "0")}<small>Dag</small></span><span><span class="day-item-meta"><span>${fmt(iso(d.d), { weekday: "short", day: "numeric", month: "short" })}</span><span>${esc(types[d.kind])}</span></span><span class="day-item-title">${esc(d.title)}</span><span class="day-item-meta">${esc(d.sub)}</span></span></button>`
+              `<button class="day-item ${d.d === selectedDay ? "selected" : ""}" data-day="${d.d}" aria-pressed="${d.d === selectedDay}"><span class="day-number">${String(d.d).padStart(2, "0")}<small>Dag</small></span><span><span class="day-item-meta"><span>${fmt(iso(d.d), { weekday: "short", day: "numeric", month: "short" })}</span><span>${esc(types[d.kind])}</span></span><span class="day-item-title">${esc(d.title)}${state.dayModes[d.d] === "calm" ? " · rustig" : ""}</span><span class="day-item-meta">${esc(d.sub)}</span></span></button>`
             );
           })
           .join("")
@@ -397,8 +414,11 @@
         "<h3>Even een andere zoekopdracht.</h3><p>Zoek bijvoorbeeld op panda, Beijing of rivier, of wis de filters om alle 31 dagen terug te zien.</p>";
     }
   }
+  function plannedDay(d) {
+    return window.ChinaExtras.dayPlan(d, state.dayModes);
+  }
   function renderDetail() {
-    const d = data.days[selectedDay - 1];
+    const d = plannedDay(data.days[selectedDay - 1]);
     const s = stayFor(d.d);
     const isTravel = ["trein", "transfer", "vlucht"].includes(d.kind);
     let dayColor = "green";
@@ -406,7 +426,7 @@
     else if (isTravel) dayColor = "red";
     $("#day-detail").className = "day-detail";
     $("#day-detail").innerHTML =
-      `<header class="detail-head"><div class="detail-top"><span class="eyebrow" style="margin:0">Dag ${String(d.d).padStart(2, "0")} · ${fmt(iso(d.d), { weekday: "long", day: "numeric", month: "long" })}</span><span class="tag ${dayColor}">${esc(types[d.kind])}</span></div><h3>${esc(d.title)}</h3><p class="detail-subtitle">${esc(d.sub)}</p></header><div class="detail-body"><div class="detail-timeline">${[
+      `<header class="detail-head"><div class="detail-top"><span class="eyebrow" style="margin:0">Dag ${String(d.d).padStart(2, "0")} · ${fmt(iso(d.d), { weekday: "long", day: "numeric", month: "long" })}</span><span class="tag ${dayColor}">${esc(types[d.kind])}</span></div><h3>${esc(d.title)}</h3><p class="detail-subtitle">${esc(d.sub)}</p></header><div class="detail-body"><div class="day-pace"><div><strong>${state.dayModes[d.d] === "calm" ? "Vandaag doen we minder." : "Past het tempo bij vandaag?"}</strong><p class="caption">Een korter programma bij regen, weinig energie of een slechte nacht. Controleer zelf de voorwaarden van bezoeken die vervallen.</p></div><button class="button ${state.dayModes[d.d] === "calm" ? "primary" : "secondary"}" data-day-mode="${d.d}" aria-pressed="${state.dayModes[d.d] === "calm"}">${state.dayModes[d.d] === "calm" ? "Terug naar basisprogramma" : "Rustiger programma"}</button></div><div class="detail-timeline">${[
         ["Ochtend", d.am],
         ["Middag", d.pm],
         ["Avond", d.eve],
@@ -476,7 +496,9 @@
     });
     document.body.classList.toggle("inner-view", view !== "planning");
     if (view === "route") initMap();
+    if (view === "hotels") renderHotels();
     if (view === "boekingen") bookingLedger?.render();
+    if (view === "boeken") extras?.renderReminders();
     if (scroll)
       $("#main").scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -607,7 +629,7 @@
             return `<div class="hotel-option ${active ? "selected" : ""}"><div class="hotel-option-top"><span class="tag ${choice === "budget" ? "green" : ""}">${choice === "budget" ? "Budget" : "Comfort"}</span><strong>${euro(h.low)}–${euro(h.high)}<small>kamer / nacht · raming</small></strong></div><h4>${esc(h.hotel)}</h4><p class="hotel-area">${esc(h.area)}<br>${esc(h.room)}</p><p>${esc(h.why)}</p><details class="hotel-questions"><summary>Voor Amélie & vóór boeken</summary><p>${esc(h.check)}</p></details><div class="hotel-total"><span>${nightsText(s.nights)} · 1 kamer</span><strong>${euro(h.low * s.nights)}–${euro(h.high * s.nights)}</strong></div><div class="hotel-links"><a href="${esc(bookingURL(h))}" target="_blank" rel="noopener">Check onze data & prijs ↗</a><a href="${esc(h.url)}" target="_blank" rel="noopener">Hotelinformatie ↗</a></div><button class="button ${active ? "primary" : "secondary"} hotel-choice" data-choice="${s.id}" data-option="${choice}" aria-pressed="${active}">${active ? "✓ In ons plan" : "Kies " + (choice === "budget" ? "budget" : "comfort")}</button>${checkHTML("hotel", [s.id + "-" + choice, "Dit hotel geboekt & babybed bevestigd", "Zelf afvinken na bevestiging van dit hotel."])}</div>`;
           })
           .join("");
-        return `<article class="hotel-card" id="hotel-${s.id}"><header class="hotel-card-top"><div><p class="eyebrow">${String(i + 1).padStart(2, "0")} · ${esc(s.cn)} · ${nightsText(s.nights)}</p><h3>${esc(s.name)}</h3><p class="caption">${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))} 2027</p></div></header><div class="hotel-options">${options}${renderCustomHotel(s)}</div></article>`;
+        return `<article class="hotel-card" id="hotel-${s.id}"><header class="hotel-card-top"><div><p class="eyebrow">${String(i + 1).padStart(2, "0")} · ${esc(s.cn)} · ${nightsText(s.nights)}</p><h3>${esc(s.name)}</h3><p class="caption">${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))} 2027</p></div></header><div class="hotel-options">${options}${renderCustomHotel(s)}</div>${extras.compare(s, hotelChoice(s))}</article>`;
       })
       .join("");
   }
@@ -710,8 +732,7 @@
       "Bijv. dagkamer, optioneel Leshan en extra babytreinstoelen",
     ],
   };
-  const hotelPrice = (s) => {
-    const choice = hotelChoice(s);
+  const hotelPrice = (s, choice = hotelChoice(s)) => {
     const h = hotelOption(s, choice);
     if (choice === "custom") return h.low;
     return (
@@ -826,7 +847,11 @@
       lines.push(
         "BEGIN:VEVENT",
         "UID:" + e.id + "@china2027.reis27",
-        "DTSTAMP:20260930T120000Z",
+        "DTSTAMP:" +
+          new Date()
+            .toISOString()
+            .replace(/[-:]/g, "")
+            .replace(/\.\d{3}Z$/, "Z"),
         e.timed
           ? "DTSTART:" + e.start
           : "DTSTART;VALUE=DATE:" + e.start.replaceAll("-", ""),
@@ -838,6 +863,14 @@
       );
       if (e.location) lines.push("LOCATION:" + icsEscape(e.location));
       if (e.url) lines.push("URL:" + e.url);
+      for (const minutes of e.alarms || [])
+        lines.push(
+          "BEGIN:VALARM",
+          "ACTION:DISPLAY",
+          "DESCRIPTION:" + icsEscape(e.title),
+          "TRIGGER:-PT" + minutes + "M",
+          "END:VALARM",
+        );
       lines.push("END:VEVENT");
     }
     lines.push("END:VCALENDAR");
@@ -865,7 +898,8 @@
     );
   }
   function journeyCalendar() {
-    const events = data.days.map((d) => {
+    const events = data.days.map((original) => {
+      const d = plannedDay(original);
       const s = stayFor(d.d);
       return {
         id: "day-" + d.d,
@@ -880,6 +914,7 @@
           "Vooraf: " + d.reserve,
           "Plan B: " + d.backup,
           "Slapen: " + (s ? hotelOption(s).hotel : d.sleep),
+          ...(s ? hotelTerms(s) : []),
           ...(s && hotelChoice(s) === "custom"
             ? [
                 "Hoteladres: " + hotelOption(s).area,
@@ -900,37 +935,55 @@
     );
     toast("31 reisdagen gedownload. Open het .ics-bestand in je agenda.");
   }
-  function bookingCalendar() {
-    const events = data.trains.map((t) => {
-      const start = shift(iso(t.day), -14);
-      return {
-        id: "book-train-" + t.day,
-        start,
-        end: shift(start, 1),
-        title: "Boek China-trein D" + t.day,
-        description: `Reisdatum ${fmt(iso(t.day), { day: "numeric", month: "long", year: "numeric" })}: ${t.from} → ${t.to}.\nHuidig 15-dagenvenster inclusief reisdag. Exacte lokale vrijgavetijd en 2027-regels vooraf controleren.\n${t.note}`,
-        url: "https://www.12306.cn/en/",
-      };
-    });
-    events.push({
-      id: "book-forbidden",
-      start: "20270328T120000Z",
-      end: "20270328T123000Z",
-      timed: true,
-      title: "Boek Forbidden City voor 4 april",
-      description:
-        "Huidige opening: 28 maart 20:00 Beijing = 14:00 Nederland (CEST). Jullie zijn dan onderweg na vertrek AMS 09:50. Bereid boeken en eventuele hulp vóór vertrek voor. Venster opnieuw controleren voor 2027.",
-      url: "https://intl.dpm.org.cn/visit",
-    });
-    events.push({
-      id: "visa-check",
-      start: "2026-12-01",
-      end: "2026-12-02",
-      title: "China: visumregels 2027 controleren",
-      description:
-        "Huidige visumvrijstelling is slechts bevestigd t/m 31 december 2026. Voor alle drie paspoorten controleren; zo nodig visum aanvragen. Hongkong apart.",
-      url: "https://www.visaforchina.cn/",
-    });
+  function bookingEvents() {
+    const events = data.trains
+      .filter((t) => state.trains[trainKey(t)] !== "Geboekt")
+      .map((t) => {
+        const start = shift(iso(t.day), -14);
+        return {
+          id: "book-train-" + t.day,
+          start,
+          end: shift(start, 1),
+          title: "Boek China-trein D" + t.day,
+          description: `Reisdatum ${fmt(iso(t.day), { day: "numeric", month: "long", year: "numeric" })}: ${t.from} → ${t.to}.\nHuidig 15-dagenvenster inclusief reisdag. Exacte lokale vrijgavetijd en 2027-regels vooraf controleren.\n${t.note}`,
+          url: "https://www.12306.cn/en/",
+        };
+      });
+    if (!state.checks["attraction-forbidden"])
+      events.push({
+        id: "book-forbidden",
+        start: "20270328T120000Z",
+        end: "20270328T123000Z",
+        timed: true,
+        title: "Boek Forbidden City voor 4 april",
+        description:
+          "Huidige opening: 28 maart 20:00 Beijing = 14:00 Nederland (CEST). Jullie zijn dan onderweg na vertrek AMS 09:50. Bereid boeken en eventuele hulp vóór vertrek voor. Venster opnieuw controleren voor 2027.",
+        url: "https://intl.dpm.org.cn/visit",
+      });
+    if (!state.checks["pre-visa"])
+      events.push({
+        id: "visa-check",
+        start: "2026-12-01",
+        end: "2026-12-02",
+        title: "China: visumregels 2027 controleren",
+        description:
+          "Huidige visumvrijstelling is slechts bevestigd t/m 31 december 2026. Voor alle drie paspoorten controleren; zo nodig visum aanvragen. Hongkong apart.",
+        url: "https://www.visaforchina.cn/",
+      });
+    const pendingVisits = checks.attraction.filter(
+      ([id]) => id !== "forbidden" && !state.checks["attraction-" + id],
+    );
+    if (pendingVisits.length)
+      events.push({
+        id: "prepare-attractions",
+        start: "2027-02-14",
+        end: "2027-02-15",
+        title: "Attractietickets & tijdslotvensters controleren",
+        description:
+          "Zes weken vóór vertrek de exacte verkoopvensters, babyregistratie en voorwaarden op de officiële sites bevestigen. Openingsdagen/tijden voor 2027 zijn nog niet vastgelegd. Nog controleren: " +
+          pendingVisits.map(([, label]) => label).join("; "),
+        url: "https://daltonganger.github.io/camper-vergelijking/china-2027/#boeken",
+      });
     for (const item of bookingLedger.items()) {
       const r = bookingLedger.recordFor(item);
       if (r.status === "Geannuleerd") continue;
@@ -966,12 +1019,22 @@
           url: r.url || undefined,
         });
     }
+    return events;
+  }
+  function bookingCalendar() {
+    const days = state.reminders.leadDays || 1;
+    const events = extras.reminderEvents().map((e) => ({
+      ...e,
+      alarms: e.timed ? [days * 1440, 60] : [days * 1440],
+    }));
     download(
       calendar(events, "China 2027 · boekingsmomenten"),
       "china-2027-boekingsmomenten.ics",
       "text/calendar;charset=utf-8",
     );
-    toast("Boekingsmomenten en ingevulde deadlines gedownload.");
+    toast(
+      "Herinneringen met agenda-meldingen gedownload. Controleer meldingen na import.",
+    );
   }
   function customHotelFingerprint(s) {
     const own = state.customHotels[s.id];
@@ -980,13 +1043,16 @@
       value = Math.imul(value ^ c.charCodeAt(0), 16777619);
     return (value >>> 0).toString(16);
   }
+  function hotelBookingId(s, choice = hotelChoice(s)) {
+    const suffix =
+      choice === "custom" ? "custom-" + customHotelFingerprint(s) : choice;
+    return "hotel-" + s.id + "-" + suffix;
+  }
   function bookingItems() {
     const hotels = data.stays.map((s) => {
       const choice = hotelChoice(s);
-      const suffix =
-        choice === "custom" ? "custom-" + customHotelFingerprint(s) : choice;
       return {
-        id: "hotel-" + s.id + "-" + suffix,
+        id: hotelBookingId(s, choice),
         type: "hotel",
         label: s.name + " · " + hotelOption(s).hotel,
         day: s.start,
@@ -1036,6 +1102,17 @@
       },
     ];
   }
+  function hotelTerms(s) {
+    const terms = state.hotelDetails[hotelBookingId(s)] || {};
+    return [
+      ["Ontbijt", terms.breakfast],
+      ["Babybed", terms.cot],
+      ["Ligging", terms.location],
+      ["Annulering", terms.cancellation],
+    ]
+      .filter(([, value]) => value)
+      .map(([label, value]) => label + ": " + value);
+  }
   function customHotelPrintInfo(s) {
     if (hotelChoice(s) !== "custom") return "";
     const h = hotelOption(s);
@@ -1053,8 +1130,20 @@
       })
       .join("");
     $("#print-plan").innerHTML =
-      `<h1>China 2027 · samen, per spoor</h1><p>Ruben, Martine & Amélie · 28 maart – 27 april 2027 · 31 reisdagen · 28 hotelnachten</p><p>Heen: SWISS · AMS 28 maart 09:50 → ZRH → PVG 29 maart 06:30.<br>Terug: Cathay Pacific + Lufthansa · HKG 26 april 23:55 → FRA → AMS 27 april 10:35.</p><p>Dagindeling is flexibel; tijden zijn lokale suggesties. Exacte treinverbindingen, hotelprijzen en reserveringen nog bevestigen. Huidige boekingsregels gecontroleerd 30 september 2026.</p><h2>Hotels</h2><table><thead><tr><th>Plek / hotel</th><th>Verblijf</th><th>Nachten</th><th>Kamerbudget / nacht</th></tr></thead><tbody>${data.stays.map((s) => `<tr><td>${esc(s.name)} · ${esc(hotelOption(s).hotel)}${customHotelPrintInfo(s)}</td><td>${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))}</td><td>${s.nights}</td><td>${preciseEuro(hotelPrice(s))} · raming / eigen invoer</td></tr>`).join("")}</tbody></table><h2>Dagprogramma</h2>${data.days
-        .map((d) => {
+      `<h1>China 2027 · samen, per spoor</h1><p>Ruben, Martine & Amélie · 28 maart – 27 april 2027 · 31 reisdagen · 28 hotelnachten</p><p>Heen: SWISS · AMS 28 maart 09:50 → ZRH → PVG 29 maart 06:30.<br>Terug: Cathay Pacific + Lufthansa · HKG 26 april 23:55 → FRA → AMS 27 april 10:35.</p><p>Dagindeling is flexibel; tijden zijn lokale suggesties. Exacte treinverbindingen, hotelprijzen en reserveringen nog bevestigen. Huidige boekingsregels gecontroleerd 30 september 2026.</p><h2>Hotels</h2><table><thead><tr><th>Plek / hotel</th><th>Verblijf</th><th>Nachten</th><th>Kamerbudget / nacht</th></tr></thead><tbody>${data.stays
+        .map(
+          (s) =>
+            `<tr><td>${esc(s.name)} · ${esc(hotelOption(s).hotel)}${customHotelPrintInfo(s)}${hotelTerms(
+              s,
+            )
+              .map((t) => "<br>" + esc(t))
+              .join(
+                "",
+              )}</td><td>${fmt(iso(s.start))} – ${fmt(iso(s.start + s.nights))}</td><td>${s.nights}</td><td>${preciseEuro(hotelPrice(s))} · raming / eigen invoer</td></tr>`,
+        )
+        .join("")}</tbody></table><h2>Dagprogramma</h2>${data.days
+        .map((original) => {
+          const d = plannedDay(original);
           const s = stayFor(d.d);
           return `<article class="print-day"><h3>D${d.d} · ${fmt(iso(d.d), { weekday: "long", day: "numeric", month: "long" })} · ${esc(d.title)}</h3><p><b>Ochtend:</b> ${esc(d.am)}</p><p><b>Middag:</b> ${esc(d.pm)}</p><p><b>Avond:</b> ${esc(d.eve)}</p><p><b>Amélie:</b> ${esc(d.baby)}</p><p><b>Vooraf:</b> ${esc(d.reserve)}</p><p><b>Plan B:</b> ${esc(d.backup)}</p><p><b>Slapen:</b> ${esc(s ? hotelOption(s).hotel : d.sleep)}</p><p><b>Uitgavenindicatie:</b> ${esc(d.cost)}</p>${state.notes[d.d] ? `<p class="print-note"><b>Eigen notitie:</b> ${esc(state.notes[d.d])}</p>` : ""}</article>`;
         })
@@ -1068,6 +1157,52 @@
       .map((s) => `<option value="${s.id}">${esc(s.name)}</option>`)
       .join("") + '<option value="reis">Onderweg</option>',
   );
+  extras = window.ChinaExtras.create({
+    getState: () => state,
+    getHotel: hotelOption,
+    getHotelId: hotelBookingId,
+    priceFor: hotelPrice,
+    getEvents: bookingEvents,
+    esc,
+    euro: preciseEuro,
+    fmt,
+    iso,
+    onSave(update) {
+      if (update.hotelId) {
+        state.hotelDetails[update.hotelId] = update.details;
+        if (update.price)
+          state.hotels[update.price.stay + "-" + update.price.choice] =
+            update.price.price;
+        save();
+        renderHotels();
+        renderBudget();
+        renderDetail();
+        const stay = data.stays.find((s) =>
+          ["budget", "comfort", "custom"].some(
+            (choice) =>
+              (choice !== "custom" || state.customHotels[s.id]) &&
+              hotelBookingId(s, choice) === update.hotelId,
+          ),
+        );
+        if (stay) {
+          const comparison = $("#hotel-" + stay.id + " .hotel-comparison");
+          comparison.open = true;
+          comparison.querySelector("summary").focus({ preventScroll: true });
+        }
+        toast("Hotelprijs en voorwaarden opgeslagen.");
+      } else if (update.reminder) {
+        state.reminders["done-" + update.reminder] = update.done;
+        save();
+        extras.renderReminders();
+      } else {
+        state.reminders.leadDays = update.leadDays;
+        save();
+        toast(
+          "Herinnering ingesteld. Exporteer de agenda opnieuw om deze keuze mee te nemen.",
+        );
+      }
+    },
+  });
   bookingLedger = window.ChinaBookings.create({
     getState: () => state,
     getItems: bookingItems,
@@ -1087,10 +1222,12 @@
         renderChecks();
       }
       save();
+      extras.renderReminders();
       toast("Boeking opgeslagen. Bedragen en deadlines zijn bijgewerkt.");
     },
   });
   bookingLedger.render();
+  extras.renderReminders();
   renderChecks();
   renderHotels();
   renderTrains();
@@ -1109,10 +1246,16 @@
   $("#kind-filter").addEventListener("change", renderList);
   document.addEventListener("click", (event) => {
     const target = event.target.closest(
-      "[data-view],[data-day],[data-next],[data-hotel],[data-route-day],[data-video],[data-choice],[data-preset],#clear-filters",
+      "[data-day-mode],[data-view],[data-day],[data-next],[data-hotel],[data-route-day],[data-video],[data-choice],[data-preset],#clear-filters",
     );
     if (!target) return;
-    if (target.dataset.choice || target.dataset.preset) {
+    if (target.dataset.dayMode) {
+      const day = target.dataset.dayMode;
+      if (state.dayModes[day] === "calm") delete state.dayModes[day];
+      else state.dayModes[day] = "calm";
+      save();
+      renderList();
+    } else if (target.dataset.choice || target.dataset.preset) {
       if (target.dataset.choice)
         state.choices[target.dataset.choice] = target.dataset.option;
       else
@@ -1223,12 +1366,14 @@
       }
       el.closest("label").classList.toggle("checked", el.checked);
       save();
+      extras.renderReminders();
     }
     if (el.dataset.train) {
       state.trains[el.dataset.train] = el.value;
       const booking = state.bookings["train-" + el.dataset.train];
       if (booking) booking.status = el.value;
       save();
+      extras.renderReminders();
     }
   });
   document.addEventListener("input", (event) => {
@@ -1291,6 +1436,9 @@
         "choices",
         "customHotels",
         "bookings",
+        "hotelDetails",
+        "dayModes",
+        "reminders",
         "budget",
       ])
         state[group] = { ...state[group], ...restored[group] };
@@ -1301,6 +1449,7 @@
       renderBudget();
       renderList();
       bookingLedger.render();
+      extras.renderReminders();
       toast("Back-up toegevoegd; andere eigen gegevens zijn behouden.");
     } catch {
       toast("Deze back-up is niet geldig. Kies een China 2027-back-upbestand.");
@@ -1323,6 +1472,7 @@
     renderBudget();
     renderList();
     bookingLedger.render();
+    extras.renderReminders();
   }
   document.addEventListener("input", (event) => {
     const form = event.target.closest(
@@ -1383,6 +1533,14 @@
       $("#save-status").textContent = text;
     },
   });
+  setInterval(() => {
+    if (
+      !document.hidden &&
+      currentView === "boeken" &&
+      !document.activeElement?.matches("input,textarea,select")
+    )
+      extras.renderReminders();
+  }, 60000);
   if (storageOK)
     $("#save-status").textContent =
       "Eigen wijzigingen worden automatisch op dit apparaat bewaard.";
