@@ -12,6 +12,8 @@ Zelfstandige statische planner binnen de bestaande GitHub Pages-site. Open `chin
 
 De oorspronkelijke route `spoor27` in `routes-data.js` blijft behouden als vergelijkingsscenario. Hoofdnavigatie en die route verwijzen naar de nieuwe planner.
 
+De scripts en `style.css` worden met een versiequery geladen (`?v=extra567-20261001`). Verhoog die in `index.html` bij elke publicatie, anders houdt een browser die de site al eerder opende de oude bestanden uit de cache naast de nieuwe HTML — en dan past bijvoorbeeld de treintabel niet meer bij de kolommen.
+
 Prijsstatus: het vluchtbedrag komt van de reizigers. Hotel-, trein-, eet-, transfer- en activiteitenbedragen zijn expliciete planningsramingen; geen geverifieerde offertes voor maart/april 2027. Eigen stoel voor Amélie binnen het opgegeven vliegbedrag is nog onbevestigd. De oude €94–115 is per volwassene per dag, over 27 dagen met twee volwassenen. Nieuwe totalen gebruiken 31 dagen en 28 hotelnachten. Hotelkeuzes hebben afzonderlijke eigen prijsvelden, zodat wisselen een eerdere eigen offerte niet verwijdert.
 
 Reserveringsvensters zijn gecontroleerd op 30 september 2026; treinvenster 15 dagen inclusief vertrekdag, Forbidden City zeven dagen vooruit om 20:00 Beijing. In 2027 opnieuw controleren. Exact treinschema en stationgebonden vrijgavetijden nog vastleggen. Visumvrijstelling voor 2027 is niet als bevestigd gepresenteerd.
