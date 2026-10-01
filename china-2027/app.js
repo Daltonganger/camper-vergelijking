@@ -244,7 +244,7 @@
       [
         "visa",
         "Visum-/visumvrijregels voor 2027 controleren",
-        "In december 2026 en opnieuw 6–8 weken vóór vertrek; Hongkong apart.",
+        "Max 30 dagen per binnenkomst; de reis van 27 dagen past daarbinnen. In december 2026 en opnieuw 6–8 weken vóór vertrek; Hongkong apart. Komt er in januari 2027 geen verlenging, vraag dan L-visums aan voor alle drie.",
       ],
       [
         "hotels",
@@ -259,7 +259,7 @@
       [
         "rail",
         "12306-account en alle passagiers voorbereiden",
-        "Paspoortverificatie, babyregistratie en betalen testen vóór de verkoopvensters.",
+        "Registreer alle drie de paspoorten ruim vooraf: verificatie duurt dagen. Zet de gratis-kindregistratie van Amélie op het ticket, test betalen en zet een alarm op de vrijgavetijd van elk station.",
       ],
       [
         "payments",
@@ -281,7 +281,7 @@
       [
         "forbidden",
         "Forbidden City · bezoek 4 april",
-        "28 maart 20:00 Beijing / 14:00 Nederland: huidige opening. Ook Amélie registreren; hulp vooraf regelen.",
+        "28 maart 20:00 Beijing / 14:00 Nederland: huidige opening. Maximaal 40.000 per dag, geen verkoop aan de deur, maandag dicht behalve op feestdagen. Neem het originele paspoort mee waarmee geboekt is; ook Amélie registreren en hulp vooraf regelen.",
       ],
       [
         "tiananmen",
@@ -290,28 +290,28 @@
       ],
       [
         "mutianyu",
-        "Mutianyu · bezoek 5 april",
-        "Chauffeur, gesloten kabelbaan en entree vooraf; extra drukte rond Qingming.",
+        "Mutianyu · bezoek 6 april",
+        "Chauffeur, gesloten kabelbaan en entree vooraf; bewust op dinsdag 6 april, buiten het Qingming-blok van 3–5 april.",
       ],
       [
         "terracotta",
         "Terracottaleger · bezoek 8 april",
-        "Uiterlijk een week vooraf verkoopvenster, ticket op naam en transfer controleren.",
+        "¥120 in het piekseizoen met tijdslot, kinderen onder 1,20 m gratis, ticket op naam. Uiterlijk een week vooraf verkoopvenster en transfer controleren.",
       ],
       [
         "pandas",
         "Panda Base · bezoek 10 april",
-        "Vooraf tijdslot, actuele openingstijd en transport regelen.",
+        "Vooraf een tijdslot op naam boeken, met dezelfde paspoorten bij de ingang. April is piek: bij opening gaan.",
       ],
       [
         "park",
         "Zhangjiajie National Forest Park · 14–15 april",
-        "Parkentree, lift, kabelbaan en shuttlecombinatie controleren.",
+        "Kaartje circa ¥225–228, vier dagen geldig met face-scan; parkbussen inbegrepen, lift en kabelbaan apart. Paspoort mee en geen grote koffer het park in.",
       ],
       [
         "tianmen",
         "Tianmen / weerbuffer · 16 april",
-        "Apart tijdslot en actuele kabelbaan-/roltraproute. Vroege trein D21? Dan rust voorrang. Grand Canyon blijft tweede keuze.",
+        "Apart tijdslot en actuele kabelbaan-/roltraproute; 3–5 dagen vooruit boeken. Grand Canyon blijft tweede keuze.",
       ],
     ],
     pack: [
@@ -426,7 +426,7 @@
     else if (isTravel) dayColor = "red";
     $("#day-detail").className = "day-detail";
     $("#day-detail").innerHTML =
-      `<header class="detail-head"><div class="detail-top"><span class="eyebrow" style="margin:0">Dag ${String(d.d).padStart(2, "0")} · ${fmt(iso(d.d), { weekday: "long", day: "numeric", month: "long" })}</span><span class="tag ${dayColor}">${esc(types[d.kind])}</span></div><h3>${esc(d.title)}</h3><p class="detail-subtitle">${esc(d.sub)}</p></header><div class="detail-body"><div class="day-pace"><div><strong>${state.dayModes[d.d] === "calm" ? "Vandaag doen we minder." : "Past het tempo bij vandaag?"}</strong><p class="caption">Een korter programma bij regen, weinig energie of een slechte nacht. Controleer zelf de voorwaarden van bezoeken die vervallen.</p></div><button class="button ${state.dayModes[d.d] === "calm" ? "primary" : "secondary"}" data-day-mode="${d.d}" aria-pressed="${state.dayModes[d.d] === "calm"}">${state.dayModes[d.d] === "calm" ? "Terug naar basisprogramma" : "Rustiger programma"}</button></div><div class="detail-timeline">${[
+      `<header class="detail-head"><div class="detail-top"><span class="eyebrow" style="margin:0">Dag ${String(d.d).padStart(2, "0")} · ${fmt(iso(d.d), { weekday: "long", day: "numeric", month: "long" })}</span><span class="tag ${dayColor}">${esc(types[d.kind])}</span></div><h3>${esc(d.title)}</h3><p class="detail-subtitle">${esc(d.sub)}</p></header><div class="detail-body">${s && s.klimaat ? `<p class="day-weather"><span class="tag weather">☀ ${s.klimaat.d}° · ☾ ${s.klimaat.n}°</span><span>${esc(s.weer || "")}</span></p>` : ""}<div class="day-pace"><div><strong>${state.dayModes[d.d] === "calm" ? "Vandaag doen we minder." : "Past het tempo bij vandaag?"}</strong><p class="caption">Een korter programma bij regen, weinig energie of een slechte nacht. Controleer zelf de voorwaarden van bezoeken die vervallen.</p></div><button class="button ${state.dayModes[d.d] === "calm" ? "primary" : "secondary"}" data-day-mode="${d.d}" aria-pressed="${state.dayModes[d.d] === "calm"}">${state.dayModes[d.d] === "calm" ? "Terug naar basisprogramma" : "Rustiger programma"}</button></div><div class="detail-timeline">${[
         ["Ochtend", d.am],
         ["Middag", d.pm],
         ["Avond", d.eve],
@@ -637,7 +637,7 @@
     $("#train-rows").innerHTML = data.trains
       .map(
         (t) =>
-          `<tr><td>D${t.day}<small>${fmt(iso(t.day), { weekday: "short", day: "numeric", month: "short" })}</small></td><td><strong>${esc(t.from)}<br>${esc(t.to)}</strong><small>${esc(t.note)}</small></td><td>${esc(t.time)}<br>${euro(t.low)}–${euro(t.high)}<small>2e klas · raming per volwassene</small></td><td><span class="book-date">${fmt(shift(iso(t.day), -14))}</span><small>2027 · lokale vrijgavetijd nog checken</small></td><td><label class="sr-only" for="train-${t.day}">Status trein dag ${t.day}</label><select id="train-${t.day}" data-train="${trainKey(t)}">${["Nog boeken", "Aangevraagd", "Geboekt"].map((v) => `<option ${state.trains[trainKey(t)] === v ? "selected" : ""}>${v}</option>`).join("")}</select></td></tr>`,
+          `<tr><td>D${t.day}<small>${fmt(iso(t.day), { weekday: "short", day: "numeric", month: "short" })}</small></td><td><strong>${esc(t.from)}<br>${esc(t.to)}</strong><small>${esc(t.note)}</small></td><td>${esc(t.time)}<br>${euro(t.low)}–${euro(t.high)}<small>2e klas · raming per volwassene</small></td><td><span class="book-date">${fmt(shift(iso(t.day), -14))}</span><small>12306-venster: 15 dagen</small></td><td>${t.release ? `<span class="book-date">${esc(t.release)}</span><small>Beijing-tijd</small>` : `<small>Opzoeken in de 12306-app: het vrijgavetijdstip verschilt per station.</small>`}</td><td><label class="sr-only" for="train-${t.day}">Status trein dag ${t.day}</label><select id="train-${t.day}" data-train="${trainKey(t)}">${["Nog boeken", "Aangevraagd", "Geboekt"].map((v) => `<option ${state.trains[trainKey(t)] === v ? "selected" : ""}>${v}</option>`).join("")}</select></td></tr>`,
       )
       .join("");
   }
@@ -645,7 +645,7 @@
     $("#route-stops").innerHTML = data.stays
       .map(
         (s, i) =>
-          `<button class="route-stop" data-route-day="${s.start}"><span class="stop-number">${String(i + 1).padStart(2, "0")}</span><h3>${esc(s.name)}</h3><p>${esc(s.highlight)}</p><span class="tag green">${nightsText(s.nights)} · ${fmt(iso(s.start))}</span></button>`,
+          `<button class="route-stop" data-route-day="${s.start}"><span class="stop-number">${String(i + 1).padStart(2, "0")}</span><h3>${esc(s.name)}</h3><p>${esc(s.highlight)}</p><span class="tag green">${nightsText(s.nights)} · ${fmt(iso(s.start))}</span>${s.klimaat ? `<span class="tag weather" title="${esc(s.weer || "")}">☀ ${s.klimaat.d}° · ☾ ${s.klimaat.n}°</span>` : ""}</button>`,
       )
       .join("");
   }
@@ -935,17 +935,34 @@
     );
     toast("31 reisdagen gedownload. Open het .ics-bestand in je agenda.");
   }
+  // 12306 geeft per station een vrijgavetijd in Beijing-tijd (UTC+8, geen zomertijd).
+  function releaseMoment(date, time, minutes = 0) {
+    const m = /^(\d{2}):(\d{2})$/.exec(time || "");
+    if (!m) return "";
+    const total = Number(m[1]) * 60 + Number(m[2]) - 480 + minutes;
+    const day = shift(date, Math.floor(total / 1440));
+    const rest = ((total % 1440) + 1440) % 1440;
+    return (
+      day.replaceAll("-", "") +
+      "T" +
+      String(Math.floor(rest / 60)).padStart(2, "0") +
+      String(rest % 60).padStart(2, "0") +
+      "00Z"
+    );
+  }
   function bookingEvents() {
     const events = data.trains
       .filter((t) => state.trains[trainKey(t)] !== "Geboekt")
       .map((t) => {
         const start = shift(iso(t.day), -14);
+        const open = releaseMoment(start, t.release);
         return {
           id: "book-train-" + t.day,
-          start,
-          end: shift(start, 1),
+          start: open || start,
+          end: open ? releaseMoment(start, t.release, 30) : shift(start, 1),
+          timed: Boolean(open),
           title: "Boek China-trein D" + t.day,
-          description: `Reisdatum ${fmt(iso(t.day), { day: "numeric", month: "long", year: "numeric" })}: ${t.from} → ${t.to}.\nHuidig 15-dagenvenster inclusief reisdag. Exacte lokale vrijgavetijd en 2027-regels vooraf controleren.\n${t.note}`,
+          description: `Reisdatum ${fmt(iso(t.day), { day: "numeric", month: "long", year: "numeric" })}: ${t.from} → ${t.to}.\nHuidig 15-dagenvenster inclusief reisdag. ${t.release ? `Vrijgave van de tickets: ${t.release} Beijing-tijd op ${fmt(start, { day: "numeric", month: "long" })}.` : "Vrijgavetijd van dit station nog opzoeken in de 12306-app."} 2027-regels vooraf controleren.\n${t.note}`,
           url: "https://www.12306.cn/en/",
         };
       });
@@ -1149,7 +1166,7 @@
         })
         .join(
           "",
-        )}<div class="print-booking"><h2>Boekingskalender</h2><table><thead><tr><th>Treinreis</th><th>Reisdatum</th><th>Boeken vanaf</th><th>Status</th></tr></thead><tbody>${data.trains.map((t) => `<tr><td>${esc(t.from)} → ${esc(t.to)}</td><td>${fmt(iso(t.day))}</td><td>${fmt(shift(iso(t.day), -14))}</td><td>${esc(state.trains[trainKey(t)] || "Nog boeken")}</td></tr>`).join("")}</tbody></table><p>Treinvenster: 15 dagen inclusief de reisdag; stationgebonden vrijgavetijd nog controleren. Forbidden City voor 4 april: 28 maart 20:00 Beijing / 14:00 Nederland. Visumvrij China voor 2027 nog niet bevestigd.</p><h2>Budget</h2><p>${euro(b.total)} inclusief ingevulde vluchten · 10% reserve over landkosten inbegrepen. Hotel-, trein-, transfer- en activiteitenbedragen zijn ramingen of eigen invoer.</p>${bookings ? `<h2>Onze boekingen</h2><p>Annuleringsdeadlines in Chinatijd (UTC+8).</p><table><thead><tr><th>Boeking</th><th>Status</th><th>Totaal</th><th>Betaald</th><th>Nummer</th><th>Deadline</th></tr></thead><tbody>${bookings}</tbody></table>` : ""}<h2>Voor vertrek</h2>${checks.pre.map(([id, label]) => `<p>${state.checks["pre-" + id] ? "☑" : "☐"} ${esc(label)}</p>`).join("")}<h2>Inpakken</h2>${checks.pack.map(([id, label]) => `<p>${state.checks["pack-" + id] ? "☑" : "☐"} ${esc(label)}</p>`).join("")}</div>`;
+        )}<div class="print-booking"><h2>Boekingskalender</h2><table><thead><tr><th>Treinreis</th><th>Reisdatum</th><th>Boeken vanaf</th><th>Vrijgave (Beijing)</th><th>Status</th></tr></thead><tbody>${data.trains.map((t) => `<tr><td>${esc(t.from)} → ${esc(t.to)}</td><td>${fmt(iso(t.day))}</td><td>${fmt(shift(iso(t.day), -14))}</td><td>${t.release ? esc(t.release) : "—"}</td><td>${esc(state.trains[trainKey(t)] || "Nog boeken")}</td></tr>`).join("")}</tbody></table><p>Treinvenster: 15 dagen inclusief de reisdag. De vrijgavetijd verschilt per station (officiële 12306-waarden, najaar 2026): Shanghai Hongqiao 13:45, Hangzhou East 10:45, Beijing West 08:00, Xi'an North 10:30, Chengdu East 08:45, Zhangjiajie West 16:30, Guangzhou South 10:15 en Hong Kong West Kowloon 08:00. Voor Chongqing en Guilin nog opzoeken; in 2027 opnieuw controleren. Forbidden City voor 4 april: 28 maart 20:00 Beijing / 14:00 Nederland. Visumvrij China voor 2027 nog niet bevestigd.</p><h2>Budget</h2><p>${euro(b.total)} inclusief ingevulde vluchten · 10% reserve over landkosten inbegrepen. Hotel-, trein-, transfer- en activiteitenbedragen zijn ramingen of eigen invoer.</p>${bookings ? `<h2>Onze boekingen</h2><p>Annuleringsdeadlines in Chinatijd (UTC+8).</p><table><thead><tr><th>Boeking</th><th>Status</th><th>Totaal</th><th>Betaald</th><th>Nummer</th><th>Deadline</th></tr></thead><tbody>${bookings}</tbody></table>` : ""}<h2>Voor vertrek</h2>${checks.pre.map(([id, label]) => `<p>${state.checks["pre-" + id] ? "☑" : "☐"} ${esc(label)}</p>`).join("")}<h2>Temperaturen in april</h2>${data.stays.map((s) => `<p>${esc(s.name)}: ${s.klimaat.d}° overdag · ${s.klimaat.n}° ’s nachts. ${esc(s.weer)}</p>`).join("")}<h2>Inpakken</h2>${checks.pack.map(([id, label]) => `<p>${state.checks["pack-" + id] ? "☑" : "☐"} ${esc(label)}</p>`).join("")}</div>`;
   }
   $("#city-filter").insertAdjacentHTML(
     "beforeend",

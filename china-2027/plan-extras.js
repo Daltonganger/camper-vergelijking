@@ -59,14 +59,14 @@
       "Rustig diner. Een nieuw paleisbezoek alleen met een nieuw bevestigd tijdslot; D9 en de trein blijven staan.",
     ],
     9: [
-      "Rustig ontbijten en de Muur-uitstap overslaan als weer of energie tegenvalt.",
-      "Hotelpauze en een klein lokaal rondje bij droog weer.",
-      "Vroeg eten. Verplaatsen naar D10 kan uitsluitend na bevestiging van tickets en chauffeur.",
-    ],
-    10: [
       "Een korte buurtwandeling of alleen ontbijten in het hotel.",
       "Dutje en een rustige lunch; Temple of Heaven, hutongs en Summer Palace hoeven vandaag niet.",
-      "Diner vlakbij en rustig inpakken voor Xi’an.",
+      "Diner vlakbij en een rustige avond.",
+    ],
+    10: [
+      "Rustig ontbijten en de Muur-uitstap overslaan als weer of energie tegenvalt.",
+      "Hotelpauze en een klein lokaal rondje bij droog weer.",
+      "Vroeg eten en rustig inpakken voor Xi’an. De muur halen we op een andere reis in.",
     ],
     11: [
       "Uitchecken en naar Beijing West voor de trein naar Xi’an North.",
@@ -116,11 +116,11 @@
     20: [
       "Rustig ontbijten en de bagage klaarzetten. Geen Tianmen of Grand Canyon.",
       "Hotelrust en hooguit een kort dorpsrondje; bevestig de transfer naar de trein van morgen.",
-      "Vroeg eten en slapen, zeker als de D21-trein vroeg vertrekt.",
+      "Eten en slapen. De trein van morgen vertrekt rond het middaguur, dus een rustige start kan.",
     ],
     21: [
-      "Alleen de geplande stationtransfer en lange treinrit naar Guilin. Trein en eventueel vroege start blijven staan.",
-      "Ruime overstap indien nodig; daarna de vooraf geregelde transfer naar Yangshuo.",
+      "Alleen de transfer naar Zhangjiajie West en de lange treinrit naar Guilin North. De trein van 12:02 en de transfer blijven staan.",
+      "Rechtstreekse rit; daarna de vooraf geregelde transfer naar Yangshuo.",
       "Late check-in en maaltijd bij het hotel laten regelen. Geen uitstap meer.",
     ],
     22: [

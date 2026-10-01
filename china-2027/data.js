@@ -33,6 +33,8 @@ window.CHINA2027 = {
         "Babybed, rustige rookvrije kamer en vroege toegang na aankomst om 06:30 schriftelijk aanvragen. Gegarandeerde vroege check-in kan een extra nacht kosten.",
       highlight: "De Bund, tuinen en een eerste kom noedels.",
       image: "shanghai",
+      klimaat: { d: 20, n: 12 },
+      weer: "April: rond 20 °C overdag en 12 °C ’s nachts, vaak grijs met af en toe motregen.",
     },
     {
       id: "hangzhou",
@@ -63,6 +65,8 @@ window.CHINA2027 = {
       check:
         "Babybed en rookvrije kamer aanvragen. Ontbijt, totale kamerprijs en annuleringsvoorwaarden controleren.",
       highlight: "Van skyline naar theegroene heuvels.",
+      klimaat: { d: 22, n: 12 },
+      weer: "Zachter dan Shanghai. West Lake in lichte regen of ochtendmist is juist op zijn mooist.",
     },
     {
       id: "beijing",
@@ -93,6 +97,8 @@ window.CHINA2027 = {
       check:
         "Babybed, rustige kamer en privétransfer naar Mutianyu met passend kinderzitje bevestigen. Qingming kan prijzen en drukte verhogen.",
       highlight: "Keizerlijke daken. Een muur tot aan de horizon.",
+      klimaat: { d: 22, n: 7 },
+      weer: "Grote verschillen: 22 °C overdag, 7 °C ’s nachts. Begin april kans op een zandstorm uit Mongolië.",
     },
     {
       id: "xian",
@@ -123,6 +129,8 @@ window.CHINA2027 = {
       check:
         "Vraag naar babybed, rustige verdieping en een chauffeur met kinderzitje voor de museumdag.",
       highlight: "Een leger van klei, een stad vol verhalen.",
+      klimaat: { d: 22, n: 10 },
+      weer: "Droog en zonnig voorjaar: rond 22 °C overdag en 10 °C ’s nachts.",
     },
     {
       id: "chengdu",
@@ -153,6 +161,8 @@ window.CHINA2027 = {
       check:
         "Vraag naar een aparte slaapruimte, eigen wasmachine, babybed en de rit naar de Panda Base.",
       highlight: "Panda’s in de ochtend. Thee in de middag.",
+      klimaat: { d: 24, n: 14 },
+      weer: "Zacht en vochtig: 24 °C overdag, 14 °C ’s nachts, vaak grijs met lichte regen.",
     },
     {
       id: "chongqing",
@@ -183,6 +193,8 @@ window.CHINA2027 = {
       check:
         "Beide stationstransfers vastleggen, inclusief exact station, kinderzitje en de volgende ochtend vertrektijd.",
       highlight: "Een futuristische stad die ’s avonds aangaat.",
+      klimaat: { d: 23, n: 15 },
+      weer: "Warm en vochtig, rond 23 °C — de avond aan de rivier is aangenaam.",
     },
     {
       id: "zhangjiajie",
@@ -214,6 +226,8 @@ window.CHINA2027 = {
         "Niet verwarren met de Hampton bij Tianmen in de stad. Transfer Zhangjiajie West–Wulingyuan en eventuele Tianmen-dag vooraf regelen.",
       highlight: "Vier nachten tussen de Avatarbergen.",
       image: "zhangjiajie",
+      klimaat: { d: 20, n: 12 },
+      weer: "Het park ligt hoger en is natter en koeler dan de stad; mist hoort erbij. Reken op één dag zonder uitzicht.",
     },
     {
       id: "yangshuo",
@@ -245,6 +259,8 @@ window.CHINA2027 = {
         "Babybed, trapvrije bereikbaarheid, transfers en eetmogelijkheden vragen. Water dichtbij: Amélie steeds onder toezicht.",
       highlight: "Karstbergen, rivierlicht en nergens haast.",
       image: "yangshuo",
+      klimaat: { d: 24, n: 17 },
+      weer: "De natste stop: korte hevige buien bij 24 °C. Mei en juni zijn nog natter.",
     },
     {
       id: "longji",
@@ -275,6 +291,8 @@ window.CHINA2027 = {
       check:
         "Trappen naar het hotel: portier, bagagevervoer, laatste looptraject en kinderbed bevestigen. Houd de grote koffer zo mogelijk bij de chauffeur of in opslag.",
       highlight: "Wakker worden boven de rijstterrassen.",
+      klimaat: { d: 21, n: 13 },
+      weer: "Op 600–1.100 meter: koeler en vochtig, ’s ochtends vaak mist, natte stenen trappen.",
     },
     {
       id: "guangzhou",
@@ -286,8 +304,8 @@ window.CHINA2027 = {
         high: 125,
         url: "https://all.accor.com/hotel/C054/index.en.shtml",
         why: "Het voordeligere alternatief midden in de stad, met een kort avondrondje rond Beijing Road. Ook deze prijs is een raming, geen offerte voor 23 april.",
-        check:
-          "Babybed, rookvrije kamer, bagageopslag na checkout en beide stationstransfers bevestigen. Waarschijnlijk Canton Fair-periode: 2027-data en totaalprijs eerst controleren.",
+      check:
+        "Babybed, rookvrije kamer, bagageopslag na checkout en beide stationstransfers bevestigen. 23–24 april is naar verwachting de opening van Canton Fair fase 2: reken op twee tot drie keer de normale kamerprijs en boek ruim vooruit. De officiële 2027-fairdata zijn nog niet gepubliceerd.",
       },
       name: "Guangzhou / Kanton",
       cn: "广州",
@@ -303,8 +321,10 @@ window.CHINA2027 = {
       url: "https://www.ihg.com/voco/hotels/us/en/guangzhou/canvc/hoteldetail",
       why: "Een comfortabele nacht in het oude Kanton, handig voor Shamian en Kantonese dim sum.",
       check:
-        "Babybed, ontbijt voor twee, bagageopslag en transfers met kinderzitje bevestigen. Canton Fair kan de prijs verhogen; de 2027-offerte gaat vóór deze raming.",
+        "Babybed, ontbijt voor twee, bagageopslag en transfers met kinderzitje bevestigen. 23–24 april valt naar verwachting in fase 2 van de Canton Fair (patroon 2026: 15–19 april, 23–27 april en 1–5 mei); tijdens de beurs gaan hotelprijzen in Kanton twee tot drie keer omhoog en raken kamers uitverkocht. Nu boeken, niet in 2027.",
       highlight: "Eén nacht Kanton. Dim sum en een vleugje oud China.",
+      klimaat: { d: 26, n: 19 },
+      weer: "Al zomers: 26 °C overdag, vochtig, met zware buien.",
     },
     {
       id: "hongkong",
@@ -335,6 +355,8 @@ window.CHINA2027 = {
       check:
         "Babybed, bagageopslag op 26 april, dagkamer of late checkout aanvragen. Controleer of 10% servicekosten en 3% accommodation tax in de getoonde prijs zitten.",
       highlight: "Nog één skyline. En dan samen naar huis.",
+      klimaat: { d: 26, n: 21 },
+      weer: "Warm en vochtig, rond 26 °C, met buien; ook ’s avonds zacht.",
     },
   ],
   trains: [
@@ -343,6 +365,7 @@ window.CHINA2027 = {
       from: "Shanghai Hongqiao 上海虹桥",
       to: "Hangzhou East 杭州东",
       time: "0u45–1u15",
+      release: "13:45",
       low: 8,
       high: 15,
       note: "Zoek op Hongqiao, niet op het centrale Shanghai-station. Na de trein een korte hoteltransfer.",
@@ -352,6 +375,7 @@ window.CHINA2027 = {
       from: "Hangzhou East 杭州东",
       to: "Beijing South 北京南",
       time: "4u45–6u30",
+      release: "10:45",
       low: 75,
       high: 110,
       note: "Voorkeur: rechtstreekse ochtendtrein. Extra drukte rond Qingming; boek bij opening.",
@@ -361,6 +385,7 @@ window.CHINA2027 = {
       from: "Beijing West 北京西",
       to: "Xi’an North 西安北",
       time: "4u10–6u",
+      release: "08:00",
       low: 60,
       high: 90,
       note: "Let op: vertrek waarschijnlijk vanaf Beijing West, dus een ander station dan bij aankomst.",
@@ -370,6 +395,7 @@ window.CHINA2027 = {
       from: "Xi’an North 西安北",
       to: "Chengdu East 成都东",
       time: "3u–4u30",
+      release: "10:30",
       low: 30,
       high: 45,
       note: "Directe HSR als basis; station en vertrektijd op het boekbare schema bevestigen.",
@@ -379,6 +405,7 @@ window.CHINA2027 = {
       from: "Chengdu East 成都东",
       to: "Chongqing · station te bepalen",
       time: "1u–2u",
+      release: "08:45",
       low: 12,
       high: 30,
       note: "Chongqing North, West of East kan per trein verschillen. Chauffeur krijgt het exacte station op het ticket.",
@@ -395,11 +422,12 @@ window.CHINA2027 = {
     {
       day: 21,
       from: "Zhangjiajie West 张家界西",
-      to: "Guilin · station te bepalen",
-      time: "6u–8u30",
+      to: "Guilin North 桂林北",
+      time: "6u22–7u01",
+      release: "16:30",
       low: 45,
       high: 75,
-      note: "Kritische rit: 2026-voorbeeld D3967 07:12–14:13 naar Guilin North; dit vraagt zeer vroeg vertrek uit Wulingyuan. In 2027 een latere directe dienst zoeken als die rijdt. Overstap bij voorkeur op hetzelfde station; Changsha en Changsha South niet verwarren. Daarna circa 1u30–2u hoteltransfer.",
+      note: "Er zijn maar twee directe treinen per dag (12306, najaar 2026). D3969 12:02–18:24 Guilin North heeft onze voorkeur: vertrek rond 10:00 uit Wulingyuan. D3967 07:12–14:13 is de terugvaloptie en vraagt vertrek rond 04:30. Een latere directe dienst bestaat niet; overstappen via Huaihua South levert niets op (dezelfde twee treinen) en via Changsha South komt de rit rond 22:40 aan. Daarna circa 1u30–2u hoteltransfer naar Yangshuo.",
     },
     {
       id: "guilin-guangzhou",
@@ -417,6 +445,7 @@ window.CHINA2027 = {
       from: "Guangzhou South 广州南",
       to: "Hong Kong West Kowloon 香港西九龙",
       time: "circa 0u50–1u30",
+      release: "10:15",
       low: 25,
       high: 40,
       note: "Na een korte stadswandeling een rechtstreekse middagtrein. Reken 45–75 minuten naar Guangzhou South en 60–90 minuten stationsmarge. Paspoorten/babyregistratie en grensformaliteiten; exact schema voor 2027 bevestigen.",
@@ -546,39 +575,39 @@ window.CHINA2027 = {
       backup:
         "Geen ticket? Vandaag park/hutongs, en alleen naar een andere open dag schuiven als daar tickets beschikbaar zijn.",
       reserve:
-        "Forbidden City: 28 maart om 20:00 Beijing / 14:00 Nederland. Jullie zijn dan op reis: regel vooraf toegang en hulp bij boeken. Tiananmen Square is een aparte optionele stop met eigen reserveringsregels; laat de route naar de paleisingang bevestigen.",
+        "Verboden Stad: ¥60 in het piekseizoen, maximaal 40.000 bezoekers per dag, geen verkoop aan de deur en maandag dicht behalve op feestdagen. Tickets komen 7 dagen vooruit vrij om 20:00 Beijing; voor 4 april is dat 28 maart 20:00 Beijing / 14:00 Nederland. Neem het originele paspoort mee waarmee geboekt is. Tiananmen Square is een aparte optionele stop met eigen reserveringsregels; laat de route naar de paleisingang bevestigen.",
       cost: "Activiteitenpot €20–35 voor twee, inclusief eventuele extra paleiszalen.",
     },
     {
       d: 9,
       city: "beijing",
-      kind: "natuur",
-      title: "Een muur tot aan de horizon.",
-      sub: "Mutianyu Great Wall · Qingming",
-      am: "Vroege privétransfer naar Mutianyu, circa 1u30–2u per richting afhankelijk van verkeer. Kies de gesloten kabelbaan en een kort traject op de muur.",
-      pm: "Lunch en terug naar Beijing. Reken op trappen, hellingen en wachtrijen; stop ruim vóór het op is.",
-      eve: "Een rustige avond in het hotel.",
-      baby: "Draagzak essentieel. Geen buggy op de muur en geen rodelbaan met Amélie.",
+      kind: "cultuur",
+      title: "De tempel. Daarna het dagelijkse Beijing.",
+      sub: "Temple of Heaven · Shichahai / hutongs · Qingming",
+      am: "Temple of Heaven: park en hoofdcomplex op rustig tempo. Dit is het enige grote bezoek van vandaag. Het is de feestdag zelf, dus drukker dan anders; het parkterrein verdeelt mensen goed.",
+      pm: "Eerst een echte hotelpauze. Daarna optioneel 45–60 minuten langs Shichahai en een rustige hutong, bijvoorbeeld rond Yandai Xiejie. Summer Palace blijft een alternatief voor deze dag: kies het dan als hoofdbezoek in plaats van Temple of Heaven, niet als extra complex.",
+      eve: "Eten, spullen bij elkaar en Beijing West voor morgen controleren. Een korte buurtwandeling mag ook genoeg zijn.",
+      baby: "Buggy in park en langs het meer; draagzak bij trappen. Het hutongrondje mag direct worden afgebroken als het dutje niet lukte.",
       backup:
-        "Bij slecht weer of extreme drukte ruilen met D10, als chauffeur en tickets dat toelaten. De Verboden Stad alleen verplaatsen met een nieuw bevestigd ticket.",
+        "Bij regen, vermoeidheid of een zandstormdag vervalt de hutongwandeling; het Nationaal Museum of Capital Museum is dan het binnenalternatief. Indien nodig ruilen met D10; tickets en chauffeur eerst bevestigen.",
       reserve:
-        "Kabelbaan/entree en chauffeur vooraf regelen. Qingming op 5 april: definitief vakantieblok 2027 controleren. Als 6 april duidelijk rustiger is, Mutianyu en D10 omwisselen.",
+        "Qingming valt in 2027 op maandag 5 april en het vakantieblok is naar verwachting 3–5 april; het officiële besluit volgt pas in november/december 2026. Opening en entree voor het gekozen hoofdbezoek controleren. Hutongs vrij verkennen; geen verplichte riksjarit.",
       cost: "Privéauto + entree/kabelbaan €140–220 voor het gezin als budget.",
     },
     {
       d: 10,
       city: "beijing",
-      kind: "cultuur",
-      title: "De tempel. Daarna het dagelijkse Beijing.",
-      sub: "Temple of Heaven · Shichahai / hutongs",
-      am: "Temple of Heaven: park en hoofdcomplex op rustig tempo. Dit is het enige grote bezoek van vandaag.",
-      pm: "Eerst een echte hotelpauze. Daarna optioneel 45–60 minuten langs Shichahai en een rustige hutong, bijvoorbeeld rond Yandai Xiejie. Summer Palace blijft een alternatief voor deze dag: kies het dan als hoofdbezoek in plaats van Temple of Heaven, niet als extra complex.",
-      eve: "Eten, spullen bij elkaar en Beijing West voor morgen controleren. Een korte buurtwandeling mag ook genoeg zijn.",
-      baby: "Buggy in park en langs het meer; draagzak bij trappen. Het hutongrondje mag direct worden afgebroken als het dutje niet lukte.",
+      kind: "natuur",
+      title: "Een muur tot aan de horizon.",
+      sub: "Mutianyu Great Wall · dinsdag buiten het feestdagblok",
+      am: "Vroege privétransfer naar Mutianyu, circa 1u30–2u per richting afhankelijk van verkeer. Kies de gesloten kabelbaan en een kort traject op de muur.",
+      pm: "Lunch en terug naar Beijing. Reken op trappen, hellingen en wachtrijen; stop ruim vóór het op is.",
+      eve: "Een rustige avond in het hotel. Bagage klaarzetten voor de trein van morgen.",
+      baby: "Draagzak essentieel. Geen buggy op de muur en geen rodelbaan met Amélie.",
       backup:
-        "Bij regen of vermoeidheid vervalt de hutongwandeling. Indien nodig ruilen met de Mutianyu-dag; tickets en chauffeur eerst bevestigen.",
+        "Bij slecht weer of extreme drukte ruilen met D9, als chauffeur en tickets dat toelaten.",
       reserve:
-        "Opening/entree voor het gekozen hoofdbezoek controleren. Hutongs vrij verkennen; geen verplichte riksjarit.",
+        "Kabelbaan/entree en chauffeur vooraf regelen. Deze dag staat bewust op dinsdag 6 april, buiten het Qingming-blok van naar verwachting 3–5 april: op de feestdag zelf is de muur het drukst. Officieel besluit volgt in november/december 2026.",
       cost: "Entreepot circa €15–35 voor twee als raming; hutongwandeling gratis, vervoer en eten apart.",
     },
     {
@@ -607,7 +636,7 @@ window.CHINA2027 = {
       baby: "Ruime hallen maar drukte en loopafstanden: draagzak én buggy naar behoefte.",
       backup: "Inkorten tot de belangrijkste hallen en daarna terug.",
       reserve:
-        "Museumticket op naam; verkoopvenster en chauffeur uiterlijk een week vooraf controleren. Voor een extra muurbezoek entree, opening en trappen bij Yongningmen navragen.",
+        "Terracottaleger: ¥120 in het piekseizoen (1 maart–30 november) met een tijdslot en kinderen onder 1,20 m gratis; tickets op naam, dus dezelfde paspoorten als bij de boeking. Museumticket op naam; verkoopvenster en chauffeur uiterlijk een week vooraf controleren. Voor een extra muurbezoek entree, opening en trappen bij Yongningmen navragen.",
       cost: "Tickets + privéauto/gids €100–180 voor het gezin als budget.",
     },
     {
@@ -637,7 +666,7 @@ window.CHINA2027 = {
       baby: "Groot terrein, hellingen en soms veel mensen. Neem de buggy en draagzak mee; houd de route kort.",
       backup: "Bij drukte een beperkt deel bezoeken en op tijd terug.",
       reserve:
-        "Panda Base-tijdslot vooraf boeken; exacte 2027-verkoopregels navragen.",
+        "Panda Base-tijdslot vooraf boeken op naam, met dezelfde paspoorten bij de ingang. April is piek: ga bij opening, dan zijn de panda’s het actiefst. Exacte 2027-verkoopregels navragen.",
       cost: "Activiteiten en vervoer €35–70 voor het gezin als budget.",
     },
     {
@@ -697,11 +726,11 @@ window.CHINA2027 = {
       am: "Via de oostelijke ingang en parkshuttle naar de Bailong-lift. Met een vroege start wachtrijen proberen te beperken.",
       pm: "Korte route langs Yuanjiajie-uitzichtpunten. Lunchpauze en tijdig via de gekozen route terug.",
       eve: "Eten in Wulingyuan. Weer en energie voor morgen bekijken.",
-      baby: "Draagzak essentieel; liften en shuttles voorkomen niet alle trappen. Geen volledige wandelroute afdwingen.",
+      baby: "Draagzak essentieel; liften en shuttles voorkomen niet alle trappen. Laat de grote koffer in Wulingyuan: in het park is handbagage het praktische maximum. Geen volledige wandelroute afdwingen.",
       backup:
         "Bij dichte mist deze dag ruilen met een lager gelegen wandeling of rust.",
       reserve:
-        "Meerdaags parkentree en lift/shuttle volgens actueel ticketpakket vooraf laten controleren.",
+        "Wulingyuan-kaartje circa ¥225–228, vier dagen geldig met face-scan bij elke toegang; parkbussen inbegrepen, kabelbanen en de Bailong-lift apart. Op naam, met paspoort bij de poort. Laat het actuele ticketpakket voor 2027 bevestigen.",
       cost: "Totale Zhangjiajie-activiteitenpot voor D18–D20: €180–280 voor twee; geen dagprijs.",
     },
     {
@@ -725,14 +754,14 @@ window.CHINA2027 = {
       kind: "keuze",
       title: "Tianmen als bonus. Rust als basis.",
       sub: "Tianmen óf weerbuffer · Grand Canyon tweede keuze",
-      am: "Eerst bepalen wat morgen haalbaar is. Bij een zeer vroege D21-trein: vandaag kort en rustig houden. Alleen bij goed zicht en voldoende energie Tianmen als één hoofdexcursie, met privétransfer vanuit Wulingyuan en apart ticket.",
+      am: "Eerst bepalen wat morgen haalbaar is. De trein van D21 vertrekt rond het middaguur, dus een lange dag is nog mogelijk — maar een bergdag vlak vóór een reisdag blijft een afweging. Alleen bij goed zicht en voldoende energie Tianmen als één hoofdexcursie, met privétransfer vanuit Wulingyuan en apart ticket.",
       pm: "Voor Tianmen een route laten bevestigen met werkende kabelbaan en roltrappen, zodat de 999 treden niet verplicht zijn. Grand Canyon / glazen brug blijft een alternatief, met lagere prioriteit; kinderregels en draagzakbeleid eerst schriftelijk bevestigen.",
-      eve: "Op tijd eten, inpakken en slapen. Ontbijtpakket en chauffeur voor D21 gereed; geen late show na een bergdag.",
+      eve: "Op tijd eten, inpakken en slapen. Chauffeur voor de rit naar Zhangjiajie West gereed; geen late show na een bergdag.",
       baby: "Tianmen kan een lange dag zijn met vervoer en wachtrijen. Een ontbrekende heldere parkdag van D18/D19 inhalen gaat vóór nog een nieuwe attractie.",
       backup:
         "D18/D19 inhalen als daar het weer tegenzat; anders hotel, dorp en rust.",
       reserve:
-        "Tianmen is een apart ticket met tijdslot en routekeuze. Actuele kabelbaanstatus en roltraproute in 2027 laten bevestigen; niet afgaan op oude A/B/C-routebeschrijvingen.",
+        "Tianmen is een apart ticket met tijdslot en routekeuze; boek 3–5 dagen vooruit via het officiële kanaal of Trip.com. Actuele kabelbaanstatus en roltraproute in 2027 laten bevestigen; niet afgaan op oude A/B/C-routebeschrijvingen.",
       cost: "In de gezamenlijke Zhangjiajie-pot; privétransfer naar Tianmen eventueel extra.",
     },
     {
@@ -740,14 +769,15 @@ window.CHINA2027 = {
       city: "yangshuo",
       kind: "trein",
       title: "Een lange treindag. Een zachte landing.",
-      sub: "Zhangjiajie · Guilin · Yangshuo",
-      am: "Controleer eerst de vertrekopties. De 2026-referentie D3967 vertrekt 07:12 uit Zhangjiajie West: vanuit Wulingyuan betekent dat grofweg 04:30–05:00 hotelvertrek met stationsmarge. Als in 2027 een geschikte latere directe dienst rijdt, heeft die onze voorkeur. Ontbijtpakket en babyspullen klaar.",
-      pm: "Circa 6u–8u30 trein als werkraming. Rechtstreeks heeft de voorkeur. Bij een overstap alleen een haalbare aansluiting: bij voorkeur hetzelfde station en 60–90 minuten marge. Changsha en Changsha South zijn verschillende stations; geen snelle stationswissel als basisplan.",
-      eve: "Chauffeur bij het exacte Guilin-station. Naar het gekozen hotel in Yangshuo, eten en slapen. Inclusief auto’s kan dit een dag van 9–12 uur zijn.",
+      sub: "Zhangjiajie · Guilin North · Yangshuo",
+      am: "Rustig ontbijten en rond 10:00 vertrekken uit Wulingyuan voor de trein van 12:02. Dat is de 2026-referentie D3969 naar Guilin North: een gewone ochtend in plaats van het 04:30-vertrek dat de eerdere D3967 van 07:12 zou vragen. Ontbijtpakket en babyspullen klaar.",
+      pm: "Treinreis van circa 6u22 rechtstreeks. Er zijn maar twee directe treinen per dag op deze verbinding; een latere of snellere dienst bestaat niet. Overstappen via Huaihua South levert niets op (dezelfde twee treinen) en via Changsha South komt de rit rond 22:40 aan, met een baby te laat.",
+      eve: "Aankomst Guilin North 18:24, chauffeur bij het station, daarna circa 1u30–2u naar het hotel in Yangshuo. Reken op aankomst rond 20:00–20:30, eten en slapen. Inclusief auto’s is dit een dag van ongeveer 10 uur.",
       baby: "Een eigen treinstoel overwegen en de zitplaatsen samen laten boeken. Geen sightseeing bij aankomst.",
-      backup: "Bij late aankomst vooraf maaltijd en late check-in regelen.",
+      backup:
+        "Bij late aankomst vooraf maaltijd en late check-in regelen. Valt de 12:02-trein uit, dan blijft D3967 van 07:12 als terugvaloptie staan — met een vertrek van rond 04:30.",
       reserve:
-        "Tickets vanaf 3 april. Deze verbinding vóór andere binnenlandse ritten uitzoeken zodra het schema zichtbaar is. Vertrektijd, aankomststation, eventuele twee tickets, kinderzitje en late check-in bevestigen.",
+        "Tickets vanaf 3 april om 16:30 Beijing. Deze verbinding vóór andere binnenlandse ritten uitzoeken: het zijn er maar twee per dag. Vertrektijd, aankomststation Guilin North, kinderzitje en late check-in bevestigen.",
       cost: "Trein €45–75 per volwassene; lange aankomsttransfer €55–90 per auto als budget.",
     },
     {
@@ -839,7 +869,7 @@ window.CHINA2027 = {
       backup:
         "Bij vertraging alleen hotel en diner. Shamian en dim sum staan morgen; geen avondtickets nodig.",
       reserve:
-        "Trein vanaf 9 april. Hotel voor 23–24 april met babybed, bagageopslag en transfers bevestigen. Waarschijnlijk Canton Fair-periode: exacte 2027-data en kamerprijs controleren.",
+        "Trein vanaf 9 april. Hotel voor 23–24 april nu al boeken: het hotel is het duurste en schaarste onderdeel van deze reis, met Canton Fair fase 2 dat naar verwachting op 23 april opent. Babybed, bagageopslag en transfers bevestigen.",
       cost: "Trein €20–35 per volwassene; auto Longji–Guilin West €70–110 plus station–hotel circa €20–40 per auto als raming.",
     },
     {

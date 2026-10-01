@@ -532,6 +532,26 @@ nav a:hover {
   border-color: #e8dfc2;
   color: #826323;
 }
+.tag.weather {
+  background: #eef2f5;
+  border-color: #dde5ea;
+  color: #3f5b6b;
+}
+.route-stop .tag.weather {
+  margin-left: 6px;
+}
+.day-weather {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+.day-weather .tag {
+  font-size: 11px;
+}
 .planning-toolbar {
   display: flex;
   align-items: center;
@@ -2820,6 +2840,14 @@ body.inner-view .hero {
 .comparison-editors {
   display: grid;
   gap: 10px;
+}
+.climate-table tbody th {
+  width: 150px;
+  overflow-wrap: normal;
+}
+.climate-table tbody td:nth-child(2),
+.climate-table tbody td:nth-child(3) {
+  width: 90px;
 }
 .comparison-editors > details {
   padding: 12px;
